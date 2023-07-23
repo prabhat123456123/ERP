@@ -19,7 +19,7 @@ const register = async (req, res, next) => {
     //   data: adm.length ? adm : [],
     // });
     //  console.log(data)
-    return res.send("data555555555555");
+    return res.send("data55555");
   } catch (error) {
     next(error);
   }
