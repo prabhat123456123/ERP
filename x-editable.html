@@ -1,0 +1,265 @@
+<html>
+	<head>
+		<title>In-Place Editing in DataTable with X-Editable using PHP Ajax</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+		<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>  
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css" />
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet">
+  		<script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<h3 align="center">In-Place Editing in DataTable with X-Editable using PHP Ajax</h3>
+			<br />
+			<div class="panel panel-default">
+				<div class="panel-heading">Sample Data</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table id="sample_data" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th><input type="checkbox" /> Check All</th>
+									<th>ID</th>
+									<th>First Name</th>
+									<th>Last Name</th>
+									<th>Gender</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<br />
+	</body>
+</html>
+
+<script type="text/javascript" language="javascript">
+
+$(document).ready(function(){
+	var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		"order":[],
+		"ajax":{
+			url:"fetch.php",
+			type:"POST",
+		},
+		createdRow:function(row, data, rowIndex)
+		{
+			$.each($('td', row), function(colIndex){
+				if(colIndex == 1)
+				{
+					$(this).attr('data-name', 'first_name');
+					$(this).attr('class', 'first_name');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data[0]);
+				}
+				if(colIndex == 2)
+				{
+					$(this).attr('data-name', 'last_name');
+					$(this).attr('class', 'last_name');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data[0]);
+				}
+				if(colIndex == 3)
+				{
+					$(this).attr('data-name', 'gender');
+					$(this).attr('class', 'gender');
+					$(this).attr('data-type', 'select');
+					$(this).attr('data-pk', data[0]);
+				}
+			});
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.first_name',
+		url:'update.php',
+		title:'First Name',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.last_name',
+		url:'update.php',
+		title:'Last Name',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.gender',
+		url:'update.php',
+		title:'Gender',
+		type:'POST',
+		datatype:'json',
+		source:[{value: "Male", text: "Male"}, {value: "Female", text: "Female"}],
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+});	
+</script>
+
+
+
+<html>
+	<head>
+		<title>In-Place Editing in DataTable with X-Editable using PHP Ajax</title>
+		<script src="/assets/plugins/jQuery/jquery.min.js"></script>
+		<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css" />
+		<script src="/assets/plugins/jQuery/jquery.dataTables.min.js"></script>
+		<script src="/assets/bootstrap/js/dataTables.bootstrap.min.js"></script>  
+		<link rel="stylesheet" href="/assets/bootstrap/css/dataTables.bootstrap.min.css" />
+		<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+		<link href="/assets/bootstrap/css/bootstrap-editable.css" rel="stylesheet">
+  		<script src="/assets/bootstrap/js/bootstrap-editable.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<h3 align="center">In-Place Editing in DataTable with X-Editable using PHP Ajax</h3>
+			<br />
+			 <div class="row"> 
+            <div class="col-md-12 text-right">
+                <input type="button" id="btnAdd" class="btn btn-primary para" value="Add New" />
+            </div>
+        </div>
+			<div class="panel panel-default">
+				
+				<div class="panel-heading">Sample Data</div>
+				<div class="panel-body">
+					<div class="table-responsive">
+						<table id="sample_data" class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th><input type="checkbox" id=""> Check All</th>
+									<th> Name</th>
+									<th> Email</th>
+									<th>Gender</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br />
+		<br />
+	</body>
+</html>
+
+<script type="text/javascript" language="javascript">
+
+$(document).ready(function(){
+	
+	var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		"order":[],
+		"ajax":{
+			url:"/admission/get-admission",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "name" },
+        { data: "email" },
+        { data: "gender" },
+        { data: "action" },
+	],
+		createdRow:function(row, data, rowIndex)
+		{
+			$.each($('td', row), function(colIndex){
+				if(colIndex == 1)
+				{
+					$(this).attr('data-name', 'name');
+					$(this).attr('class', 'name');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				if(colIndex == 2)
+				{
+					$(this).attr('data-name', 'email');
+					$(this).attr('class', 'email');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				if(colIndex == 3)
+				{
+					$(this).attr('data-name', 'gender');
+					$(this).attr('class', 'gender');
+					$(this).attr('data-type', 'select');
+					$(this).attr('data-pk', data.id);
+				}
+			});
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.name',
+		url:'/admission/update-admission',
+		title:'Name',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.email',
+		url:'/admission/update-admission',
+		title:'Email',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.gender',
+		url:'/admission/update-admission',
+		title:'Gender',
+		type:'POST',
+		datatype:'json',
+		source:[{value: "Male", text: "Male"}, {value: "Female", text: "Female"}],
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+		}
+	});
+});	
+</script>

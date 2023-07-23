@@ -1,0 +1,268 @@
+<%- include('../../partials/top-bar') %>
+
+      <!-- Site wrapper -->
+      <div class="wrapper">
+         <%- include('../../partials/header') %>
+		  <style>
+      .loading-image {
+        position: absolute;
+		
+        top: 48%;
+        left: 32%;
+        transform: translateY(-50%) translateX(50%);
+      }
+      .loader {
+        display: none;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        position: fixed;
+        z-index: 99999;
+      }
+    </style>
+         <!-- =============================================== -->
+         <!-- Left side column. contains the sidebar -->
+       <%- include('../../partials/sidebar') %>
+	
+   
+         <!-- =============================================== -->
+         <!-- Content Wrapper. Contains page content -->
+         <div class="content-wrapper">
+			   <div class="loader" id="loader">
+      <img
+        class="loading-image" style="width: 100px;"
+        src="/assets/images/loader.webp"
+        alt="loading.."
+      />
+	   </div>
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="header-icon">
+                  <i class="fa fa-dashboard"></i>
+               </div>
+               <div class="header-title">
+                  <h1>SMART SCHOOL Dashboard</h1>
+                  <small>Very detailed & featured admin.</small>
+               </div>
+            </section>
+			
+            <!-- Main content -->
+            <section class="content">
+          
+			<div class="panel panel-default">
+				
+				<div class="panel-heading">Complaint Data</div>
+				<div class="panel-body">
+					
+		<br>
+
+					<div class="table-responsive">
+						
+						<table id="sample_data" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									<th></th>
+									<th> Name</th>
+									<th> Email</th>
+									<th>Gender</th>
+									<th>Action (view add edit delete button )</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		
+            </section>
+		
+
+            <!-- /.content -->
+         </div>
+         <!-- /.content-wrapper -->
+        <%- include('../../partials/footer') %>
+      </div>
+	
+      <!-- /.wrapper -->
+      <!-- Start Core Plugins
+         =====================================================================-->
+   <%- include('../../partials/footer-script') %>
+
+   <script type="text/javascript" language="javascript">
+
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+
+   // Delete record
+   $('#delete_record').click(function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+
+         // Confirm alert
+         var confirmdelete = confirm("Do you really want to Delete records?");
+         if (confirmdelete == true) {
+
+			
+            $.ajax({
+               url: '/admission/delete-multiple',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               success: function(response){
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               }
+            });
+         } 
+      }
+   });
+	$(document).on("click",".delBtn",function(){
+		 if(confirm('Are you sure you want to delete this?')){
+ const id = $(this).attr('data-id');
+ $('.loader').css('display','block');
+  $.ajax({
+        url: '/admission/delete-admission',
+        type: "POST",
+        data: {
+          id:id
+        },
+        success: function () {
+        $('.loader').css('display','none');
+
+     $('#sample_data').DataTable().ajax.reload();
+	toastr.error('Record Deleted Successfuly !!')
+
+        }
+    });
+		 }
+ 
+});
+	var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		
+		"order":[],
+		"ajax":{
+			url:"/admission/get-admission",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "name" },
+        { data: "email" },
+        { data: "gender" },
+        { data: "action" },
+	],
+		createdRow:function(row, data, rowIndex)
+		{
+			$.each($('td', row), function(colIndex){
+				if(colIndex == 1)
+				{
+					$(this).attr('data-name', 'name');
+					$(this).attr('class', 'name');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				if(colIndex == 2)
+				{
+					$(this).attr('data-name', 'email');
+					$(this).attr('class', 'email');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				if(colIndex == 3)
+				{
+					$(this).attr('data-name', 'gender');
+					$(this).attr('class', 'gender');
+					$(this).attr('data-type', 'select');
+					$(this).attr('data-pk', data.id);
+				}
+			});
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.name',
+		url:'/admission/update-admission',
+		title:'Name',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+				toastr.success('Record Updated Successfuly !!')
+
+		}
+		
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.email',
+		url:'/admission/update-admission',
+		title:'Email',
+		type:'POST',
+		validate:function(value){
+			
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+			toastr.success('Record Updated Successfuly !!')
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.gender',
+		url:'/admission/update-admission',
+		title:'Gender',
+		type:'POST',
+		datatype:'json',
+		source:[{value: "Male", text: "Male"}, {value: "Female", text: "Female"}],
+		validate:function(value){
+			
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+			toastr.success('Record Updated Successfuly !!')
+		}
+	});
+	
+});	
+</script>

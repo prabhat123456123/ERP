@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>CRM Admin panel</title>
+        <!-- Favicon and touch icons -->
+        <link rel="shortcut icon" href="/assets/dist/img/ico/favicon.png" type="image/x-icon">
+        <!-- Bootstrap -->
+        <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Bootstrap rtl -->
+        <!--<link href="assets/bootstrap-rtl/bootstrap-rtl.min.css" rel="stylesheet" type="text/css"/>-->
+         <!-- Pe-icon-7-stroke -->
+        <link href="/assets/pe-icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet" type="text/css"/>
+        <!-- style css -->
+        <link href="/assets/dist/css/stylecrm.css" rel="stylesheet" type="text/css"/>
+        <!-- Theme style rtl -->
+        <!--<link href="assets/dist/css/stylecrm-rtl.css" rel="stylesheet" type="text/css"/>-->
+    </head>
+    <body>
+        <!-- Content Wrapper -->
+        <div class="login-wrapper">
+           
+            <div class="container-center lg">
+             <div class="login-area">
+                <div class="panel panel-bd panel-custom">
+                    <div class="panel-heading">
+                        <div class="view-header">
+                            <div class="header-icon">
+                                <i class="pe-7s-unlock"></i>
+                            </div>
+                            <div class="header-title">
+                                <h3>Register</h3>
+                                <small><strong>Please enter your data to register.</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                     <%- include('../partials/message') %>
+                      <div class="panel-body" >
+                         <div align="right">
+                               
+                                <a class="btn btn-add" href="/">Back To Login</a>
+                            </div>
+                      <div class="form-group">
+                                 <label>Select Role</label>
+                                 <select class="form-control" id="role">
+                                    <option value="">Please Select Role</option>
+                                    <option value="1">Institute</option>
+                                    <option value="2">Faculty</option>
+                                    <option value="3">Student</option>
+                                 </select>
+                              </div>
+                             
+                              </div>
+                             
+                    <div class="panel-body" id="school-tab">
+                        <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>School Name</label>
+                                    <input type="text" value="" id="school_name" placeholder="School Name" class="form-control" name="school_name">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Principal Name</label>
+                                    <input type="password" value="" id="password" placeholder="Principal Name" class="form-control" name="principan_name">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Principal Email ID</label>
+                                    <input type="password" value="" id="principal_email" placeholder="Principal Email ID" class="form-control" name="principal_email">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Principal Phone</label>
+                                    <input type="text" value="" id="principal_phone" placeholder="Principal Phone" class="form-control" name="principal_phone">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>School Address</label>
+                                    <input type="text" value="" id="school_address" placeholder="School Address" class="form-control" name="school_address">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Number of class</label>
+                                    <input type="text" value="" id="number_class" placeholder="Number of class" class="form-control" name="number_class">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Year of Established</label>
+                                    <input type="date" value="" id="school_year" class="form-control" name="school_year">
+                                </div>
+                            </div>
+                             <div align="center">
+                                <button class="btn btn-warning">Register</button>
+                               
+                            </div>
+                           
+                        </form>
+                        </div>
+                         <div class="panel-body" id="student-tab">
+                       <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Name</label>
+                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Father's Name</label>
+                                    <input type="text" value="" id="father_name" class="form-control" name="father_name">
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Mother's Name</label>
+                                    <input type="text" value="" id="mother_name" class="form-control" name="mother_name">
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Class</label>
+                                    <input type="text" value="" id="class" class="form-control" name="class">
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Hobbies</label>
+                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>DOB</label>
+                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Email ID</label>
+                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Phone Number</label>
+                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Current Address</label>
+                                    <input type="text"  id="studentcurrentaddress1" placeholder="address line 1" class="form-control" name="address1">
+                                     <label></label>
+                                    <input type="text" id="studentcurrentaddress2" placeholder="address line 2" class="form-control" name="address2">
+                                     <label></label>
+                                    <input type="text"  id="studentcurrentstate" placeholder="State" class="form-control" name="state">
+                                     <label></label>
+                                    <input type="text" id="studentcurrentdistrict" placeholder="District" class="form-control" name="district">
+                                     <label></label>
+                                    <input type="text"  id="studentcurrentcity" placeholder="City" class="form-control" name="city">
+                                     <label></label>
+                                    <input type="text" id="studentcurrentpincode" placeholder="Pin Code" class="form-control" name="pincode">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    
+                                    <label>Permanent Address</label> ( <input type="checkbox" name="studentaddresscheck" id="studentaddresscheck"/>Same as Current: )
+                                    <input type="text" placeholder="address line 1"  id="studentpermanentaddress1" class="form-control" name="address1">
+                                      <label></label>
+                                    <input type="text" id="studentpermanentaddress2" placeholder="address line 2" class="form-control" name="address2">
+                                     <label></label>
+                                    <input type="text"  id="studentpermanentstate" placeholder="State" class="form-control" name="state">
+                                     <label></label>
+                                    <input type="text" id="studentpermanentdistrict" placeholder="District" class="form-control" name="district">
+                                     <label></label>
+                                    <input type="text"  id="studentpermanentcity" placeholder="City" class="form-control" name="city">
+                                     <label></label>
+                                    <input type="text" id="studentpermanentpincode" placeholder="Pin Code" class="form-control" name="pincode">
+                                </div>
+                              
+                            </div>
+                            <div align="center">
+                                <button class="btn btn-warning">Register</button>
+                            </div>
+                        </form>
+                        </div>
+                         <div class="panel-body" id="faculty-tab">
+                           <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Name</label>
+                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                </div>
+                                
+                                  <div class="form-group col-lg-6">
+                                    <label>Highest Qualification</label>
+                                    <input type="text" value="" id="qualification" class="form-control" name="qualification">
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Hobbies</label>
+                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>DOB</label>
+                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Email ID</label>
+                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label>Phone Number</label>
+                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Current Address</label>
+                                    <input type="text"  id="facultycurrentaddress1" placeholder="address line 1" class="form-control" name="address1">
+                                     <label></label>
+                                    <input type="text" id="facultycurrentaddress2" placeholder="address line 2" class="form-control" name="address2">
+                                     <label></label>
+                                    <input type="text"  id="facultycurrentstate" placeholder="State" class="form-control" name="state">
+                                     <label></label>
+                                    <input type="text" id="facultycurrentdistrict" placeholder="District" class="form-control" name="district">
+                                     <label></label>
+                                    <input type="text"  id="facultycurrentcity" placeholder="City" class="form-control" name="city">
+                                     <label></label>
+                                    <input type="text" id="facultycurrentpincode" placeholder="Pin Code" class="form-control" name="pincode">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    
+                                    <label>Permanent Address</label> ( <input type="checkbox" name="facultyaddresscheck" id="facultyaddresscheck"/>Same as Current: )
+                                    <input type="text" value="" id="facultypermanentaddress1" placeholder="address line 1"  class="form-control" name="address1">
+                                      <label></label>
+                                    <input type="text" id="facultypermanentaddress2" placeholder="address line 2" class="form-control" name="address2">
+                                     <label></label>
+                                    <input type="text"  id="facultypermanentstate" placeholder="State" class="form-control" name="state">
+                                     <label></label>
+                                    <input type="text" id="facultypermanentdistrict" placeholder="District" class="form-control" name="district">
+                                     <label></label>
+                                    <input type="text"  id="facultypermanentcity" placeholder="City" class="form-control" name="city">
+                                     <label></label>
+                                    <input type="text" id="facultypermanentpincode" placeholder="Pin Code" class="form-control" name="pincode">
+                                </div>
+                              
+                            </div>
+                            <div align="center">
+                                <button class="btn btn-warning">Register</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- jQuery -->
+        <script src="/assets/plugins/jQuery/jquery-1.12.4.min.js" type="text/javascript"></script>
+        <!-- bootstrap js -->
+        <script src="/assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+       
+ 
+    </body>
+</html>
+<script>
+    $(document).ready(function(){
+          $('#school-tab').hide();
+        $('#student-tab').hide();
+        $('#faculty-tab').hide();
+ $("#role").change(function(){
+    if($("#role option:selected").val()==""){
+        $('#school-tab').hide();
+        $('#student-tab').hide();
+        $('#faculty-tab').hide();
+    }
+      if($("#role option:selected").val()=="1"){
+        $('#school-tab').show();
+        $('#student-tab').hide();
+        $('#faculty-tab').hide();
+    }
+      if($("#role option:selected").val()=="2"){
+        $('#school-tab').hide();
+        $('#student-tab').hide();
+        $('#faculty-tab').show();
+    }
+      if($("#role option:selected").val()=="3"){
+        $('#school-tab').hide();
+        $('#student-tab').show();
+        $('#faculty-tab').hide();
+    }
+});
+
+function setBillingAddress(){
+  if ($("#facultyaddresscheck").is(":checked")) {
+    $('#facultypermanentaddress1').val($('#facultycurrentaddress1').val());
+    $('#facultypermanentaddress2').val($('#facultycurrentaddress2').val());
+    $('#facultypermanentstate').val($('#facultycurrentstate').val());
+    $('#facultypermanentdistrict').val($('#facultycurrentdistrict').val());
+    $('#facultypermanentcity').val($('#facultycurrentcity').val());
+    $('#facultypermanentpincode').val($('#facultycurrentpincode').val());
+   
+    $('#facultypermanentaddress1').attr('disabled', 'disabled');
+    $('#facultypermanentaddress2').attr('disabled', 'disabled');
+    $('#facultypermanentstate').attr('disabled', 'disabled');
+    $('#facultypermanentdistrict').attr('disabled', 'disabled');
+    $('#facultypermanentcity').attr('disabled', 'disabled');
+    $('#facultypermanentpincode').attr('disabled', 'disabled');
+  
+  } else {
+  
+
+    $('#facultypermanentaddress1').removeAttr('disabled');
+    $('#facultypermanentaddress2').removeAttr('disabled');
+    $('#facultypermanentstate').removeAttr('disabled');
+    $('#facultypermanentdistrict').removeAttr('disabled');
+    $('#facultypermanentcity').removeAttr('disabled');
+    $('#facultypermanentpincode').removeAttr('disabled');
+
+  }
+}
+
+$('#facultyaddresscheck').click(function(){
+  setBillingAddress();
+})
+
+
+function setStudentAddress(){
+  if ($("#studentaddresscheck").is(":checked")) {
+    $('#studentpermanentaddress1').val($('#studentcurrentaddress1').val());
+    $('#studentpermanentaddress2').val($('#studentcurrentaddress2').val());
+    $('#studentpermanentstate').val($('#studentcurrentstate').val());
+    $('#studentpermanentdistrict').val($('#studentcurrentdistrict').val());
+    $('#studentpermanentcity').val($('#studentcurrentcity').val());
+    $('#studentpermanentpincode').val($('#studentcurrentpincode').val());
+   
+    $('#studentpermanentaddress1').attr('disabled', 'disabled');
+    $('#studentpermanentaddress2').attr('disabled', 'disabled');
+    $('#studentpermanentstate').attr('disabled', 'disabled');
+    $('#studentpermanentdistrict').attr('disabled', 'disabled');
+    $('#studentpermanentcity').attr('disabled', 'disabled');
+    $('#studentpermanentpincode').attr('disabled', 'disabled');
+  
+  } else {
+  
+
+    $('#studentpermanentaddress1').removeAttr('disabled');
+    $('#studentpermanentaddress2').removeAttr('disabled');
+    $('#studentpermanentstate').removeAttr('disabled');
+    $('#studentpermanentdistrict').removeAttr('disabled');
+    $('#studentpermanentcity').removeAttr('disabled');
+    $('#studentpermanentpincode').removeAttr('disabled');
+ 
+  }
+}
+
+$('#studentaddresscheck').click(function(){
+  setStudentAddress();
+})
+    })
+   
+
+</script>
