@@ -1,7 +1,7 @@
 
 
 const {
-  register
+  register,login
  
 } = require("./auth");
 
@@ -10,18 +10,18 @@ getStudent
 } = require("./attendance");
 
 const {
-  getQuiz
+  getQuiz,singleQuiz
 } = require("./quiz");
 
 const {
- getProfile
+ getProfile,saveProfile,editProfile,updateProfile
 } = require("./profile");
 
 
 
 
 const {
- feedback
+ saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback
 } = require("./feedback");
 
 
@@ -31,7 +31,7 @@ getReport
 
 
 module.exports = {
-   register, getQuiz,
-  getProfile, feedback, getReport,
-getStudent
+   register, getQuiz,login,saveProfile,editProfile,updateProfile,
+  getProfile, saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback, getReport,
+getStudent,singleQuiz
 };

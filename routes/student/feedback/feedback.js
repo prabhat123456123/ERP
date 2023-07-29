@@ -3,12 +3,16 @@ const router = express.Router();
 
  
 const {
-  feedback,
+  saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback
  
 } = require("../../../controller/student");
 
 
-router.post("/feedback", feedback);
+router.post("/save-feedback", saveFeedback);
+router.get("/get-feedback", getFeedback);
+router.get("/edit-feedback", editFeedback);
+router.post("/update-feedback", updateFeedback);
+router.post("/delete-feedback", deleteFeedback);
 
 
 

@@ -1,7 +1,7 @@
 
 
 const {
-  register
+  register,login
  
 } = require("./auth");
 
@@ -11,14 +11,14 @@ getStudent
 
 
 const {
- getProfile
+ getProfile,saveProfile,editProfile,updateProfile
 } = require("./profile");
 
 
 
 
 const {
- getComplaint
+ getComplaint,saveComplaint,editComplaint,updateComplaint,deleteComplaint,
 } = require("./complaint");
 
 
@@ -28,7 +28,7 @@ getReport
 
 
 module.exports = {
-   register,
-  getProfile, getComplaint, getReport,
-getStudent
+   register,saveComplaint,editComplaint,updateComplaint,deleteComplaint,
+  getProfile, getComplaint, getReport,login,
+getStudent,saveProfile,editProfile,updateProfile
 };

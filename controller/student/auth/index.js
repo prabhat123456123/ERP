@@ -1,8 +1,8 @@
 let {
-  register,
+  register,login
  
 } = require("./auth");
 
 module.exports = {
- register,
+ register,login
 };

@@ -3,12 +3,13 @@ const router = express.Router();
 
  
 const {
-  register,
+  register,login
  
 } = require("../../../controller/student");
 
 
-router.get("/register", register);
+router.post("/register", register);
+router.post("/login", login);
 
 
 

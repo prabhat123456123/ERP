@@ -1,8 +1,8 @@
 let {
-  getComplaint,
+  getComplaint,saveComplaint,editComplaint,updateComplaint,deleteComplaint,
  
 } = require("./complaint");
 
 module.exports = {
- getComplaint,
+ getComplaint,saveComplaint,editComplaint,updateComplaint,deleteComplaint,
 };

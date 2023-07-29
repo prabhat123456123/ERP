@@ -1,8 +1,8 @@
 let {
-  feedback,
+  saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback,
  
 } = require("./feedback");
 
 module.exports = {
- feedback,
+ saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback,
 };

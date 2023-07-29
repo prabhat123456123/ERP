@@ -3,12 +3,13 @@ const router = express.Router();
 
  
 const {
-  getQuiz,
+  getQuiz,singleQuiz
  
 } = require("../../../controller/student");
 
 
 router.get("/get-quiz", getQuiz);
+router.get("/single-quiz", singleQuiz);
 
 
 

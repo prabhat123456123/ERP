@@ -1,8 +1,8 @@
 let {
-  getProfile,
+  getProfile,saveProfile,editProfile,updateProfile
  
 } = require("./profile");
 
 module.exports = {
- getProfile,
+ getProfile,saveProfile,editProfile,updateProfile
 };
