@@ -1,8 +1,8 @@
 let {
-  getQuiz,singleQuiz
+  getQuiz,singleQuiz,result
  
 } = require("./quiz");
 
 module.exports = {
- getQuiz,singleQuiz
+ getQuiz,singleQuiz,result
 };

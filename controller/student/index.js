@@ -10,7 +10,7 @@ getStudent
 } = require("./attendance");
 
 const {
-  getQuiz,singleQuiz
+  getQuiz,singleQuiz,result
 } = require("./quiz");
 
 const {
@@ -33,5 +33,5 @@ getReport
 module.exports = {
    register, getQuiz,login,saveProfile,editProfile,updateProfile,
   getProfile, saveFeedback,getFeedback,editFeedback,updateFeedback,deleteFeedback, getReport,
-getStudent,singleQuiz
+getStudent,singleQuiz,result
 };

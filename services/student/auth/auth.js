@@ -72,6 +72,44 @@ class AuthManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
+  async login(body) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT id,name,email,gender FROM student WHERE name like "%${
+          body.search.value
+        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
+          body.length
+        )} OFFSET ${parseInt(body.start)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+      for (let i = 0; i < data.length; i++) {
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["name"] = `${data[i].name}`;
+        data[i]["email"] = `${data[i].email}`;
+        data[i]["gender"] = `${data[i].gender}`;
+
+        data[i][
+          "action"
+        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+       
+      }
+
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
    
   
  
