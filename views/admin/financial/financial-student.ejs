@@ -49,10 +49,15 @@
             <!-- Main content -->
             <section class="content">
           
-			<div class="panel panel-default">
-				
-				<div class="panel-heading">Sample Data</div>
-				<div class="panel-body">
+			<div class="panel panel-bd lobidrag">
+                        <div class="panel-heading">
+                           <div class="btn-group" id="buttonexport">
+                              <a href="#">
+                                 <h4>Student Financial Data</h4>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="panel-body">
 					 <div class="row"> 
  <div class="col-md-6 text-left">
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger para" id='delete_record' value='Check All & Delete' >
@@ -96,7 +101,59 @@
          <!-- /.content-wrapper -->
         <%- include('../../partials/footer') %>
       </div>
-	
+	   <div class="modal fade" id="addtask" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> add new task</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                                 <form class="form-horizontal">
+                                    <fieldset>
+                                       <!-- Text input-->
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Task Name</label>
+                                          <input type="text" placeholder="Task Name" class="form-control">
+                                       </div>
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Due date</label>
+                                          <input type="number" placeholder="Due title" class="form-control">
+                                       </div>
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Description</label>
+                                          <input type="text" placeholder="Description" class="form-control">
+                                       </div>
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Assign to</label>
+                                          <input type="text" placeholder="Assign to" class="form-control">
+                                       </div>
+                                       <!-- Text input-->
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">status</label>
+                                          <input type="text" placeholder="status" class="form-control">
+                                       </div>
+                                       <div class="col-md-12 form-group user-form-group">
+                                          <div class="pull-right">
+                                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
+                                             <button type="submit" class="btn btn-add btn-sm">Update</button>
+                                          </div>
+                                       </div>
+                                    </fieldset>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
       <!-- /.wrapper -->
       <!-- Start Core Plugins
          =====================================================================-->

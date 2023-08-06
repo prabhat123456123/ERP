@@ -1,0 +1,249 @@
+<head>
+	<title>How to use Toastr</title>
+	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Toastr -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<!-- Styles -->
+	<style type="text/css">
+        
+/* 	
+		body {
+  background: #ececec;
+}
+.lds-dual-ring.hidden { 
+display: none;
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 20% auto;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,.8);
+    z-index: 999;
+    opacity: 1;
+    transition: all 0.5s;
+} */
+/*
+ Imports
+*/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
+
+
+
+/*
+ Colours
+*/
+
+
+
+
+
+
+  
+/*
+ Base Styles
+*/  
+HTML,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/*
+ Start Loader
+*/  
+.cover {
+  width: 100%;
+  height: 100%;
+ 
+  background:#ccc;
+  position: fixed;
+    z-index: 99999;
+  top: 0;
+  left: 0;
+display: none;
+}
+
+.wrap {
+  width: 100px;
+  height: 250px;
+  position: absolute;
+  top: calc(50% - 200px);
+  left: calc(50% - 50px);
+}
+  .ball {
+   width: 100%;
+   height: 40;
+    background: radial-gradient(10% 24%, circle, rgb(0,255,12), darken(rgb(0,255,12), 30%) 70%);;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 30%;
+   
+    animation: ball-bounce 1s infinite;
+  }
+
+  .shadow {
+    height: 40%;
+    width: 100%;
+    background: radial-gradient(rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    position: absolute;
+    bottom: -40px;
+    border-radius: 50%;
+    transform: rotateX(80deg);
+    animation: shadow-grow 1s infinite;
+  }
+  
+  .text {
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: text;
+  }
+
+
+
+
+@keyframes ball-bounce {
+  0% {
+    transform: translateY(65px);
+    transition-timing-function: ease-in-out;
+    height:30%;
+  }
+
+  50% {
+    transform: translateY(-50px);
+    transition-timing-function: ease-in;
+    height: 40%;
+  }
+  
+  80% {
+    height: 40%;
+  }
+
+  99% {
+    height: 30%;
+    transition-timing-function: ease-in;
+  }
+  
+  100% {
+    transform: translateY(65px);
+    transition-timing-function: linear;
+    height: 30%;
+  }
+}
+
+@keyframes shadow-grow {
+  0% {
+    transform: rotateX(80deg) scale(1,1);
+    transition-timing-function: ease-in-out;
+  }
+
+  50% {
+    transform: rotateX(80deg) scale(.2, .2);
+    transition-timing-function: ease-in;
+  }
+
+  100% {
+    transform: rotateX(80deg) scale(1,1);
+    transition-timing-function: linear;
+  }
+}
+
+	</style>
+</head>
+<body>
+  <div class="sbc">
+    <button id='getDataBtn' class="get">Get Data</button>
+  </div>
+	<div>
+		<!-- <button id='getDataBtn'>Get Data</button>
+
+<div id="richList"></div>
+
+
+<div id="loader" class="lds-dual-ring hidden overlay">lll</div>
+ -->
+
+ <div class="cover">
+  <div class="wrap">
+    <div class="text">Loading...</div>
+    <div class="ball"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+		
+		
+	</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+	<script type="text/javascript">
+	// Default Configuration
+		$(document).ready(function() {
+
+			$(document).click('.get',function() {
+                       
+$.ajax({
+    type: "GET",
+    url: "https://forbes400.herokuapp.com/api/forbes400?limit=400",
+    dataType: 'json',
+    beforeSend: function() {
+        // $('#loader').removeClass('hidden')
+         $('.cover').show();
+    },
+    success: function(data){
+        console.log(data);
+        let richList = "<ol>";
+        for (let i = 0; i < data.length; i++) {
+          console.log(data[i].uri);
+          richList += "<li>"+data[i].uri+"</li>";
+        }
+      richList += "</ol>"
+      $('#richList').html(richList);
+    },
+  complete: function(){
+    // $('#loader').addClass('hidden')
+        $('.cover').hide();
+    },
+});
+  
+});
+		
+		});
+
+	
+	</script>
+</body>

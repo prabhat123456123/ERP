@@ -61,10 +61,32 @@ const deleteMultiple = async (req, res, next) => {
   }
 };
 
+const fetchStudentById = async (req, res, next) => {
+  try {
+    const data = await new AdmissionManagement().fetchStudentById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateStudentById = async (req, res, next) => {
+  try {
+    const data = await new AdmissionManagement().updateStudentById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 
 module.exports = {
-  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple
+  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById
  
 };

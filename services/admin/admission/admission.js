@@ -39,7 +39,7 @@ class AdmissionManagement {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -58,7 +58,7 @@ class AdmissionManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm delBtn' onclick='deleteAdmission(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Delete </button> `;
        
       }
 
@@ -98,7 +98,7 @@ class AdmissionManagement {
   }
    async updateAdmission(body) {
     try {
- console.log(body)
+
       let id = parseInt(body.pk)
 
       if (body.name === "name") {
@@ -170,6 +170,55 @@ class AdmissionManagement {
          
         }
         );
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  async fetchStudentById(body) {
+    try {
+      const studentId = parseInt(body.studentId);
+      const classId = parseInt(body.classId);
+      const schoolId = parseInt(body.schoolId);
+     const data = await sequelize.query(
+        `SELECT * FROM student WHERE id = ${studentId} AND class_id = ${classId} AND school_id=${schoolId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+        );
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async updateStudentById(body) {
+    try {
+
+      const id = parseInt(body.id);
+      const data = await sequelize.query(
+        `UPDATE student SET gender=? WHERE id = ${id}`,
+        {
+          type: QueryTypes.UPDATE,
+           replacements: [
+            body.value,
+           
+
+          ],
+        }
+         );
           return data;
 
     
