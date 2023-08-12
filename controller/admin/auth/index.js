@@ -1,9 +1,9 @@
 let {
-  login,register
+  login,register,createSchool,postLogin,logout
  
 } = require("./auth");
 
 module.exports = {
-  login,register
+  login,register,createSchool,postLogin,logout
  
 };

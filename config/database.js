@@ -1,29 +1,35 @@
 const Sequelize = require("sequelize");
+const { createNamespace } = require("cls-hooked");
 
-const { host, user, password, database } = require("../utils/Constant");
-
+const cls = createNamespace("transaction-namespace"); // any string
+Sequelize.useCLS(cls);
+console.log(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD);
 const sequelize = new Sequelize(
-	database,
-	user,
-	password,
-	{
-		dialect: "mysql",
-		host: host,
-		define: {
-			//prevent sequelize from pluralizing table names
-			freezeTableName: true,
-			// timestamps: true,
-		},
-		logging: false,
-	},
-	{
-		pool: {
-			max: 100,
-			min: 0,
-			acquire: 30000,
-			idle: 10000,
-		},
-	}
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialectOptions: {
+      multipleStatements: true,
+      decimalNumbers: true,
+    },
+    dialect: "mysql",
+    timezone: "+05:30",
+    host: process.env.DB_HOST,
+    define: {
+      //prevent sequelize from pluralizing table names
+      freezeTableName: true,
+    },
+    logging: console.log,
+  },
+  {
+    pool: {
+      max: 1000,
+      min: 0,
+      acquire: 30000,
+      idle: 10000,
+    },
+  }
 );
 
 module.exports = sequelize;

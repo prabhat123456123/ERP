@@ -4,12 +4,13 @@ const router = express.Router();
 
  
 const {
-  viewComplaint
+  viewComplaint,getComplaint
  
 } = require("../../../controller/admin");
 
 
 router.get("/view-complaint", viewComplaint);
+router.post("/get-complaint", getComplaint);
 
 
 

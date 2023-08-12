@@ -34,12 +34,12 @@ const BASEURL = process.env.BASEURL;
 class ComplaintManagement {
   constructor() {}
 
-  async getAdmission(body) {
+async getComplaint(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT id,school_id,name,email,gender FROM complaint WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -58,7 +58,7 @@ class ComplaintManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editComplaint(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm delBtn' onclick='deleteComplaint(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Delete </button> `;
        
       }
 
@@ -72,12 +72,12 @@ class ComplaintManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countComplaint(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM complaint`,
         {
           type: QueryTypes.SELECT,
         }

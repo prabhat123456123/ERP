@@ -1,11 +1,11 @@
 
 const {
-  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById
+  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById
  
 } = require("./admission");
 
 const {
-  login,register
+  login,register,createSchool,postLogin,logout
  
 } = require("./auth");
 
@@ -34,11 +34,11 @@ const {
 } = require("./download");
 
 const {
- viewFaculty
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData
 } = require("./faculty");
 
 const {
- viewComplaint
+ viewComplaint,getComplaint
 } = require("./complaint");
 
 const {
@@ -59,8 +59,8 @@ const {
 } = require("./test-series");
 
 module.exports = {
-  addAdmission, attendanceStudent, attendanceFaculty, reportStudent,reportFaculty, financialStudent, financialFaculty, viewCalender,
-  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback, login, register, getAdmission,
-  updateAdmission, deleteAdmission, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,
-  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,
+  addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById, financialStudent, financialFaculty, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,
+  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,
+  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,createFaculty,
+  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,getFacultyData
 };

@@ -14,11 +14,26 @@ const viewComplaint = async (req, res, next) => {
     next(error);
   }
 };
-
+const getComplaint = async (req, res, next) => {
+  try {
+    const adm = await new ComplaintManagement().getComplaint(req.body);
+     const count = await new ComplaintManagement().countComplaint(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
 module.exports = {
- viewComplaint
+ viewComplaint,getComplaint
  
 };

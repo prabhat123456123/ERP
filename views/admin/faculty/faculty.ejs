@@ -1,25 +1,11 @@
 <%- include('../../partials/top-bar') %>
 
+
       <!-- Site wrapper -->
       <div class="wrapper">
          <%- include('../../partials/header') %>
-		  <style>
-      .loading-image {
-        position: absolute;
-		
-        top: 48%;
-        left: 32%;
-        transform: translateY(-50%) translateX(50%);
-      }
-      .loader {
-        display: none;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        position: fixed;
-        z-index: 99999;
-      }
-    </style>
+	
+   
          <!-- =============================================== -->
          <!-- Left side column. contains the sidebar -->
        <%- include('../../partials/sidebar') %>
@@ -28,13 +14,7 @@
          <!-- =============================================== -->
          <!-- Content Wrapper. Contains page content -->
          <div class="content-wrapper">
-			   <div class="loader" id="loader">
-      <img
-        class="loading-image" style="width: 100px;"
-        src="/assets/images/loader.webp"
-        alt="loading.."
-      />
-	   </div>
+			   
             <!-- Content Header (Page header) -->
             <section class="content-header">
                <div class="header-icon">
@@ -103,6 +83,7 @@
         <%- include('../../partials/footer') %>
       </div>
 	 <div class="modal fade" id="addFaculty-lg" tabindex="-1" role="dialog">
+      <%- include('../../partials/loader') %>
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -112,39 +93,44 @@
                         <div class="modal-body">
                            <div class="row">
                               <div class="col-md-12">
-                                 <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
-                  <input type="hidden" class="form-control" name="studentId" id="studentId" value="${studentId}">
-                    <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
-                    <input type="hidden" class="form-control" name="classId" id="classId" value="${classId}">
+                               <form action="http://thememinister.com/crm/index.html" id="facultyForm">
+                                  <input type="hidden" id="school_id" value="2" class="form-control" name="school_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="name" class="form-control" name="name">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Father's Name</label>
-                                    <input type="text" value="" id="father_name" class="form-control" name="father_name">
+                                   <div class="form-group col-lg-6">
+                                    <label>Father Name</label>
+                                    <input type="text" id="father_name" class="form-control" name="father_name">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Mother's Name</label>
-                                    <input type="text" value="" id="mother_name" class="form-control" name="mother_name">
+                                   <div class="form-group col-lg-6">
+                                    <label>Mother Name</label>
+                                    <input type="text" id="mother_name" class="form-control" name="mother_name">
                                 </div>
-                                
+                                 <div class="form-group col-lg-6">
+                                    <label>School</label>
+                                   <select name="school_id" id="school_id" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="1">School1</option>
+                                   </select>
+                                </div>
+                                    
                                   <div class="form-group col-lg-6">
                                     <label>Hobbies</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="hobbies" class="form-control" name="hobbies">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label> Experience</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="experience" class="form-control" name="experience">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Qualification</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="qualification" class="form-control" name="qualification">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Specialize in</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="specialize" class="form-control" name="specialize">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Gender</label>
@@ -156,29 +142,33 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                    <input type="date" id="dob" class="form-control" name="dob">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                    <input type="email" id="email" class="form-control" name="email">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                    <input type="text" id="phone" class="form-control" name="phone">
                                 </div>
                                  <div class="form-group col-lg-6">
-                                    <label> Address</label>
-                                    <textarea  id="address"  class="form-control" rows="5" name="address"></textarea>
+                                    <label>Address</label>
+                                     <textarea id="address" placeholder="Address" rows="5" class="form-control" name="address"></textarea>
                                   
+                        
                                 </div>
                                
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" value="" id="photo" class="form-control" name="photo">
+                                    <input type="file" id="photo" class="form-control" name="photo">
                                 </div>
                             </div>
                             <div align="center">
-                                <button class="btn btn-warning">Create New</button>
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveFaculty" data-action="submit">
+															Register
+														</button>
                             </div>
                         </form>
                               </div>
@@ -243,6 +233,62 @@
    <%- include('../../partials/footer-script') %>
 
    <script type="text/javascript" language="javascript">
+                  $("#facultyForm").on("submit", async e => {
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/faculty/create-faculty`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                     
+                  if (data) {
+                       const url = '/success.mp3'
+                    const audio = new Audio(url);
+                    audio.play();
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                  $("#facultyForm")[0].reset();
+                  $("#addFaculty-lg").modal("hide");
+                   $('#sample_data').DataTable().ajax.reload();
+
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
     function editFaculty(studentId,schoolId,classId) {
     try {
       $("#editFacultyDiv").html("");
@@ -458,7 +504,7 @@ $(document).ready(function(){
 		
 		"order":[],
 		"ajax":{
-			url:"/admission/get-admission",
+			url:"/faculty/get-faculty",
 			type:"POST",
 		},
          columns: [
@@ -499,7 +545,7 @@ $(document).ready(function(){
 	$('#sample_data').editable({
 		container:'body',
 		selector:'td.name',
-		url:'/admission/update-admission',
+		url:'/faculty/update-faculty',
 		title:'Name',
 		type:'POST',
 		validate:function(value){
@@ -516,7 +562,7 @@ $(document).ready(function(){
 	$('#sample_data').editable({
 		container:'body',
 		selector:'td.email',
-		url:'/admission/update-admission',
+		url:'/faculty/update-faculty',
 		title:'Email',
 		type:'POST',
 		validate:function(value){
@@ -532,7 +578,7 @@ $(document).ready(function(){
 	$('#sample_data').editable({
 		container:'body',
 		selector:'td.gender',
-		url:'/admission/update-admission',
+		url:'/faculty/update-faculty',
 		title:'Gender',
 		type:'POST',
 		datatype:'json',

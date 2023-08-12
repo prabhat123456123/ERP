@@ -1,5 +1,6 @@
 const {AcademicManagement} = require('./academic');
 const {ExamManagement} = require('./exam');
+const {AuthManagement} = require('./auth');
 const {HolidayManagement} = require('./holiday');
 const {FeedbackManagement} = require('./feedback');
 const {ComplaintManagement} = require('./complaint');
@@ -14,6 +15,6 @@ const {AdmissionManagement} = require('./admission');
 
 module.exports = {
     AcademicManagement,ExamManagement,FeedbackManagement,DownloadManagement,FinancialManagement,AttendanceManagement,TestManagement,
-    AdmissionManagement,HolidayManagement,ComplaintManagement,FacultyManagement,ReportManagement,CalenderManagement,
+    AdmissionManagement,HolidayManagement,ComplaintManagement,FacultyManagement,ReportManagement,CalenderManagement,AuthManagement
    
 }

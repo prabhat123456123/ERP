@@ -6,15 +6,15 @@ const { QueryTypes, Sequelize } = require("sequelize");
 //   casbinEnforcer,
 //   actionLogger,
 // } = require("../../../helper");
-// const {
-//   copyFiles,
-//   getDate,
-//   generateRandomNumber,
-//   addDate,
-// } = require("../../../utils");
+const {
+  copyFiles,
+  getDate,
+  generateRandomPassword,
+  hashPassword,
+} = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 // const humps = require("humps");
 
 const path = require("path");
@@ -33,13 +33,89 @@ const BASEURL = process.env.BASEURL;
 
 class FacultyManagement {
   constructor() {}
+   async createFaculty(files, fields, req, res) {
+    try {
 
-  async getAdmission(body) {
+console.log(fields);
+console.log(files);
+      const currentTime = getDate("YYYY-MM-DD hh:mm");
+
+      const userExist = await sequelize.query(
+        "SELECT * FROM faculty WHERE email =? OR phone=?",
+        {
+          replacements: [fields.email[0], fields.phone[0]],
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      if (userExist.length > 0) {
+        return false;
+      } else {
+       
+       
+        const password = await generateRandomPassword();
+        const genratedPassword = await hashPassword(password);
+
+        const uniqueNum = uuidv4();
+        const dir = path.join(
+          __dirname,
+          `../../../public/uploads/teacher/${fields.email[0]}`
+        );
+
+        let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.photo[0].originalFilename.toString().replace(/\s/g, "-");
+
+        copyFiles(files.photo[0].filepath, `${dir}/${fileName}`, dir);
+
+        const url = `${fileName}`;
+
+         const data = await sequelize.query(
+          "INSERT INTO faculty(track_id,school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          {
+            replacements: [
+             
+              uniqueNum,
+              fields.school_id[0],
+              fields.name[0],
+              fields.mother_name[0],
+              fields.father_name[0],
+              fields.email[0],
+              fields.dob[0],
+              fields.phone[0],
+              fields.address[0],
+              fields.gender[0],
+              fields.experience[0],
+              fields.qualification[0],
+              fields.specialize[0],
+              genratedPassword,
+              url,
+           
+             
+              "Faculty",
+               currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
+        );
+      
+        return true;
+      }
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getFaculty(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT id,school_id,name,email,gender FROM faculty WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -58,7 +134,7 @@ class FacultyManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm delBtn' onclick='deleteFaculty(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Delete </button> `;
        
       }
 
@@ -72,12 +148,12 @@ class FacultyManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countFaculty(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM faculty`,
         {
           type: QueryTypes.SELECT,
         }
@@ -96,14 +172,14 @@ class FacultyManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async updateAdmission(body) {
+   async updateFacultyData(body) {
     try {
  console.log(body)
       let id = parseInt(body.pk)
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE id = ${id}`,
+        `UPDATE faculty SET name=? WHERE id = ${id}`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -117,7 +193,7 @@ class FacultyManagement {
       }
        if (body.name == "email") {
          const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE id = ${id}`,
+        `UPDATE faculty SET email=? WHERE id = ${id}`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -131,7 +207,7 @@ class FacultyManagement {
       }
        if (body.name == "gender") {
          const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
+        `UPDATE faculty SET gender=? WHERE id = ${id}`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -159,12 +235,12 @@ class FacultyManagement {
     }
   }
 
-    async deleteAdmission(body) {
+    async deleteFacultyData(body) {
     try {
 
       const id = parseInt(body.id);
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${id}`,
+        `DELETE FROM faculty WHERE id = ${id}`,
         {
           type: QueryTypes.DELETE,
          
@@ -181,14 +257,14 @@ class FacultyManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async deleteMultiple(body) {
+    async deleteMultipleFacultyData(body) {
     try {
 
       let ids = body.deleteids_arr;
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = (${ids[index]})`,
+        `DELETE FROM faculty WHERE id = (${ids[index]})`,
         {
           type: QueryTypes.DELETE,
          

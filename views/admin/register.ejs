@@ -18,8 +18,54 @@
         <link href="/assets/dist/css/stylecrm.css" rel="stylesheet" type="text/css"/>
         <!-- Theme style rtl -->
         <!--<link href="assets/dist/css/stylecrm-rtl.css" rel="stylesheet" type="text/css"/>-->
+        <style>
+          	body {
+  background: #ececec;
+}
+.lds-dual-ring.hidden { 
+display: none;
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 20% auto;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,.8);
+    z-index: 999;
+    opacity: 1;
+    transition: all 0.5s;
+} 
+        </style>
     </head>
     <body>
+      <div id="loader" class="lds-dual-ring hidden overlay"></div>
         <!-- Content Wrapper -->
         <div class="login-wrapper">
            
@@ -45,7 +91,7 @@
                             </div>
                       <div class="form-group">
                                  <label>Select Role</label>
-                                 <select class="form-control" id="role">
+                                 <select class="form-control" id="role" required>
                                     <option value="">Please Select Role</option>
                                     <option value="1">Institute</option>
                                     <option value="2">Faculty</option>
@@ -56,80 +102,87 @@
                               </div>
                              
                     <div class="panel-body" id="school-tab">
-                        <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                        <form action="http://thememinister.com/crm/index.html" id="schoolForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>School Name</label>
-                                    <input type="text" value="" id="school_name" placeholder="School Name" class="form-control" name="school_name">
+                                    <input type="text" id="school_name" placeholder="School Name" class="form-control" name="school_name" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Principal Name</label>
-                                    <input type="password" value="" id="password" placeholder="Principal Name" class="form-control" name="principan_name">
+                                    <input type="password" id="principal_name" placeholder="Principal Name" class="form-control" name="principal_name" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Principal Email ID</label>
-                                    <input type="password" value="" id="principal_email" placeholder="Principal Email ID" class="form-control" name="principal_email">
+                                    <input type="password" id="principal_email" placeholder="Principal Email ID" class="form-control" name="principal_email" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Principal Phone</label>
-                                    <input type="text" value="" id="principal_phone" placeholder="Principal Phone" class="form-control" name="principal_phone">
+                                    <input type="text" id="principal_phone" placeholder="Principal Phone" class="form-control" name="principal_phone" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>School Address</label>
-                                    <input type="text" value="" id="school_address" placeholder="School Address" class="form-control" name="school_address">
+                                    <input type="text" id="school_address" placeholder="School Address" class="form-control" name="school_address"required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Number of class</label>
-                                    <input type="text" value="" id="number_class" placeholder="Number of class" class="form-control" name="number_class">
+                                    <input type="text" id="number_class" placeholder="Number of class" class="form-control" name="number_class" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Year of Established</label>
-                                    <input type="date" value="" id="school_year" class="form-control" name="school_year">
+                                    <input type="date" id="school_year" class="form-control" name="school_year" required>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Upload Logo</label>
+                                    <input type="file" id="logo" class="form-control" name="logo" required>
                                 </div>
                             </div>
                              <div align="center">
-                                <button class="btn btn-warning">Register</button>
+                                <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="savePlot" data-action="submit">
+															Register
+														</button>
                                
                             </div>
                            
                         </form>
                         </div>
                          <div class="panel-body" id="student-tab">
-                       <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                       <form action="" id="studentForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="student_name" class="form-control" name="student_name" required>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Father's Name</label>
-                                    <input type="text" value="" id="father_name" class="form-control" name="father_name">
+                                    <input type="text" id="student_father_name" class="form-control" name="student_father_name" required>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Mother's Name</label>
-                                    <input type="text" value="" id="mother_name" class="form-control" name="mother_name">
+                                    <input type="text" id="student_mother_name" class="form-control" name="student_mother_name" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Parent  Phone Number</label>
-                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                    <input type="text" id="student_parent_phone" class="form-control" name="student_parent_phone" required>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>School</label>
-                                   <select name="classId" id="classId" class="form-control">
+                                   <select name="student_school_id" id="student_school_id" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="1">School1</option>
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Class</label>
-                                   <select name="classId" id="classId" class="form-control">
+                                   <select name="student_class_id" id="student_class_id" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="1">class1</option>
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Gender</label>
-                                   <select name="classId" id="classId" class="form-control">
+                                   <select name="student_gender" id="student_gender" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="Male">Male</option>
                                     <option value="FeMale">FeMale</option>
@@ -137,54 +190,57 @@
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Hobbies</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="student_hobbies" class="form-control" name="student_hobbies" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                    <input type="date" id="student_dob" class="form-control" name="student_dob" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                    <input type="email" id="student_email" class="form-control" name="student_email" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                    <input type="text" id="student_phone" class="form-control" name="student_phone" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label> Address</label>
                                   
-                                    <textarea id="address" placeholder="Address" rows="5" class="form-control" name="address"></textarea>
+                                    <textarea id="student_address" placeholder="Address" rows="5" class="form-control" name="student_address" required></textarea>
                                 </div>
                               
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" value="" id="photo" class="form-control" name="photo">
+                                    <input type="file" id="student_photo" class="form-control" name="student_photo" required>
                                 </div>
                             </div>
                             <div align="center">
-                                <button class="btn btn-warning">Register</button>
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveStudent" data-action="submit">
+															Register
+														</button>
                             </div>
                         </form>
                         </div>
                          <div class="panel-body" id="faculty-tab">
-                           <form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
+                           <form action="http://thememinister.com/crm/index.html" id="facultyForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="name" class="form-control" name="name" required>
                                 </div>
                                    <div class="form-group col-lg-6">
                                     <label>Father Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="father_name" class="form-control" name="father_name" required>
                                 </div>
                                    <div class="form-group col-lg-6">
                                     <label>Mother Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="mother_name" class="form-control" name="mother_name" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>School</label>
-                                   <select name="classId" id="classId" class="form-control">
+                                   <select name="school_id" id="school_id" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="1">School1</option>
                                    </select>
@@ -192,23 +248,23 @@
                                     
                                   <div class="form-group col-lg-6">
                                     <label>Hobbies</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="hobbies" class="form-control" name="hobbies" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label> Experience</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="experience" class="form-control" name="experience" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Qualification</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="qualification" class="form-control" name="qualification" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Specialize in</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                    <input type="text" id="specialize" class="form-control" name="specialize" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Gender</label>
-                                   <select name="gender" id="gender" class="form-control">
+                                   <select name="gender" id="gender" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="Male">Male</option>
                                     <option value="FeMale">FeMale</option>
@@ -216,30 +272,33 @@
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                    <input type="date" id="dob" class="form-control" name="dob" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                    <input type="email" id="email" class="form-control" name="email" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                    <input type="text" id="phone" class="form-control" name="phone" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Address</label>
-                                     <textarea id="address" placeholder="Address" rows="5" class="form-control" name="address"></textarea>
+                                     <textarea id="address" placeholder="Address" rows="5" class="form-control" name="address" required></textarea>
                                   
                         
                                 </div>
                                
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" value="" id="photo" class="form-control" name="photo">
+                                    <input type="file" id="photo" class="form-control" name="photo" required>
                                 </div>
                             </div>
                             <div align="center">
-                                <button class="btn btn-warning">Register</button>
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveFaculty" data-action="submit">
+															Register
+														</button>
                             </div>
                         </form>
                         </div>
@@ -249,6 +308,10 @@
         </div>
         <!-- /.content-wrapper -->
         <!-- jQuery -->
+        <script src="
+/assets/dist/js/sweetalert2.all.min.js
+"></script>
+    <script src="/assets/dist/js/sweetalert.min.js"></script>
         <script src="/assets/plugins/jQuery/jquery-1.12.4.min.js" type="text/javascript"></script>
         <!-- bootstrap js -->
         <script src="/assets/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -350,6 +413,170 @@ function setStudentAddress(){
 $('#studentaddresscheck').click(function(){
   setStudentAddress();
 })
+	$("#schoolForm").on("submit", async e => {
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/create-school`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                     
+                  if (data) {
+                       const url = '/success.mp3'
+                    const audio = new Audio(url);
+                    audio.play();
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                
+
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+            $("#studentForm").on("submit", async e => {
+							e.preventDefault();
+							try {
+								alert("pop")
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/admission/create-student`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                       const url = '/success.mp3'
+                    const audio = new Audio(url);
+                    audio.play();
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                
+
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+            $("#facultyForm").on("submit", async e => {
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/faculty/create-faculty`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                     
+                  if (data) {
+                       const url = '/success.mp3'
+                    const audio = new Audio(url);
+                    audio.play();
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                
+
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+
     })
    
 

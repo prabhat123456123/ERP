@@ -1,9 +1,9 @@
 let {
- viewFaculty
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData
  
 } = require("./faculty");
 
 module.exports = {
- viewFaculty
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData
  
 };

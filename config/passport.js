@@ -1,21 +1,21 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
-// const Admin = require("../models/admin");
-// const {
-//   getUser,
-//   getLoginUser,
-//   getUserById,
-//   getExeLogin,
-//   getExeLoginUserById,
-//   getLoginUserById,
-// } = require("../service/login");
+
+const { AuthManagement } = require("../services/admin");
+
+const {
+  getSchool,
+  
+  getstudent,
+  getTeacher,
+} = require("../services/admin/auth");
 
 module.exports = function (passport) {
   passport.use(
-    "admin",
+    "school",
     new LocalStrategy(async (username, password, done) => {
-      const admin = await getUser(Admin, username);
-
+      const admin = await new AuthManagement().getSchool( username);
+console.log(admin);
       if (admin.length > 0) {
         bcrypt.compare(password, admin[0].password, (error, isMatch) => {
           if (error) console.error(error);
@@ -25,21 +25,21 @@ module.exports = function (passport) {
             return done(null, admin[0]);
           } else {
             return done(null, false, {
-              message: "Incorrect Password",
+              message: "Invalid username or Password",
             });
           }
         });
       } else {
         return done(null, false, {
-          message: "Incorrect username",
+          message: "Invalid username or Password",
         });
       }
     })
   );
   passport.use(
-    "pcc",
+    "student",
     new LocalStrategy(async (username, password, done) => {
-      const admin = await getUser(Admin, username);
+      const admin = await new AuthManagement().getStudent( username);
       // console.log(admin);
 
       if (admin.length > 0) {
@@ -49,88 +49,43 @@ module.exports = function (passport) {
             return done(null, admin[0]);
           } else {
             return done(null, false, {
-              message: "Incorrect Password",
+              message: "Invalid username or Password",
             });
           }
         });
       } else {
         return done(null, false, {
-          message: "Incorrect username",
+          message: "Invalid username or Password",
         });
       }
     })
   );
-  // passport.use(
-  //   "executive",
-  //   new LocalStrategy(async (username, password, done) => {
-  //     const admin = await getExeLogin(Admin, username);
-  //     // console.log(admin);
-  //     if (admin.length > 0) {
-  //       bcrypt.compare(password, admin[0].password, (error, isMatch) => {
-  //         if (error) console.error(error);
-  //         if (isMatch) {
-  //           // console.log(isMatch);
-  //           return done(null, admin[0]);
-  //         } else {
-  //           return done(null, false, {
-  //             message: "Incorrect Password",
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       return done(null, false, {
-  //         message: "Incorrect username",
-  //       });
-  //     }
-  //   })
-  // );
-  // passport.use(
-  //   "dgm",
-  //   new LocalStrategy(async (username, password, done) => {
-  //     const admin = await getLoginUser(Admin, username);
-  //     // console.log(admin);
-  //     if (admin.length > 0) {
-  //       bcrypt.compare(password, admin[0].password, (error, isMatch) => {
-  //         if (error) console.error(error);
-  //         if (isMatch) {
-  //           // console.log(isMatch);
-  //           return done(null, admin[0]);
-  //         } else {
-  //           return done(null, false, {
-  //             message: "Incorrect Password",
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       return done(null, false, {
-  //         message: "Incorrect username",
-  //       });
-  //     }
-  //   })
-  // );
-  // passport.use(
-  //   "ed",
-  //   new LocalStrategy(async (username, password, done) => {
-  //     const admin = await getLoginUser(Admin, username);
-  //     // console.log(admin);
-  //     if (admin.length > 0) {
-  //       bcrypt.compare(password, admin[0].password, (error, isMatch) => {
-  //         if (error) console.error(error);
-  //         if (isMatch) {
-  //           return done(null, admin[0]);
-  //         } else {
-  //           return done(null, false, {
-  //             message: "Incorrect Password",
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       return done(null, false, {
-  //         message: "Incorrect username",
-  //       });
-  //     }
-  //   })
-  // );
+  
+  passport.use(
+    "faculty",
+    new LocalStrategy(async (username, password, done) => {
+      const admin = await new AuthManagement().getTeacher(username);
+      // console.log(admin);
+      if (admin.length > 0) {
+        bcrypt.compare(password, admin[0].password, (error, isMatch) => {
+          if (error) console.error(error);
+          if (isMatch) {
+            // console.log(isMatch);
+            return done(null, admin[0]);
+          } else {
+            return done(null, false, {
+              message: "Invalid username or Password",
+            });
+          }
+        });
+      } else {
+        return done(null, false, {
+          message: "Invalid username or Password",
+        });
+      }
+    })
+  );
+  
 
   passport.serializeUser((user, done) => {
     // console.log(user);
@@ -139,30 +94,32 @@ module.exports = function (passport) {
 
   passport.deserializeUser(async (uid, done) => {
     try {
-      if (uid.role === "Admin") {
-        const rows = await getUserById(Admin, uid.uId);
+      if (uid.role === "school") {
+        const rows = await new AuthManagement().getSchoolId(uid.uId);
         if (rows) {
           done(null, rows);
         } else {
           done(null, null);
         }
-      } else if (uid.role === "PCC Executive") {
-        const rows = await getUserById(Admin, uid.uId);
+      } else if (uid.role === "student") {
+        const rows = await new AuthManagement().getStudentId( uid.uId);
         if (rows) {
           done(null, rows);
         } else {
           done(null, null);
         }
       }
-      // else if (uid.role === "Executive") {
-      //   const rows = await getExeLoginUserById(Admin, uid.uId);
+      else if (uid.role === "faculty") {
+        const rows = await new AuthManagement().getFacultyId( uid.uId);
 
-      //   if (rows) {
-      //     done(null, rows);
-      //   } else {
-      //     done(null, null);
-      //   }
-      // } else if (uid.role === "DGM") {
+        if (rows) {
+          done(null, rows);
+        } else {
+          done(null, null);
+        }
+      }
+      
+      // else if (uid.role === "DGM") {
       //   const rows = await getLoginUserById(Admin, uid.uId);
       //   if (rows) {
       //     done(null, rows);

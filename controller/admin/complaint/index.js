@@ -1,7 +1,7 @@
 let {
- viewComplaint
+ viewComplaint,getComplaint
 } = require("./complaint");
 
 module.exports = {
-  viewComplaint
+  viewComplaint,getComplaint
 };

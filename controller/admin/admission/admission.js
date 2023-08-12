@@ -1,10 +1,10 @@
 // const sequelize = require("../../../config/db");
 const { AdmissionManagement } = require("../../../services/admin");
 // const moment = require("moment");
-// const {
-//   serviceSingleDocUploadUtil,
-//   formidableUpload,
-// } = require("../../../utils/upload");
+const {
+  serviceSingleDocUploadUtil,
+  formidableUpload,
+} = require("../../../utils");
 
 const addAdmission = async (req, res, next) => {
   try {
@@ -70,6 +70,19 @@ const fetchStudentById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
+};
+
+const viewStudentById = async (req, res, next) => {
+  try {
+    const data = await new AdmissionManagement().viewStudentById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+  
 };
 
 const updateStudentById = async (req, res, next) => {
@@ -82,11 +95,27 @@ const updateStudentById = async (req, res, next) => {
     next(error);
   }
 };
+const createStudent = async (req, res, next) => {
+  try {
+     const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new AdmissionManagement().createStudent(
+      files,
+      fields,
+      req,
+      res
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
 
 module.exports = {
-  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById
+  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById
  
 };

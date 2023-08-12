@@ -1,62 +1,26 @@
-const constant = require("./constant");
-const formatResponse = require("./format-response");
-const { getSearchAbleData, checkForMatch, getSearchType } = require("./search-util");
-const token = require("./token");
-const {
-	camelize,
-	registrationNo,
-	applicationNo,
-	updateSubmittedSections,
-	lockSections,
-	getPrevUnit,
-	dopTrackingId,
-	licenseTrackingId,
-	assigner,
-} = require("./helper");
-const { getDate, addDate } = require("./time");
-const { compare, hashPassword } = require("./hash");
-const { generate, messenger } = require("./message");
-const {
-	copyFiles,
-	formidableUpload,
-	fetchServiceDocuments,
-	uploadDocument,
-	multiFileDownload,
-	serviceSingleDocUploadUtil,
-	randomUpload,
-} = require("./upload");
+const { getDate, addDate, updateFormat } = require("./time");
 const { sendMail } = require("./mail");
-const uploadToSpaces = require("./upload-to-spaces");
-
+const { camelize, generate } = require("./helper");
+const { messenger } = require("./message");
+const { hashPassword, compare } = require("./hash");
+// const { host, user, database, password } = require("./constant");
+const {
+  generateRandomNumber,
+  generateRandomPassword,
+} = require("./generate-number");
+const { formidableUpload, copyFiles, multiFileDownload } = require("./upload");
 module.exports = {
-	assigner,
-	formatResponse,
-	token,
-	getSearchAbleData,
-	checkForMatch,
-	getSearchType,
-	constant,
-	camelize,
-	getDate,
-	compare,
-	licenseTrackingId,
-	dopTrackingId,
-	hashPassword,
-	addDate,
-	registrationNo,
-	applicationNo,
-	generate,
-	copyFiles,
-	sendMail,
-	messenger,
-	randomUpload,
-	formidableUpload,
-	fetchServiceDocuments,
-	uploadDocument,
-	multiFileDownload,
-	serviceSingleDocUploadUtil,
-	updateSubmittedSections,
-	lockSections,
-	getPrevUnit,
-	uploadToSpaces,
+  formidableUpload,
+  copyFiles,
+  getDate,
+  updateFormat,
+  generateRandomNumber,
+  addDate,
+  generate,
+  messenger,
+  camelize,
+  hashPassword,
+  compare,
+  generateRandomPassword,
+  sendMail,
 };
