@@ -24,11 +24,14 @@ const formidableUpload = async (req) => {
   try {
     let formidable;
     formidable = await import('formidable');
-    const form = new formidable.IncomingForm();
-    form.keepExtensions = true;
-    form.multiples = true;
+    const form = new formidable.IncomingForm({
+         keepExtensions:true,
+       multiples : true,
+         allowEmptyFiles: true,
+         minFileSize: 0,
+       });
     const formfields = await new Promise(function (resolve, reject) {
-      form.parse(req, function (err, fields, files) {
+      form.parse(req,  (err, fields, files)=>{
         if (err) {
           reject(err);
           return;

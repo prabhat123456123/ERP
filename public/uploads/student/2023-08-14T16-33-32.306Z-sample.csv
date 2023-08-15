@@ -1,0 +1,4 @@
+name,email,dob,gender,phone,class_id,school_id,address,fathers_name,mothers_name,parent_phone,hobby,password
+test1,tes332t@gmail.com,01-02-1992,Male,502255555,3,1,test,test1,test,teet,teeta,teete
+test2,po555p@gmail.com,01-02-1992,Male,23322222,2,2,test1,test4,teewst6,trtr3,trrt2,koko3
+test3,kok88o@gmail.com,01-02-1992,Male,300033333,1,3,test2,test3,trrt2,teet2,ttt3,jkjkj2

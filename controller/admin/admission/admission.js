@@ -8,8 +8,8 @@ const {
 
 const addAdmission = async (req, res, next) => {
   try {
-    // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
-    return res.render("admin/admission/admission");
+    const data = await new AdmissionManagement().getClass(req, res);
+    return res.render("admin/admission/admission",{data:data});
   } catch (error) {
     next(error);
   }
@@ -85,6 +85,30 @@ const viewStudentById = async (req, res, next) => {
   
 };
 
+const exportExcel = async (req, res, next) => {
+  try {
+    const data = await new AdmissionManagement().exportExcel(req,res);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+  
+};
+
+const exportPdf = async (req, res, next) => {
+  try {
+    const data = await new AdmissionManagement().exportPdf(req,res);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+  
+};
+
 const updateStudentById = async (req, res, next) => {
   try {
     const data = await new AdmissionManagement().updateStudentById(req.body);
@@ -112,10 +136,47 @@ const createStudent = async (req, res, next) => {
   }
 };
 
+const bulkCreateStudent = async (req, res, next) => {
+  try {
+     const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new AdmissionManagement().bulkCreateStudent(
+      files,
+      fields,
+      req,
+      res
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateAdmissionById = async (req, res, next) => {
+  try {
+    
+    const { files, fields } = await formidableUpload(req);
+    const data = await new AdmissionManagement().updateAdmissionById(
+      files,
+      fields,
+      req,
+      res
+    );
+   
+    req.flash("success_msg", "Student Records Updated Successfully !");
+      
+       return res.redirect("/admission/admission");
+  
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 
 module.exports = {
-  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById
+  addAdmission,updateAdmissionById,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById,bulkCreateStudent,exportExcel,exportPdf
  
 };

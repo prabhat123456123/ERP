@@ -1,6 +1,6 @@
 
 const {
-  addAdmission,getAdmission,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById
+  addAdmission,getAdmission,updateAdmissionById,updateAdmission,deleteAdmission,deleteMultiple,fetchStudentById,updateStudentById,createStudent,viewStudentById,bulkCreateStudent,exportExcel,exportPdf
  
 } = require("./admission");
 
@@ -60,7 +60,7 @@ const {
 
 module.exports = {
   addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById, financialStudent, financialFaculty, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,
-  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,
+  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,
   updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,createFaculty,
-  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,getFacultyData
+  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData
 };

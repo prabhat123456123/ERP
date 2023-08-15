@@ -37,9 +37,12 @@ class AuthManagement {
 
 
     async createSchool(files, fields, req, res) {
-    try {
-
-      const currentTime = getDate("YYYY-MM-DD hh:mm");
+      try {
+        const classes = fields.number_class[0];
+        const lower = parseInt(classes.split("-")[0]);
+        const higher = parseInt(classes.split("-")[1]);
+        const currentTime = getDate("YYYY-MM-DD hh:mm");
+        console.log(lower,higher);
 
       const userExist = await sequelize.query(
         "SELECT * FROM school WHERE principal_email =? OR principal_phone=?",
@@ -94,7 +97,25 @@ class AuthManagement {
             type: QueryTypes.INSERT,
           }
         );
-      
+        console.log(data);
+        for (let i = lower; i <= higher; i++) {
+          await sequelize.query(
+            "INSERT INTO class(school_id,class_name,created_by,created_at) VALUES (?,?,?,?)",
+            {
+              replacements: [
+             
+             
+             
+                data[0],
+                `class${i}`,
+           
+                "INSTITUTE",
+                currentTime,
+              ],
+              type: QueryTypes.INSERT,
+            }
+          );
+        }
         return true;
       }
     } catch (error) {

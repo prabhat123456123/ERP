@@ -37,17 +37,21 @@
                            </div>
                         </div>
                         <div class="panel-body">
+                            
 					 <div class="row"> 
- <div class="col-md-6 text-left">
+ <div class="col-md-3 text-left">
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
 
-                <input type="button" id="btnAdd" class="btn-sm btn-primary para" value="Export as PDF" />
-                <input type="button" id="btnAdd" class="btn-sm btn-primary para" value="Export as Excel" />
+               
 				
             </div>
-            <div class="col-md-6 text-right">
+             <div class="col-md-6">
+ <%- include('../../partials/message') %>
+             </div>
+            <div class="col-md-3 text-right">
  
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addStudent-lg"><i class="fa fa-plus"></i> Add New</a>  
+                                 <a href="#" class="btn btn-add" data-toggle="modal" data-target="#bulkStudentModal"><i class="fa fa-plus"></i> Bulk Create</a>  
                                  
                              
             </div>
@@ -65,7 +69,7 @@
 									<th> Name</th>
 									<th> Email</th>
 									<th>Gender</th>
-									<th>Action</th>
+									<th class="noExport">Action</th>
 								</tr>
 							</thead>
 						</table>
@@ -94,35 +98,37 @@
                            <div class="row">
                               <div class="col-md-12">
                                 <form action="" id="studentForm">
-                                  <input type="hidden" id="student_school_id" value="2" class="form-control" name="student_school_id">
+                                  <input type="hidden" id="student_school_id" value="2" class="form-control" name="student_school_id" >
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" id="student_name" class="form-control" name="student_name">
+                                    <input type="text" id="student_name" class="form-control" name="student_name" required>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Father's Name</label>
-                                    <input type="text" id="student_father_name" class="form-control" name="student_father_name">
+                                    <input type="text" id="student_father_name" class="form-control" name="student_father_name" required>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Mother's Name</label>
-                                    <input type="text" id="student_mother_name" class="form-control" name="student_mother_name">
+                                    <input type="text" id="student_mother_name" class="form-control" name="student_mother_name" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Parent  Phone Number</label>
-                                    <input type="text" id="student_parent_phone" class="form-control" name="student_parent_phone">
+                                    <input type="text" id="student_parent_phone" class="form-control" name="student_parent_phone" required>
                                 </div>
                                
                                   <div class="form-group col-lg-6">
                                     <label>Class</label>
-                                   <select name="student_class_id" id="student_class_id" class="form-control">
+                                   <select name="student_class_id" id="student_class_id" class="form-control" required>
                                     <option value="">Please Select</option>
-                                    <option value="1">class1</option>
+                                    <% for(let i = 0; i < data.length; i++){%> 
+                                    <option value="<%= data[i].id %>"><%= data[i].class_name %></option>
+                                       <% } %>
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Gender</label>
-                                   <select name="student_gender" id="student_gender" class="form-control">
+                                   <select name="student_gender" id="student_gender" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <option value="Male">Male</option>
                                     <option value="FeMale">FeMale</option>
@@ -130,29 +136,29 @@
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Hobbies</label>
-                                    <input type="text" id="student_hobbies" class="form-control" name="student_hobbies">
+                                    <input type="text" id="student_hobbies" class="form-control" name="student_hobbies" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" id="student_dob" class="form-control" name="student_dob">
+                                    <input type="date" id="student_dob" class="form-control" name="student_dob" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" id="student_email" class="form-control" name="student_email">
+                                    <input type="email" id="student_email" class="form-control" name="student_email" required>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" id="student_phone" class="form-control" name="student_phone">
+                                    <input type="text" id="student_phone" class="form-control" name="student_phone" required>
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label> Address</label>
                                   
-                                    <textarea id="student_address" placeholder="Address" rows="5" class="form-control" name="student_address"></textarea>
+                                    <textarea id="student_address" placeholder="Address" rows="5" class="form-control" required name="student_address"></textarea>
                                 </div>
                               
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" id="student_photo" class="form-control" name="student_photo">
+                                    <input type="file" id="student_photo" class="form-control" name="student_photo" required>
                                 </div>
                             </div>
                             <div align="center">
@@ -217,6 +223,48 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
+                <div class="modal fade" id="bulkStudentModal" tabindex="-1" role="dialog">
+                 <div id="loaderBulk" class="lds-dual-ring hidden overlay"></div>
+
+                  <div class="modal-dialog modal-lg"  role="document">
+                     
+                     <div class="modal-content">
+                       
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Bulk Create</h3>
+                        </div>
+                       
+                        <div class="modal-body">
+                              <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="bulkUploadForm">
+                                  <input type="hidden" id="student_school_id" value="2" class="form-control" name="student_school_id" >
+                            <div class="row">
+
+                                <div class="form-group col-lg-6">
+                                    <label>Upload File</label>
+                                    <input type="file" id="file" class="form-control" name="file" required>
+                                </div>
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="111" data-action="submit">
+															Upload
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
                 <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog">
                   <div class="modal-dialog">
                      <div class="modal-content">
@@ -268,7 +316,11 @@
    <%- include('../../partials/footer-script') %>
 
    <script type="text/javascript" language="javascript">
+
+
+     
         $("#studentForm").on("submit", async e => {
+         
 							e.preventDefault();
 							try {
 								
@@ -324,7 +376,65 @@
 								console.error(e)
 							}
 						});
-     
+                 
+                    $("#bulkUploadForm").on("submit", async e => {
+        
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/admission/bulk-create-student`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loaderBulk').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                      
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Bulk Action Completed !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                $("#bulkUploadForm")[0].reset();
+                  $("#bulkStudentModal").modal("hide");
+                  $('#sample_data').DataTable().ajax.reload();
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                 $("#bulkUploadForm")[0].reset();
+                }
+										
+										},
+                      complete: function(){
+                      $('#loaderBulk').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+                  
+
+       
 function viewAdmission(studentId,schoolId,classId) {
     try {
      
@@ -341,6 +451,7 @@ function viewAdmission(studentId,schoolId,classId) {
             let formDetails = ``;
             formDetails += `<table class="table table-bordered table-striped"> 
                
+               <tr><td>Photo</td><td><img src="/uploads/student/${data[0].email}/${data[0].photo}" width="100px"></td></tr>
                <tr><td>Name</td><td>${data[0].name}</td></tr>
                <tr><td>Email</td><td>${data[0].email}</td></tr>
                <tr><td>Gender</td><td>${data[0].gender}</td></tr>
@@ -362,6 +473,7 @@ function viewAdmission(studentId,schoolId,classId) {
     }
   }
 
+
                   function editAdmission(studentId,schoolId,classId) {
     try {
      
@@ -375,39 +487,43 @@ function viewAdmission(studentId,schoolId,classId) {
          cache: false,
          success: function (data) {
         console.log(data);
+        let option;
+        for(let i=0; i<data.classes.length; i++){
+           option += `<option value="${data.classes[i].id}"${data.data[0].class_id==data.classes[i].id?'selected':""}>${data.classes[i].class_name}</option>`
+        }
             let formDetails = ``;
-            formDetails += `<form action="" id="studentForm">
-                                  <input type="hidden" id="school_id" value="${schoolId}" class="form-control" name="school_id">
-                                  <input type="hidden" id="student_id" value="${studentId}" class="form-control" name="student_id">
-                                  <input type="hidden" id="class_id" value="${classId}" class="form-control" name="class_id">
+            formDetails += `<form action="/admission/update-admission-by-id" method="post" enctype="multipart/form-data">
+                                  <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
+                                  <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
+                                  <input type="hidden" value="${classId}" class="form-control" name="class_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" id="student_name" class="form-control" value="${data.data[0].name}" name="student_name">
+                                    <input type="text" class="form-control" value="${data.data[0].name}" name="student_name">
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Father's Name</label>
-                                    <input type="text" id="student_father_name" class="form-control" value="${data.data[0].fathers_name}" name="student_father_name">
+                                    <input type="text" class="form-control" value="${data.data[0].fathers_name}" name="student_father_name">
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Mother's Name</label>
-                                    <input type="text" id="student_mother_name" class="form-control" value="${data.data[0].mothers_name}" name="student_mother_name">
+                                    <input type="text" class="form-control" value="${data.data[0].mothers_name}" name="student_mother_name">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label>Parent  Phone Number</label>
-                                    <input type="text" id="student_parent_phone" class="form-control" value="${data.data[0].parent_phone}" name="student_parent_phone">
+                                    <input type="text"  class="form-control" value="${data.data[0].parent_phone}" name="student_parent_phone">
                                 </div>
                                
                                   <div class="form-group col-lg-6">
                                     <label>Class</label>
-                                   <select name="student_class_id" id="student_class_id" class="form-control">
+                                   <select name="student_class_id" class="form-control">
                                     <option value="">Please Select</option>
-                                    <option value="1"${data.data[0].class_id==data.classes[0].id?'selected':""}>${data.classes[0].class_name}</option>
+                                   ${option}
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Gender</label>
-                                   <select name="student_gender" id="student_gender" class="form-control">
+                                   <select name="student_gender"  class="form-control">
                                     <option value="">Please Select</option>
                                     <option value="Male" ${data.data[0].gender=="Male"?'selected':""}>Male</option>
                                     <option value="Female" ${data.data[0].gender=="Female"?'selected':""}>Female</option>
@@ -415,38 +531,38 @@ function viewAdmission(studentId,schoolId,classId) {
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Hobbies</label>
-                                    <input type="text" id="student_hobbies" value="${data.data[0].hobby}" class="form-control" name="student_hobbies">
+                                    <input type="text" value="${data.data[0].hobby}" class="form-control" name="student_hobbies">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" id="student_dob" value="${data.data[0].dob}" class="form-control" name="student_dob">
+                                    <input type="date" value="${data.data[0].dob}" class="form-control" name="student_dob">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" id="student_email" value="${data.data[0].email}" class="form-control" name="student_email">
+                                    <input type="email" value="${data.data[0].email}"  class="form-control" name="student_email" >
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" id="student_phone" value="${data.data[0].phone}" class="form-control" name="student_phone">
+                                    <input type="text" value="${data.data[0].phone}" class="form-control" name="student_phone">
                                 </div>
                                  <div class="form-group col-lg-6">
                                     <label> Address</label>
                                   
-                                    <textarea id="student_address" placeholder="Address" rows="5" class="form-control" name="student_address">${data.data[0].address}</textarea>
+                                    <textarea placeholder="Address" rows="5" class="form-control" name="student_address">${data.data[0].address}</textarea>
                                 </div>
                               
                                 <div class="form-group col-lg-6">
                                 
                                     <label>Upload Photo</label>
                                      <img src="/uploads/student/${data.data[0].email}/${data.data[0].photo}" width="100px">
-                                    <input type="file" id="student_photo" class="form-control" name="student_photo">
+                                    <input type="file" class="form-control" name="student_photo">
                                 </div>
                             </div>
                             <div align="center">
-                               <button class="	btn btn-success waves-effect waves-light"
-															data-callback="onSubmit" id="saveStudent" data-action="submit">
-															Register
-														</button>
+                               <input type="submit" class="btn btn-success"
+															value="Update">
+															
+														
                             </div>
                         </form>`;
             $("#editStudentDiv").html(formDetails);
@@ -608,7 +724,23 @@ $(document).ready(function(){
 	var dataTable = $('#sample_data').DataTable({
 		"processing": true,
 		"serverSide": true,
-		
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
 		"order":[],
 		"ajax":{
 			url:"/admission/get-admission",
@@ -699,6 +831,16 @@ $(document).ready(function(){
 			toastr.success('Record Updated Successfuly !!')
 		}
 	});
+  
 	
 });	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
 </script>
