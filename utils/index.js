@@ -1,6 +1,6 @@
 const { getDate, addDate, updateFormat } = require("./time");
 const { sendMail } = require("./mail");
-const { camelize, generate } = require("./helper");
+const { camelize, generate,titletoslug } = require("./helper");
 const { messenger } = require("./message");
 const { hashPassword, compare } = require("./hash");
 // const { host, user, database, password } = require("./constant");
@@ -18,6 +18,7 @@ module.exports = {
   addDate,
   generate,
   messenger,
+  titletoslug,
   camelize,
   hashPassword,
   compare,

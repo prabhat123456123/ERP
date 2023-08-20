@@ -34,14 +34,14 @@ const BASEURL = process.env.BASEURL;
 class FeedbackManagement {
   constructor() {}
 
-  async getAdmission(body) {
+ async getFeedback(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,faculty.email FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.name like "%${
           body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
+        }%" OR faculty.email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
         )} OFFSET ${parseInt(body.start)}`,
         {
@@ -52,13 +52,14 @@ class FeedbackManagement {
 
       for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+      
         data[i]["name"] = `${data[i].name}`;
-        data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
+        data[i]["title"] = `${data[i].title}`;
+        data[i]["rate"] = `${data[i].rate}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -72,12 +73,12 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countFeedback(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM faculty`,
         {
           type: QueryTypes.SELECT,
         }
@@ -96,60 +97,50 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async updateAdmission(body) {
+
+     async createFeedback(files, fields, req, res) {
     try {
- console.log(body)
-      let id = parseInt(body.pk)
+      const currentTime = getDate("YYYY-MM-DD hh:mm");
 
-      if (body.name === "name") {
-         const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
+      // const userExist = await sequelize.query(
+      //   "SELECT * FROM student WHERE email =? OR phone=?",
+      //   {
+      //     replacements: [fields.student_email[0], fields.student_phone[0]],
+      //     type: QueryTypes.SELECT,
+      //   }
+      // );
 
-          ],
-        }
+      // if (userExist.length > 0) {
+      //   return false;
+      // } else {
+       
+       
+       
+
+        const uniqueNum = uuidv4();
+       
+
+        const data = await sequelize.query(
+          "INSERT INTO feedback(track_id,student_id,faculty_id,school_id,title,rate,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
+          {
+            replacements: [
+             
+              uniqueNum,
+              fields.student_id[0],
+              fields.faculty_id[0],
+              fields.school_id[0],
+              fields.title[0],
+              fields.rate[0],
+             
+              "STUDENT",
+               currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
         );
-          return data;
-      }
-       if (body.name == "email") {
-         const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
-       if (body.name == "gender") {
-         const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
       
-      
-
-     
-
-
-    
+        return true;
+      // }
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -158,13 +149,112 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
+ 
+   async updateFeedbackById(files, fields, req, res) {
+     try {
+        console.log(fields)
+        console.log(files.student_photo[0].size)
+       const currentTime = getDate("YYYY-MM-DD hh:mm");
+    
+       
+       
+        const data = await sequelize.query(
+          "UPDATE `feedback` SET title=?,rate=?,updated_by=?,updated_at=? WHERE id = ?",
+          {
+            replacements: [
+              fields.title[0],
+              fields.rate[0],
+            
+              "STUDENT",
+              currentTime,
+               fields.feedbackId[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+       
 
-    async deleteAdmission(body) {
+     
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async addFeedbackById(files, fields, req, res) {
+     try {
+        console.log(fields)
+        console.log(files.student_photo[0].size)
+       const currentTime = getDate("YYYY-MM-DD hh:mm");
+    
+       
+       
+        const data = await sequelize.query(
+          "UPDATE `feedback` SET title=?,rate=?,updated_by=?,updated_at=? WHERE id = ?",
+          {
+            replacements: [
+              fields.title[0],
+              fields.rate[0],
+            
+              "STUDENT",
+              currentTime,
+               fields.feedbackId[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+       
+
+     
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getClass(req,res) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT * FROM class`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+    
+
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   
+
+    async deleteFeedback(body) {
     try {
 
-      const id = parseInt(body.id);
+      const feedbackId = parseInt(body.feedbackId);
+    
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${id}`,
+        `DELETE FROM feedback WHERE id = ${feedbackId}`,
         {
           type: QueryTypes.DELETE,
          
@@ -181,14 +271,68 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async deleteMultiple(body) {
+  async fetchFeedbackById(body) {
+    try {
+      const feedbackId = parseInt(body.feedbackId);
+    
+     const data = await sequelize.query(
+        `SELECT * FROM feedback WHERE id = ${feedbackId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+       const classes = await sequelize.query(
+        `SELECT * FROM class`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+        );
+          return {data,classes};
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async viewFeedbackById(body) {
+    try {
+      const feedbackId = parseInt(body.feedbackId);
+      
+     const data = await sequelize.query(
+        `SELECT feedback.*,class.class_name,faculty.name as fname FROM feedback INNER JOIN student ON student.id = feedback.student_id INNER JOIN faculty ON faculty.id = feedback.faculty_id INNER JOIN class ON class.id = feedback.class_id WHERE feedback.id = ${feedbackId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+      
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+ 
+   
+    async deleteMultipleFeedback(body) {
     try {
 
       let ids = body.deleteids_arr;
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = (${ids[index]})`,
+        `DELETE FROM feedback WHERE id = (${ids[index]})`,
         {
           type: QueryTypes.DELETE,
          

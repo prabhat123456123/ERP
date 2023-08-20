@@ -30,6 +30,7 @@ const getAdmission = async (req, res, next) => {
     next(error);
   }
 };
+
 const updateAdmission = async (req, res, next) => {
   try {
     const data = await new AdmissionManagement().updateAdmission(req.body);

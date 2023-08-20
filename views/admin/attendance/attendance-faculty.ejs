@@ -69,10 +69,12 @@
 						
 							<thead>
 								<tr>
-									<th></th>
 									<th> Name</th>
 									<th> Email</th>
 									<th>Gender</th>
+									<th>Status</th>
+									<th>Check IN</th>
+									<th>Check OUT</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -234,94 +236,21 @@ $(document).ready(function(){
 		
 		"order":[],
 		"ajax":{
-			url:"/admission/get-admission",
+			url:"/faculty/get-faculty",
 			type:"POST",
 		},
          columns: [
-        { data: "check" },
         { data: "name" },
         { data: "email" },
         { data: "gender" },
+         { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 1)
-				{
-					$(this).attr('data-name', 'name');
-					$(this).attr('class', 'name');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 2)
-				{
-					$(this).attr('data-name', 'email');
-					$(this).attr('class', 'email');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 3)
-				{
-					$(this).attr('data-name', 'gender');
-					$(this).attr('class', 'gender');
-					$(this).attr('data-type', 'select');
-					$(this).attr('data-pk', data.id);
-				}
-			});
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.name',
-		url:'/admission/update-admission',
-		title:'Name',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
 		
 	});
 
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.email',
-		url:'/admission/update-admission',
-		title:'Email',
-		type:'POST',
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
 
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.gender',
-		url:'/admission/update-admission',
-		title:'Gender',
-		type:'POST',
-		datatype:'json',
-		source:[{value: "Male", text: "Male"}, {value: "Female", text: "Female"}],
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
-	
 });	
 </script>

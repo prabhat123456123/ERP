@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {isAuthenticatedUser} = require("../../../helper/auth");
 
  
 const {
@@ -7,14 +8,14 @@ const {
  
 } = require("../../../controller/admin");
 
-router.get("/attendance-student", attendanceStudent);
-router.post("/get-student", getStudent);
+router.get("/attendance-student",isAuthenticatedUser(), attendanceStudent);
+router.post("/get-student",isAuthenticatedUser(), getStudent);
 router.post("/update-student", updateStudent);
 router.post("/delete-student", deleteStudent);
 router.post("/delete-multiple-student", deleteMultipleStudent);
 
-router.get("/attendance-faculty", attendanceFaculty);
-router.post("/get-faculty", getFaculty);
+router.get("/attendance-faculty",isAuthenticatedUser(), attendanceFaculty);
+router.post("/get-faculty",isAuthenticatedUser(), getFaculty);
 router.post("/update-faculty", updateFaculty);
 router.post("/delete-faculty", deleteFaculty);
 router.post("/delete-multiple-faculty", deleteMultipleFaculty);

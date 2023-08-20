@@ -1,10 +1,10 @@
 // const sequelize = require("../../../config/db");
 const { ComplaintManagement } = require("../../../services/admin");
 // const moment = require("moment");
-// const {
-//   serviceSingleDocUploadUtil,
-//   formidableUpload,
-// } = require("../../../utils/upload");
+const {
+  serviceSingleDocUploadUtil,
+  formidableUpload,
+} = require("../../../utils");
 
 
 const viewComplaint = async (req, res, next) => {
@@ -32,8 +32,112 @@ const getComplaint = async (req, res, next) => {
 };
 
 
+const deleteComplaint = async (req, res, next) => {
+  try {
+    const data = await new ComplaintManagement().deleteComplaint(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+const deleteMultipleComplaint = async (req, res, next) => {
+  try {
+    const data = await new ComplaintManagement().deleteMultipleComplaint(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const fetchComplaintById = async (req, res, next) => {
+  try {
+    const data = await new ComplaintManagement().fetchComplaintById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
+
+const viewComplaintById = async (req, res, next) => {
+  try {
+    const data = await new ComplaintManagement().viewComplaintById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+  
+};
+
+const createComplaint = async (req, res, next) => {
+  try {
+     const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new ComplaintManagement().createComplaint(
+      files,
+      fields,
+      req,
+      res
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+const updateComplaintById = async (req, res, next) => {
+  try {
+    
+    const { files, fields } = await formidableUpload(req);
+    const data = await new ComplaintManagement().updateComplaintById(
+      files,
+      fields,
+      req,
+      res
+    );
+   
+    req.flash("success_msg", "Complaint Updated Successfully !");
+      
+       return res.redirect("/complaint/view-complaint");
+  
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addComplaintById = async (req, res, next) => {
+  try {
+    
+    const { files, fields } = await formidableUpload(req);
+    const data = await new ComplaintManagement().addComplaintById(
+      files,
+      fields,
+      req,
+      res
+    );
+   
+    req.flash("success_msg", "Complaint Updated Successfully !");
+      
+       return res.redirect("/complaint/view-complaint");
+  
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 module.exports = {
- viewComplaint,getComplaint
+ viewComplaint,getComplaint,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint,addComplaintById
  
 };

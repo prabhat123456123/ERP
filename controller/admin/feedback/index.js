@@ -1,8 +1,8 @@
 let {
-  viewFeedback
+  viewFeedback,getFeedback,addFeedbackById,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback
  
 } = require("./feedback");
 
 module.exports = {
- viewFeedback
+ viewFeedback,getFeedback,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,addFeedbackById,deleteMultipleFeedback,createFeedback
 };

@@ -24,7 +24,7 @@ const { admin } = require("./routes");
 // const { validator, validateToken, handleError } = require("./middleware");
 // const { handleError } = require("./middleware");
 
-// const sequelize = require("./config/db");
+const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
 
@@ -46,7 +46,7 @@ app
 // contentSecurityPolicy: {
 // directives: {
 // defaultSrc: ["'self'"],
-// 'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'",  'https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js'],
+// 'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'","'unsafe-hashes'",  'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js'],
 
 // },
 // },
@@ -55,16 +55,16 @@ app
 
 
 // app.use(`${process.env.URL_PREFIX?process.env.URL_PREFIX:''}/`, require('./routes'));
-const csrfProtection = csrf();
+// const csrfProtection = csrf();
 app.use(
   session({
     secret: "labourAdmin",
     name: "__sessionlabour",
-    // store: new SequelizeStore({
-    //   db: sequelize,
-    //   checkExpirationInterval: 15 * 60 * 1000,
-    //   expiration: 24 * 60 * 60 * 1000,
-    // }),
+    store: new SequelizeStore({
+      db: sequelize,
+      checkExpirationInterval: 15 * 60 * 1000, 
+      expiration: 24 * 60 * 60 * 1000,
+    }),
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
@@ -76,15 +76,15 @@ app.use(
     resave: false,
   })
 );
-app.use(csrfProtection);
+// app.use(csrfProtection);
 
-  app.use(function (err, req, res, next) {
-    if (req.session._csrf) {
-      csrf(req, res, next);
-    } else {
-      next();
-    }
-  });
+//   app.use(function (err, req, res, next) {
+//     if (req.session._csrf) {
+//       csrf(req, res, next);
+//     } else {
+//       next();
+//     }
+//   });
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -139,13 +139,13 @@ app.use((err, req, res, next) => {
   // res.status(statusCode).json({ error: message });
 });
 
-// sequelize
-//   .sync({ logging: false })
-//   .then(() => {
-//     console.log("Database connected");
-//   })
-//   .catch((err) => {
-//     throw err;
-//   });
+sequelize
+  .sync({ logging: false })
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((err) => {
+    throw err;
+  });
 
 module.exports = app;

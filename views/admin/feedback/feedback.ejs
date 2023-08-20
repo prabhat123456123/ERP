@@ -1,25 +1,10 @@
 <%- include('../../partials/top-bar') %>
 
+
       <!-- Site wrapper -->
       <div class="wrapper">
          <%- include('../../partials/header') %>
-		  <style>
-      .loading-image {
-        position: absolute;
 		
-        top: 48%;
-        left: 32%;
-        transform: translateY(-50%) translateX(50%);
-      }
-      .loader {
-        display: none;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        position: fixed;
-        z-index: 99999;
-      }
-    </style>
          <!-- =============================================== -->
          <!-- Left side column. contains the sidebar -->
        <%- include('../../partials/sidebar') %>
@@ -28,13 +13,7 @@
          <!-- =============================================== -->
          <!-- Content Wrapper. Contains page content -->
          <div class="content-wrapper">
-			   <div class="loader" id="loader">
-      <img
-        class="loading-image" style="width: 100px;"
-        src="/assets/images/loader.webp"
-        alt="loading.."
-      />
-	   </div>
+			   
             <!-- Content Header (Page header) -->
             <section class="content-header">
                <div class="header-icon">
@@ -49,48 +28,55 @@
             <!-- Main content -->
             <section class="content">
           
-		    <div class="row">
-				 <div class="panel panel-bd lobidrag">
+			<div class="panel panel-bd lobidrag">
                         <div class="panel-heading">
                            <div class="btn-group" id="buttonexport">
                               <a href="#">
-                                 <h4>FeedBack Module</h4>
+                                 <h4>All student</h4>
                               </a>
                            </div>
                         </div>
                         <div class="panel-body">
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox1" style="background-color: #5d720f;">
-                        <div class="statistic-box">
-                           <i class="fa fa-user-plus fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h3>Students</h3>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox2" style="background-color: #36784c;">
-                        <div class="statistic-box">
-                           <i class="fa fa-user-secret fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">4</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h3> Faculty</h3>
-                        </div>
-                     </div>
-                  </div>
-                  </div>
-				   </div>
-                
-				   
-               </div>
-			   
+                            <%- include('../../partials/message') %>
+                            <% if(user[0].role==="school"){ %>
+					 <div class="row"> 
+ <div class="col-md-6 text-left">
+								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
+
+               
+				
+            </div>
+           
+            <div class="col-md-6 text-right">
+ 
+                                 
+                             
+            </div>
+			<br>
+        </div>
+
+        <% } %>
+		<br>
+
+					<div class="table-responsive">
+						
+						<table id="sample_data" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									<th></th>
+									
+									<th>Faculty Name</th>
+									
+									<th> title</th>
+									<th>Rate</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
 		
             </section>
 		
@@ -100,8 +86,512 @@
          <!-- /.content-wrapper -->
         <%- include('../../partials/footer') %>
       </div>
-	
+	 <!-- Modal1 -->
+              
+                 <div class="modal fade" id="editFeedbackModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Edit Feedback Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="editFeedbackDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                <div class="modal fade" id="addFeedbackModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Add Feedback Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="addFeedbackDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="viewFeedbackModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> View Feedback Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewFeedbackDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+              
+                <div class="modal fade" id="deleteFeedbackModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Student</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteFeedbackDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="deleteMultipleFeedbackModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Students</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteMultipleFeedbackDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
       <!-- /.wrapper -->
       <!-- Start Core Plugins
+         
          =====================================================================-->
    <%- include('../../partials/footer-script') %>
+
+   <script type="text/javascript" language="javascript">
+
+
+     
+        $("#feedbackForm").on("submit", async e => {
+         
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/feedback/create-feedback`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                       const url = '/success.mp3'
+                    const audio = new Audio(url);
+                    audio.play();
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                $("#feedbackForm")[0].reset();
+                  $("#addfeedback-lg").modal("hide");
+                  $('#sample_data').DataTable().ajax.reload();
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+          
+function viewFeedback(facultyId,schoolId) {
+    try {
+     
+      $("#viewFeedbackDiv").html("");
+      $("#viewFeedbackModal").modal("toggle");
+      $.ajax({
+         url: `/feedback/view-feedback-byid`,
+         type: "post",
+         data:{facultyId:facultyId,schoolId:schoolId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+    console.log(data);
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               
+             
+               <tr><td>Name</td><td>${data[0].name}</td></tr>
+               <tr><td>Email</td><td>${data[0].email}</td></tr>
+               <tr><td>Gender</td><td>${data[0].gender}</td></tr>
+                <tr><td>Father Name</td><td>${data[0].fathers_name}</td></tr>
+               <tr><td>Mother Name</td><td>${data[0].mothers_name}</td></tr>
+               <tr><td>Parent Phone</td><td>${data[0].parent_phone}</td></tr>
+               <tr><td>Class</td><td>${data[0].class_name}</td></tr>
+               <tr><td>School</td><td>${data[0].school_name}</td></tr>
+               <tr><td>address</td><td>${data[0].address}</td></tr>
+               <tr><td>DOB</td><td>${data[0].dob}</td></tr>
+              
+               </table>`;
+            $("#viewFeedbackDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+ function editFeedback(facultyId,schoolId) {
+    try {
+     
+      $("#editFeedbackDiv").html("");
+      $("#editFeedbackModal").modal("toggle");
+      $.ajax({
+         url: `/feedback/fetch-feedback-byid`,
+         type: "post",
+         data:{facultyId:facultyId,schoolId:schoolId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+        
+            let formDetails = ``;
+            formDetails += `<form action="/feedback/update-feedback-by-id" method="post">
+                                  <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
+                                  <input type="hidden"  value="${facultyId}" class="form-control" name="faculty_id">
+                                
+                            <div class="row">
+                               
+                              
+                                <div class="form-group col-lg-6">
+                                    <label>Feedback</label>
+                                    <input type="Number" value="${data.data[0].rate}" class="form-control" name="rate">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label> Feedback</label>
+                                  
+                                    <textarea placeholder="Feedback" rows="5" class="form-control" name="feedback">${data.data[0].title}</textarea>
+                                </div>
+                              
+                               
+                            </div>
+                            <div align="center">
+                               <input type="submit" class="btn btn-success"
+															value="Update">
+															
+														
+                            </div>
+                        </form>`;
+            $("#editFeedbackDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+   function addFeedback(facultyId,schoolId) {
+    try {
+     
+      $("#addFeedbackDiv").html("");
+      $("#addFeedbackModal").modal("toggle");
+    
+            let formDetails = ``;
+            formDetails += `<form action="/feedback/add-feedback-by-id" id="feedbackForm" method="post">
+                                  <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
+                                  <input type="hidden"  value="${facultyId}" class="form-control" name="faculty_id">
+                                 
+                            <div class="row">
+                               
+                              
+                                <div class="form-group col-lg-6">
+                                    <label>Rate</label>
+                                    <input type="Number"  class="form-control" name="rate">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label> Feedback</label>
+                                  
+                                    <textarea placeholder="Feedback" rows="5" class="form-control" name="title"></textarea>
+                                </div>
+                              
+                               
+                            </div>
+                            <div align="center">
+                               <input type="submit" class="btn btn-success"
+															value="Save">
+															
+														
+                            </div>
+                        </form>`;
+            $("#addFeedbackDiv").html(formDetails);
+          
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
+   function deleteFeedback(facultyId,schoolId) {
+    try {
+     
+      $("#deleteFeedbackDiv").html("");
+      $("#deleteFeedbackModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                    <input type="hidden" class="form-control" name="facultyId" id="facultyId" value="${facultyId}">
+                    <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
+        
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary delBtn waves-effect waves-light"
+                       id="register"
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 </form> `;
+            $("#deleteFeedbackDiv").html(formDetails);
+          
+       
+    } catch (err) {
+      console.error(err);
+    }
+  }
+    
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+     // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleFeedbackDiv").html("");
+      $("#deleteMultipleFeedbackModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleFeedbackDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+
+   // Delete record
+   $(document).on('click','#delete_record',function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+        
+      
+            $.ajax({
+               url: '/feedback/delete-multiple-feedback',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               success: function(response){
+                   $("#deleteMultipleFeedbackModal").modal("hide");
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               }
+            });
+         
+      }
+   });
+	$(document).on("click",".delBtn",function(){
+		
+ const studentId = $("#studentId").val();
+ const schoolId = $("#schoolId").val();
+  $.ajax({
+        url: '/feedback/delete-feedback',
+        type: "POST",
+        data: {
+          studentId:studentId,
+          schoolId:schoolId
+        },
+        success: function () {
+      $("#deleteFeedbackModal").modal("hide");
+     $('#sample_data').DataTable().ajax.reload();
+	toastr.error('Record Deleted Successfuly !!')
+
+        }
+    });
+	
+ 
+});
+	
+var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/feedback/get-feedback",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "name" },
+        { data: "title" },
+        { data: "rate" },
+        { data: "action" },
+	],
+		
+	});
+
+
+
+	
+  
+	
+});	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
+</script>

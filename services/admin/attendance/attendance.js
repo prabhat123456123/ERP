@@ -34,12 +34,12 @@ const BASEURL = process.env.BASEURL;
 class AttendanceManagement {
   constructor() {}
 
-  async getAdmission(body) {
+ async getStudent(body) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT student.id,class.class_name,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student INNER JOIN student_attendance ON student_attendance.student_id = student.id INNER JOIN class ON class.id = student_attendance.class_id  WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -51,14 +51,17 @@ class AttendanceManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+       
         data[i]["name"] = `${data[i].name}`;
         data[i]["email"] = `${data[i].email}`;
         data[i]["gender"] = `${data[i].gender}`;
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-success btn-sm' onclick='viewAttendance(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -78,6 +81,69 @@ class AttendanceManagement {
      
        const data = await sequelize.query(
         `SELECT * FROM student`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+     
+
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+async getFaculty(body) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT faculty.id,faculty.school_id,faculty.name,faculty.email,faculty.gender,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty LEFT JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE name like "%${
+          body.search.value
+        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
+          body.length
+        )} OFFSET ${parseInt(body.start)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+      for (let i = 0; i < data.length; i++) {
+        data[i]["name"] = `${data[i].name}`;
+        data[i]["email"] = `${data[i].email}`;
+        data[i]["gender"] = `${data[i].gender}`;
+data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+        data[i][
+          "action"
+        ] = `<button class='btn btn-success btn-sm' onclick='viewAttendance(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
+       
+      }
+
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+    async countFaculty(body) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT * FROM faculty`,
         {
           type: QueryTypes.SELECT,
         }

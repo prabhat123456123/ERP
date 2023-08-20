@@ -9,11 +9,11 @@ const {
  
 } = require("../../../controller/admin");
 
-router.post("/update-admission-by-id",isAuthenticatedUser(), updateAdmissionById);
 router.get("/admission",isAuthenticatedUser(), addAdmission);
 router.get("/export-excel",isAuthenticatedUser(), exportExcel);
 router.get("/export-pdf",isAuthenticatedUser(), exportPdf);
 router.post("/get-admission",isAuthenticatedUser(), getAdmission);
+router.post("/update-admission-by-id",isAuthenticatedUser(), updateAdmissionById);
 router.post("/fetch-student-byid",isAuthenticatedUser(), fetchStudentById);
 router.post("/view-student-byid",isAuthenticatedUser(), viewStudentById);
 router.post("/update-student-byid",isAuthenticatedUser(), updateStudentById);

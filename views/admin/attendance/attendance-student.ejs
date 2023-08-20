@@ -69,10 +69,12 @@
 						
 							<thead>
 								<tr>
-									<th></th>
 									<th> Name</th>
 									<th> Email</th>
 									<th>Gender</th>
+                           <th>Status</th>
+									<th>Check IN</th>
+									<th>Check OUT</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -234,14 +236,17 @@ $(document).ready(function(){
 		
 		"order":[],
 		"ajax":{
-			url:"/admission/get-admission",
+			url:"/student/get-student",
 			type:"POST",
 		},
          columns: [
-        { data: "check" },
+       
         { data: "name" },
         { data: "email" },
         { data: "gender" },
+        { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
         { data: "action" },
 	],
 		createdRow:function(row, data, rowIndex)

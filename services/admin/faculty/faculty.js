@@ -36,8 +36,6 @@ class FacultyManagement {
    async createFaculty(files, fields, req, res) {
     try {
 
-console.log(fields);
-console.log(files);
       const currentTime = getDate("YYYY-MM-DD hh:mm");
 
       const userExist = await sequelize.query(
@@ -126,7 +124,7 @@ console.log(files);
       );
       
 
-      for (let i = 0; i < data.length; i++) {
+     for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["email"] = `${data[i].email}`;
@@ -134,7 +132,7 @@ console.log(files);
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm delBtn' onclick='deleteFaculty(${data[i].id},${data[i].school_id}})' data-id='${data[i].id}' > Delete </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -238,7 +236,7 @@ console.log(files);
     async deleteFacultyData(body) {
     try {
 
-      const id = parseInt(body.id);
+      const id = parseInt(body.facultyId);
      const data = await sequelize.query(
         `DELETE FROM faculty WHERE id = ${id}`,
         {
@@ -282,8 +280,180 @@ console.log(files);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  
+   async fetchFacultyById(body) {
+    try {
+      const facultyId = parseInt(body.facultyId);
+      
+      const schoolId = parseInt(body.schoolId);
+     const data = await sequelize.query(
+        `SELECT * FROM faculty WHERE id = ${facultyId} AND school_id=${schoolId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+       const classes = await sequelize.query(
+        `SELECT * FROM class`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+        );
+          return {data,classes};
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async viewFacultyById(body) {
+    try {
+      const facultyId = parseInt(body.facultyId);
+      const schoolId = parseInt(body.schoolId);
+     const data = await sequelize.query(
+        `SELECT faculty.*,school.school_name FROM faculty INNER JOIN school ON school.id = faculty.school_id WHERE faculty.id = ${facultyId} AND faculty.school_id=${schoolId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+      
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   
  
+   async updateFacultyById(body) {
+    try {
+
+      const id = parseInt(body.id);
+      const data = await sequelize.query(
+        `UPDATE student SET gender=? WHERE id = ${id}`,
+        {
+          type: QueryTypes.UPDATE,
+           replacements: [
+            body.value,
+           
+
+          ],
+        }
+         );
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  async updateFacultyId(files, fields, req, res) {
+     try {
+        console.log(fields)
+        console.log(files.faculty_photo[0].size)
+       const currentTime = getDate("YYYY-MM-DD hh:mm");
+      if (files.faculty_photo[0].size>0) {
+        
+        const dir = path.join(
+          __dirname,
+          `../../../public/uploads/faculty/${fields.email[0]}`
+        );
+
+        let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.faculty_photo[0].originalFilename.toString().replace(/\s/g, "-");
+
+        copyFiles(files.faculty_photo[0].filepath, `${dir}/${fileName}`, dir);
+
+        const url = `${fileName}`;
+
+        const data = await sequelize.query(
+          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,photo=?,updated_by=?,updated_at=? WHERE id = ?",
+          {
+            replacements: [
+             
+              fields.name[0],
+              fields.email[0],
+              fields.dob[0],
+              fields.gender[0],
+              fields.phone[0],
+              fields.address[0],
+              fields.father_name[0],
+              fields.mother_name[0],
+              fields.experience[0],
+              fields.qualification[0],
+              fields.specialize[0],
+             
+              url,
+              "Faculty",
+              currentTime,
+                fields.faculty_id[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+      } else {
+        
+     
+       
+       const data = await sequelize.query(
+          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,updated_by=?,updated_at=? WHERE id = ?",
+          {
+            replacements: [
+             
+              fields.name[0],
+              fields.email[0],
+              fields.dob[0],
+              fields.gender[0],
+              fields.phone[0],
+           
+             
+              fields.address[0],
+              fields.father_name[0],
+              fields.mother_name[0],
+              fields.experience[0],
+              fields.qualification[0],
+              fields.specialize[0],
+             
+              "Faculty",
+              currentTime,
+                fields.faculty_id[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+       
+}
+     
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
 }
 
 module.exports = {

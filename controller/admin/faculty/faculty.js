@@ -78,6 +78,64 @@ const deleteMultipleFacultyData = async (req, res, next) => {
   
     const data = await new FacultyManagement().deleteMultipleFacultyData(
      
+      req.body,
+     
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const fetchFacultyById = async (req, res, next) => {
+  try {
+    const data = await new FacultyManagement().fetchFacultyById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
+
+const viewFacultyById = async (req, res, next) => {
+  try {
+    const data = await new FacultyManagement().viewFacultyById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+  
+};
+
+
+
+
+
+const updateFacultyById = async (req, res, next) => {
+  try {
+    const data = await new FacultyManagement().updateFacultyById(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const bulkCreateFaculty = async (req, res, next) => {
+  try {
+     const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new FacultyManagement().bulkCreateFaculty(
+      files,
+      fields,
       req,
       res
     );
@@ -87,9 +145,30 @@ const deleteMultipleFacultyData = async (req, res, next) => {
   }
 };
 
+const updateFacultyId = async (req, res, next) => {
+  try {
+    
+    const { files, fields } = await formidableUpload(req);
+    const data = await new FacultyManagement().updateFacultyId(
+      files,
+      fields,
+      req,
+      res
+    );
+   
+    req.flash("success_msg", "Student Records Updated Successfully !");
+      
+       return res.redirect("/admission/admission");
+  
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 
 
 module.exports = {
- viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFacultyId
  
 };

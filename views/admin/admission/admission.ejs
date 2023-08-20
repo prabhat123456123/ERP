@@ -37,18 +37,17 @@
                            </div>
                         </div>
                         <div class="panel-body">
-                            
+                            <%- include('../../partials/message') %>
+                            <% if(user[0].role==="school"){ %>
 					 <div class="row"> 
- <div class="col-md-3 text-left">
+ <div class="col-md-6 text-left">
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
 
                
 				
             </div>
-             <div class="col-md-6">
- <%- include('../../partials/message') %>
-             </div>
-            <div class="col-md-3 text-right">
+           
+            <div class="col-md-6 text-right">
  
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addStudent-lg"><i class="fa fa-plus"></i> Add New</a>  
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#bulkStudentModal"><i class="fa fa-plus"></i> Bulk Create</a>  
@@ -57,6 +56,8 @@
             </div>
 			<br>
         </div>
+
+        <% } %>
 		<br>
 
 					<div class="table-responsive">
@@ -98,7 +99,7 @@
                            <div class="row">
                               <div class="col-md-12">
                                 <form action="" id="studentForm">
-                                  <input type="hidden" id="student_school_id" value="2" class="form-control" name="student_school_id" >
+                                  <input type="hidden" id="student_school_id" value="<%= user[0].id %>" class="form-control" name="student_school_id" >
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
@@ -239,7 +240,7 @@
                               <div class="row">
                               <div class="col-md-12">
                                 <form action="" id="bulkUploadForm">
-                                  <input type="hidden" id="student_school_id" value="2" class="form-control" name="student_school_id" >
+                                  <input type="hidden" id="student_school_id" value="<%= user[0].id %>" class="form-control" name="student_school_id" >
                             <div class="row">
 
                                 <div class="form-group col-lg-6">
@@ -721,7 +722,8 @@ $(document).ready(function(){
 	
  
 });
-	var dataTable = $('#sample_data').DataTable({
+	
+var dataTable = $('#sample_data').DataTable({
 		"processing": true,
 		"serverSide": true,
 		 dom: 'Bfrtip',

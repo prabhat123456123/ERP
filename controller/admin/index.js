@@ -18,7 +18,7 @@ const {
 } = require("./academic");
 
 const {
- viewExam
+ viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam
 } = require("./exam");
 
 const {
@@ -34,15 +34,15 @@ const {
 } = require("./download");
 
 const {
- viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFacultyId
 } = require("./faculty");
 
 const {
- viewComplaint,getComplaint
+ viewComplaint,getComplaint,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint,addComplaintById
 } = require("./complaint");
 
 const {
- viewFeedback
+ viewFeedback,getFeedback,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback
 } = require("./feedback");
 
 const {
@@ -60,7 +60,7 @@ const {
 
 module.exports = {
   addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById, financialStudent, financialFaculty, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,
-  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,
-  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,createFaculty,
-  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData
+  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,updateFacultyId,getFeedback,addFeedbackById,
+  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback,addComplaintById,
+  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint
 };

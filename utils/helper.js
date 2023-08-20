@@ -9,6 +9,11 @@ module.exports = {
       throw new ErrorHandler(500, error);
     }
   },
+   titletoslug:(title)=>{
+    return title.toLowerCase().replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '');
+ 
+},
   generate: (lenght = 4) => {
     try {
       const string = "123456789";

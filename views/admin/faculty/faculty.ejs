@@ -38,17 +38,18 @@
                            </div>
                         </div>
                         <div class="panel-body">
+                             <%- include('../../partials/message') %>
 					 <div class="row"> 
  <div class="col-md-6 text-left">
-								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger para" id='delete_record' value='Check All & Delete' >
+								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger para" id="multDel"  value='Check All & Delete' >
 
-                <input type="button" id="btnAdd" class="btn-sm btn-primary para" value="Export as PDF" />
-                <input type="button" id="btnAdd" class="btn-sm btn-primary para" value="Export as Excel" />
+              
 				
             </div>
             <div class="col-md-6 text-right">
  
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addFaculty-lg"><i class="fa fa-plus"></i> Add New</a>  
+                                 <a href="#" class="btn btn-add" data-toggle="modal" data-target="#bulkStudentModal"><i class="fa fa-plus"></i> Bulk Create</a> 
                                   
                              
             </div>
@@ -94,7 +95,7 @@
                            <div class="row">
                               <div class="col-md-12">
                                <form action="http://thememinister.com/crm/index.html" id="facultyForm">
-                                  <input type="hidden" id="school_id" value="2" class="form-control" name="school_id">
+                                  <input type="hidden" id="school_id" value="<%= user[0].id %>" class="form-control" name="school_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
@@ -108,18 +109,7 @@
                                     <label>Mother Name</label>
                                     <input type="text" id="mother_name" class="form-control" name="mother_name">
                                 </div>
-                                 <div class="form-group col-lg-6">
-                                    <label>School</label>
-                                   <select name="school_id" id="school_id" class="form-control">
-                                    <option value="">Please Select</option>
-                                    <option value="1">School1</option>
-                                   </select>
-                                </div>
-                                    
-                                  <div class="form-group col-lg-6">
-                                    <label>Hobbies</label>
-                                    <input type="text" id="hobbies" class="form-control" name="hobbies">
-                                </div>
+                               
                                  <div class="form-group col-lg-6">
                                     <label> Experience</label>
                                     <input type="text" id="experience" class="form-control" name="experience">
@@ -227,6 +217,92 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
+                  <div class="modal fade" id="viewFacultyModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> View Faculty Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewFacultyDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                <div class="modal fade" id="bulkFacultyModal" tabindex="-1" role="dialog">
+                 <div id="loaderBulk" class="lds-dual-ring hidden overlay"></div>
+
+                  <div class="modal-dialog modal-lg"  role="document">
+                     
+                     <div class="modal-content">
+                       
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Bulk Create</h3>
+                        </div>
+                       
+                        <div class="modal-body">
+                              <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="bulkUploadForm">
+                                  <input type="hidden" id="faculty_school_id" value="<%= user[0].id %>" class="form-control" name="faculty_school_id" >
+                            <div class="row">
+
+                                <div class="form-group col-lg-6">
+                                    <label>Upload File</label>
+                                    <input type="file" id="file" class="form-control" name="file" required>
+                                </div>
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="111" data-action="submit">
+															Upload
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                 <div class="modal fade" id="deleteMultipleFacultyModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Faculty</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteMultipleFacultyDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
       <!-- /.wrapper -->
       <!-- Start Core Plugins
          =====================================================================-->
@@ -289,92 +365,86 @@
 								console.error(e)
 							}
 						});
-    function editFaculty(studentId,schoolId,classId) {
+    function editFaculty(facultyId,schoolId) {
     try {
       $("#editFacultyDiv").html("");
       $("#editFacultyModal").modal("toggle");
       $.ajax({
-         url: `/admission/fetch-student-byid`,
+         url: `/faculty/fetch-faculty-byid`,
          type: "post",
-         data:{studentId:studentId,schoolId:schoolId,classId:classId},
+         data:{facultyId:facultyId,schoolId:schoolId},
          dataType: "json",
          cache: false,
          success: function (data) {
           alert("teteet")
             let formDetails = ``;
-            formDetails += `<form action="http://thememinister.com/crm/index.html" id="loginForm" novalidate>
-                  <input type="hidden" class="form-control" name="studentId" id="studentId" value="${studentId}">
-                    <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
-                    <input type="hidden" class="form-control" name="classId" id="classId" value="${classId}">
+            formDetails += `  <form action="/faculty/update-faculty-by-id">
+                                  <input type="hidden" id="school_id" value="<%= user[0].id %>" class="form-control" name="school_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
-                                    <input type="text" value="" id="name" class="form-control" name="name">
+                                    <input type="text" id="name"  value="${data.data[0].name}" class="form-control" name="name">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Father's Name</label>
-                                    <input type="text" value="" id="father_name" class="form-control" name="father_name">
+                                   <div class="form-group col-lg-6">
+                                    <label>Father Name</label>
+                                    <input type="text" id="father_name"  value="${data.data[0].fathers_name}" class="form-control" name="father_name">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Mother's Name</label>
-                                    <input type="text" value="" id="mother_name" class="form-control" name="mother_name">
+                                   <div class="form-group col-lg-6">
+                                    <label>Mother Name</label>
+                                    <input type="text" id="mother_name"  value="${data.data[0].mother_name}" class="form-control" name="mother_name">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Class</label>
-                                    <input type="text" value="" id="class" class="form-control" name="class">
+                               
+                             
+                                 <div class="form-group col-lg-6">
+                                    <label> Experience</label>
+                                    <input type="text" id="experience"  value="${data.data[0].experience}" class="form-control" name="experience">
                                 </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Hobbies</label>
-                                    <input type="text" value="" id="hobbies" class="form-control" name="hobbies">
+                                 <div class="form-group col-lg-6">
+                                    <label>Qualification</label>
+                                    <input type="text" id="qualification"  value="${data.data[0].qualification}" class="form-control" name="qualification">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Specialize in</label>
+                                    <input type="text" id="specialize"  value="${data.data[0].specialize}" class="form-control" name="specialize">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Gender</label>
+                                   <select name="gender" id="gender" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="Male"${data.data[0].class_id=="Male"?'selected':""}>Male</option>
+                                    <option value="Female"${data.data[0].class_id=="Female"?'selected':""}>Female</option>
+                                   </select>
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>DOB</label>
-                                    <input type="date" value="" id="dob" class="form-control" name="dob">
+                                    <input type="date" id="dob"  value="${data.data[0].dob}" class="form-control" name="dob">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Email ID</label>
-                                    <input type="email" value="" id="email" class="form-control" name="email">
+                                    <input type="email" id="email"  value="${data.data[0].email}" class="form-control" name="email">
                                 </div>
                                 <div class="form-group col-lg-6">
                                     <label>Phone Number</label>
-                                    <input type="text" value="" id="phone" class="form-control" name="phone">
+                                    <input type="text" id="phone"  value="${data.data[0].phone}" class="form-control" name="phone">
                                 </div>
                                  <div class="form-group col-lg-6">
-                                    <label>Current Address</label>
-                                    <input type="text"  id="studentcurrentaddress1" placeholder="address line 1" class="form-control" name="address1">
-                                     <label></label>
-                                    <input type="text" id="studentcurrentaddress2" placeholder="address line 2" class="form-control" name="address2">
-                                     <label></label>
-                                    <input type="text"  id="studentcurrentstate" placeholder="State" class="form-control" name="state">
-                                     <label></label>
-                                    <input type="text" id="studentcurrentdistrict" placeholder="District" class="form-control" name="district">
-                                     <label></label>
-                                    <input type="text"  id="studentcurrentcity" placeholder="City" class="form-control" name="city">
-                                     <label></label>
-                                    <input type="text" id="studentcurrentpincode" placeholder="Pin Code" class="form-control" name="pincode">
+                                    <label>Address</label>
+                                     <textarea id="address" placeholder="Address" rows="5" class="form-control" name="address"> ${data.data[0].address}</textarea>
+                                  
+                        
                                 </div>
-                                 <div class="form-group col-lg-6">
-                                    
-                                    <label>Permanent Address</label> ( <input type="checkbox" name="studentaddresscheck" id="studentaddresscheck"/>Same as Current: )
-                                    <input type="text" placeholder="address line 1"  id="studentpermanentaddress1" class="form-control" name="address1">
-                                      <label></label>
-                                    <input type="text" id="studentpermanentaddress2" placeholder="address line 2" class="form-control" name="address2">
-                                     <label></label>
-                                    <input type="text"  id="studentpermanentstate" placeholder="State" class="form-control" name="state">
-                                     <label></label>
-                                    <input type="text" id="studentpermanentdistrict" placeholder="District" class="form-control" name="district">
-                                     <label></label>
-                                    <input type="text"  id="studentpermanentcity" placeholder="City" class="form-control" name="city">
-                                     <label></label>
-                                    <input type="text" id="studentpermanentpincode" placeholder="Pin Code" class="form-control" name="pincode">
-                                </div>
+                               
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" value="" id="photo" class="form-control" name="photo">
+                                     <img src="/uploads/faculty/${data.data[0].email}/${data.data[0].photo}" width="100px">
+                                    <input type="file" id="photo" class="form-control" name="photo">
                                 </div>
                             </div>
                             <div align="center">
-                                <button class="btn btn-warning">Register</button>
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveFaculty" data-action="submit">
+															Register
+														</button>
                             </div>
                         </form>`;
             $("#editFacultyDiv").html(formDetails);
@@ -385,17 +455,16 @@
       console.error(err);
     }
   }
-   function deleteAdmission(studentId,schoolId,classId) {
+   function deleteFaculty(facultyId,schoolId) {
     try {
       $("#deleteFacultyDiv").html("");
       $("#deleteFacultyModal").modal("toggle");
    
           
             let formDetails = ``;
-            formDetails += ` <form action="/release-student" method="post">
-                    <input type="hidden" class="form-control" name="studentId" id="studentId" value="${studentId}">
+            formDetails += `
+                    <input type="hidden" class="form-control" name="facultyId" id="facultyId" value="${facultyId}">
                     <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
-                    <input type="hidden" class="form-control" name="classId" id="classId" value="${classId}">
                     
                    <div class="col-md-12">
                     Are You Sure. ?
@@ -405,13 +474,13 @@
                     <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
                      <button
                        type="submit"
-                       class="btn btn-primary waves-effect waves-light"
+                       class="btn btn-primary delBtn waves-effect waves-light"
                        id="register"
                      >
                        Yes
                      </button>
                    </div>
-                 </form> `;
+                `;
             $("#deleteFacultyDiv").html(formDetails);
           
        
@@ -419,7 +488,105 @@
       console.error(err);
     }
   }
-$(document).ready(function(){
+   $("#bulkUploadForm").on("submit", async e => {
+        
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/faculty/bulk-create-faculty`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loaderBulk').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                      
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Bulk Action Completed !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                $("#bulkUploadForm")[0].reset();
+                  $("#bulkFacultyModal").modal("hide");
+                  $('#sample_data').DataTable().ajax.reload();
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                 $("#bulkUploadForm")[0].reset();
+                }
+										
+										},
+                      complete: function(){
+                      $('#loaderBulk').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+                  
+
+       
+function viewFaculty(facultyId,schoolId) {
+    try {
+     
+      $("#viewFacultyDiv").html("");
+      $("#viewFacultyModal").modal("toggle");
+      $.ajax({
+         url: `/faculty/view-faculty-byid`,
+         type: "post",
+         data:{facultyId:facultyId,schoolId:schoolId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+    console.log(data);
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               
+               <tr><td>Photo</td><td><img src="/uploads/faculty/${data[0].email}/${data[0].photo}" width="100px"></td></tr>
+               <tr><td>Name</td><td>${data[0].name}</td></tr>
+               <tr><td>Email</td><td>${data[0].email}</td></tr>
+               <tr><td>Gender</td><td>${data[0].gender}</td></tr>
+                <tr><td>Father Name</td><td>${data[0].fathers_name}</td></tr>
+               <tr><td>Mother Name</td><td>${data[0].mothers_name}</td></tr>
+               <tr><td>Experience</td><td>${data[0].experience}</td></tr>
+               <tr><td>qualification</td><td>${data[0].qualification}</td></tr>
+               <tr><td>Specialize In</td><td>${data[0].specialize}</td></tr>
+               <tr><td>School</td><td>${data[0].school_name}</td></tr>
+               <tr><td>address</td><td>${data[0].address}</td></tr>
+               <tr><td>DOB</td><td>${data[0].dob}</td></tr>
+              
+               </table>`;
+            $("#viewFacultyDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+  $(document).ready(function(){
 	
 
 	toastr.options = {
@@ -449,59 +616,110 @@ $(document).ready(function(){
       }
    });
 
-   // Delete record
-   $('#delete_record').click(function(){
+   // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleFacultyDiv").html("");
+      $("#deleteMultipleFacultyModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleFacultyDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+    // Delete record
+   $(document).on('click','#delete_record',function(){
       var deleteids_arr = [];
       // Read all checked checkboxes
       $("input:checkbox[class=delete_check]:checked").each(function () {
          deleteids_arr.push($(this).attr('data-id'));
       });
-
       // Check checkbox checked or not
       if(deleteids_arr.length > 0){
-
-         // Confirm alert
-         var confirmdelete = confirm("Do you really want to Delete records?");
-         if (confirmdelete == true) {
-
-			
+        
+      
             $.ajax({
-               url: '/admission/delete-multiple',
+               url: '/faculty/delete-multiple-faculty',
                type: 'post',
                data: {deleteids_arr: deleteids_arr},
                success: function(response){
+                   $("#deleteMultipleFacultyModal").modal("hide");
 				toastr.error('Record Deleted Successfuly !!')
                   $('#sample_data').DataTable().ajax.reload();
                }
             });
-         } 
+         
       }
    });
 	$(document).on("click",".delBtn",function(){
-		 if(confirm('Are you sure you want to delete this?')){
- const id = $(this).attr('data-id');
- $('.loader').css('display','block');
+		
+ const facultyId = $("#facultyId").val();
+ const schoolId = $("#schoolId").val();
   $.ajax({
-        url: '/admission/delete-admission',
+        url: '/faculty/delete-faculty',
         type: "POST",
         data: {
-          id:id
+          facultyId:facultyId,
+          schoolId:schoolId
         },
         success: function () {
-        $('.loader').css('display','none');
-
+      $("#deleteFacultyModal").modal("hide");
      $('#sample_data').DataTable().ajax.reload();
 	toastr.error('Record Deleted Successfuly !!')
 
         }
     });
-		 }
+	
  
 });
+	
+
+
 	var dataTable = $('#sample_data').DataTable({
 		"processing": true,
 		"serverSide": true,
-		
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
 		"order":[],
 		"ajax":{
 			url:"/faculty/get-faculty",
@@ -594,4 +812,13 @@ $(document).ready(function(){
 	});
 	
 });	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
 </script>
