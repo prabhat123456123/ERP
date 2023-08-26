@@ -4,10 +4,10 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
 
  
 const {
- admitCard
+ leaveTracker
 } = require("../../../controller/admin");
 
-router.get("/admit-card", admitCard);
+router.get("/leave-tracker", leaveTracker);
 
 
 module.exports = router;

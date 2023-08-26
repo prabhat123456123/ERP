@@ -122,10 +122,9 @@ const updateFeedbackById = async (req, res, next) => {
 const addFeedbackById = async (req, res, next) => {
   try {
     
-    const { files, fields } = await formidableUpload(req);
+  
     const data = await new FeedbackManagement().addFeedbackById(
-      files,
-      fields,
+      
       req,
       res
     );

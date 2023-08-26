@@ -6,15 +6,15 @@ const { QueryTypes, Sequelize } = require("sequelize");
 //   casbinEnforcer,
 //   actionLogger,
 // } = require("../../../helper");
-// const {
-//   copyFiles,
-//   getDate,
-//   generateRandomNumber,
-//   addDate,
-// } = require("../../../utils");
+const {
+  copyFiles,
+  getDate,
+  generateRandomNumber,
+  addDate,
+} = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 // const humps = require("humps");
 
 const path = require("path");
@@ -39,7 +39,7 @@ class FeedbackManagement {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,faculty.email FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.name like "%${
+        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.name like "%${
           body.search.value
         }%" OR faculty.email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -59,7 +59,7 @@ class FeedbackManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -186,28 +186,32 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async addFeedbackById(files, fields, req, res) {
+   async addFeedbackById( req, res) {
      try {
-        console.log(fields)
-        console.log(files.student_photo[0].size)
-       const currentTime = getDate("YYYY-MM-DD hh:mm");
-    
+         const currentTime = getDate("YYYY-MM-DD hh:mm");
+console.log(req.body);
+        const uniqueNum = uuidv4();
        
-       
+
         const data = await sequelize.query(
-          "UPDATE `feedback` SET title=?,rate=?,updated_by=?,updated_at=? WHERE id = ?",
+          "INSERT INTO feedback(track_id,student_id,faculty_id,school_id,title,rate,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
           {
             replacements: [
-              fields.title[0],
-              fields.rate[0],
-            
+             
+              uniqueNum,
+              req.body.student_id,
+              req.body.faculty_id,
+              req.body.school_id,
+              req.body.title,
+              req.body.rate,
+             
               "STUDENT",
-              currentTime,
-               fields.feedbackId[0],
+               currentTime,
             ],
-            type: QueryTypes.UPDATE,
+            type: QueryTypes.INSERT,
           }
         );
+      
       
         return true;
       

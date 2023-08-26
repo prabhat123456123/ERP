@@ -118,11 +118,9 @@ const updateComplaintById = async (req, res, next) => {
 
 const addComplaintById = async (req, res, next) => {
   try {
-    
-    const { files, fields } = await formidableUpload(req);
+   
     const data = await new ComplaintManagement().addComplaintById(
-      files,
-      fields,
+     
       req,
       res
     );

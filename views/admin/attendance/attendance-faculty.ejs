@@ -70,8 +70,7 @@
 							<thead>
 								<tr>
 									<th> Name</th>
-									<th> Email</th>
-									<th>Gender</th>
+								
 									<th>Status</th>
 									<th>Check IN</th>
 									<th>Check OUT</th>
@@ -236,13 +235,12 @@ $(document).ready(function(){
 		
 		"order":[],
 		"ajax":{
-			url:"/faculty/get-faculty",
+			url:"/attendance/get-faculty",
 			type:"POST",
 		},
          columns: [
         { data: "name" },
-        { data: "email" },
-        { data: "gender" },
+      
          { data: "attendance_status" },
         { data: "check_in" },
         { data: "check_out" },

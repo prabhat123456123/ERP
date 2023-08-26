@@ -209,63 +209,63 @@
 
 
      
-        $("#feedbackForm").on("submit", async e => {
+      //   $("#feedbackForm").on("submit", async e => {
          
-							e.preventDefault();
-							try {
+		// 					e.preventDefault();
+		// 					try {
 								
-									const formData = new FormData($(`#${e.target.id}`)[0]);
-									e.preventDefault();
-									$.ajax({
-										url: `/feedback/create-feedback`,
-										type: "post",
-										processData: false,
-										contentType: false,
+		// 							const formData = new FormData($(`#${e.target.id}`)[0]);
+		// 							e.preventDefault();
+		// 							$.ajax({
+		// 								url: `/feedback/create-feedback`,
+		// 								type: "post",
+		// 								processData: false,
+		// 								contentType: false,
 										
-										data: formData,
-										dataType: "json",
-                     beforeSend: function() {
-                     $('#loader').removeClass('hidden')
-                     },
-										success: function (data) {
+		// 								data: formData,
+		// 								dataType: "json",
+      //                beforeSend: function() {
+      //                $('#loader').removeClass('hidden')
+      //                },
+		// 								success: function (data) {
                       
                      
-                  if (data) {
-                       const url = '/success.mp3'
-                    const audio = new Audio(url);
-                    audio.play();
-                     Swal.fire({
-                    position: "top-center",
-                    icon: "success",
-                    title: "Application Saved Successfully !!",
-                    showConfirmButton: false,
-                    timer: 2000,
-                  });
-                $("#feedbackForm")[0].reset();
-                  $("#addfeedback-lg").modal("hide");
-                  $('#sample_data').DataTable().ajax.reload();
+      //             if (data) {
+      //                  const url = '/success.mp3'
+      //               const audio = new Audio(url);
+      //               audio.play();
+      //                Swal.fire({
+      //               position: "top-center",
+      //               icon: "success",
+      //               title: "Application Saved Successfully !!",
+      //               showConfirmButton: false,
+      //               timer: 2000,
+      //             });
+      //           $("#feedbackForm")[0].reset();
+      //             $("#addfeedback-lg").modal("hide");
+      //             $('#sample_data').DataTable().ajax.reload();
                 
-                } else {
-                    Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Data Allready Exist !",
-                  });
+      //           } else {
+      //               Swal.fire({
+      //               icon: "error",
+      //               title: "Oops...",
+      //               text: "Data Allready Exist !",
+      //             });
                 
-                }
+      //           }
 										
-										},
-                      complete: function(){
-                      $('#loader').addClass('hidden')
-                      },
-									});
+		// 								},
+      //                 complete: function(){
+      //                 $('#loader').addClass('hidden')
+      //                 },
+		// 							});
 
 								
 
-							} catch (e) {
-								console.error(e)
-							}
-						});
+		// 					} catch (e) {
+		// 						console.error(e)
+		// 					}
+		// 				});
           
 function viewFeedback(facultyId,schoolId) {
     try {
@@ -366,6 +366,7 @@ function viewFeedback(facultyId,schoolId) {
             formDetails += `<form action="/feedback/add-feedback-by-id" id="feedbackForm" method="post">
                                   <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
                                   <input type="hidden"  value="${facultyId}" class="form-control" name="faculty_id">
+                                  <input type="hidden"  value="2" class="form-control" name="student_id">
                                  
                             <div class="row">
                                

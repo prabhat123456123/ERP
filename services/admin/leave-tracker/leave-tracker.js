@@ -31,7 +31,7 @@ const fs = require("fs");
 
 const BASEURL = process.env.BASEURL;
 
-class AcademicManagement {
+class LeaveTrackerManagement {
   constructor() {}
 
   async getAdmission(body) {
@@ -211,5 +211,5 @@ class AcademicManagement {
 }
 
 module.exports = {
-  AcademicManagement,
+  LeaveTrackerManagement,
 };

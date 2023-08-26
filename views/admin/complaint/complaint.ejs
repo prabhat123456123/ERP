@@ -206,63 +206,63 @@
 
 
      
-        $("#complaintForm").on("submit", async e => {
+      //   $("#complaintForm").on("submit", async e => {
          
-							e.preventDefault();
-							try {
+		// 					e.preventDefault();
+		// 					try {
 								
-									const formData = new FormData($(`#${e.target.id}`)[0]);
-									e.preventDefault();
-									$.ajax({
-										url: `/complaint/create-complaint`,
-										type: "post",
-										processData: false,
-										contentType: false,
+		// 							const formData = new FormData($(`#${e.target.id}`)[0]);
+		// 							e.preventDefault();
+		// 							$.ajax({
+		// 								url: `/complaint/create-complaint`,
+		// 								type: "post",
+		// 								processData: false,
+		// 								contentType: false,
 										
-										data: formData,
-										dataType: "json",
-                     beforeSend: function() {
-                     $('#loader').removeClass('hidden')
-                     },
-										success: function (data) {
+		// 								data: formData,
+		// 								dataType: "json",
+      //                beforeSend: function() {
+      //                $('#loader').removeClass('hidden')
+      //                },
+		// 								success: function (data) {
                       
                      
-                  if (data) {
-                       const url = '/success.mp3'
-                    const audio = new Audio(url);
-                    audio.play();
-                     Swal.fire({
-                    position: "top-center",
-                    icon: "success",
-                    title: "Application Saved Successfully !!",
-                    showConfirmButton: false,
-                    timer: 2000,
-                  });
-                $("#complaintForm")[0].reset();
-                  $("#addComplaint-lg").modal("hide");
-                  $('#sample_data').DataTable().ajax.reload();
+      //             if (data) {
+      //                  const url = '/success.mp3'
+      //               const audio = new Audio(url);
+      //               audio.play();
+      //                Swal.fire({
+      //               position: "top-center",
+      //               icon: "success",
+      //               title: "Application Saved Successfully !!",
+      //               showConfirmButton: false,
+      //               timer: 2000,
+      //             });
+      //           $("#complaintForm")[0].reset();
+      //             $("#addComplaint-lg").modal("hide");
+      //             $('#sample_data').DataTable().ajax.reload();
                 
-                } else {
-                    Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Data Allready Exist !",
-                  });
+      //           } else {
+      //               Swal.fire({
+      //               icon: "error",
+      //               title: "Oops...",
+      //               text: "Data Allready Exist !",
+      //             });
                 
-                }
+      //           }
 										
-										},
-                      complete: function(){
-                      $('#loader').addClass('hidden')
-                      },
-									});
+		// 								},
+      //                 complete: function(){
+      //                 $('#loader').addClass('hidden')
+      //                 },
+		// 							});
 
 								
 
-							} catch (e) {
-								console.error(e)
-							}
-						});
+		// 					} catch (e) {
+		// 						console.error(e)
+		// 					}
+		// 				});
                  
                   
                   
@@ -283,18 +283,13 @@ function viewComplaint(studentId,schoolId,classId) {
     console.log(data);
             let formDetails = ``;
             formDetails += `<table class="table table-bordered table-striped"> 
-               
-               <tr><td>Photo</td><td><img src="/uploads/student/${data[0].email}/${data[0].photo}" width="100px"></td></tr>
+             
                <tr><td>Name</td><td>${data[0].name}</td></tr>
-               <tr><td>Email</td><td>${data[0].email}</td></tr>
-               <tr><td>Gender</td><td>${data[0].gender}</td></tr>
-                <tr><td>Father Name</td><td>${data[0].fathers_name}</td></tr>
-               <tr><td>Mother Name</td><td>${data[0].mothers_name}</td></tr>
-               <tr><td>Parent Phone</td><td>${data[0].parent_phone}</td></tr>
-               <tr><td>Class</td><td>${data[0].class_name}</td></tr>
-               <tr><td>School</td><td>${data[0].school_name}</td></tr>
-               <tr><td>address</td><td>${data[0].address}</td></tr>
-               <tr><td>DOB</td><td>${data[0].dob}</td></tr>
+               <tr><td>Class</td><td>${data[0].email}</td></tr>
+               <tr><td>Complaint By (Faculty)</td><td>${data[0].gender}</td></tr>
+                
+               <tr><td>Complaint</td><td>${data[0].school_name}</td></tr>
+               
               
                </table>`;
             $("#viewComplaintDiv").html(formDetails);
@@ -366,6 +361,7 @@ function viewComplaint(studentId,schoolId,classId) {
                                   <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
                                   <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
                                   <input type="hidden" value="${classId}" class="form-control" name="class_id">
+                                  <input type="hidden" value="2" class="form-control" name="faculty_id">
                             <div class="row">
                                
                                  <div class="form-group col-lg-12">

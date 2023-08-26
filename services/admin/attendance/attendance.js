@@ -39,9 +39,9 @@ class AttendanceManagement {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT student.id,class.class_name,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student INNER JOIN student_attendance ON student_attendance.student_id = student.id INNER JOIN class ON class.id = student_attendance.class_id  WHERE name like "%${
+        `SELECT student.id,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student LEFT JOIN student_attendance ON student_attendance.student_id = student.id  WHERE student.name like "%${
           body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
+        }%" OR student.email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
         )} OFFSET ${parseInt(body.start)}`,
         {
@@ -53,15 +53,14 @@ class AttendanceManagement {
       for (let i = 0; i < data.length; i++) {
        
         data[i]["name"] = `${data[i].name}`;
-        data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
+      
         data[i]["attendance_status"] = `${data[i].attendance_status}`;
         data[i]["check_in"] = `${data[i].check_in}`;
         data[i]["check_out"] = `${data[i].check_out}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewAttendance(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-success btn-sm' onclick='viewStudentAttendance(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -117,14 +116,13 @@ async getFaculty(body) {
 
       for (let i = 0; i < data.length; i++) {
         data[i]["name"] = `${data[i].name}`;
-        data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
+      
 data[i]["attendance_status"] = `${data[i].attendance_status}`;
         data[i]["check_in"] = `${data[i].check_in}`;
         data[i]["check_out"] = `${data[i].check_out}`;
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewAttendance(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-success btn-sm' onclick='viewFacultyAttendance(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
        
       }
 

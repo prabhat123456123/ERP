@@ -14,8 +14,8 @@ const {
 } = require("./attendance");
 
 const {
-  admitCard
-} = require("./academic");
+  leaveTracker
+} = require("./leave-tracker");
 
 const {
  viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam
@@ -42,7 +42,7 @@ const {
 } = require("./complaint");
 
 const {
- viewFeedback,getFeedback,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback
+ viewFeedback,getFeedback,updateFeedbackById,addFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback
 } = require("./feedback");
 
 const {
@@ -61,6 +61,6 @@ const {
 module.exports = {
   addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById, financialStudent, financialFaculty, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,
   viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,updateFacultyId,getFeedback,addFeedbackById,
-  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, admitCard,fetchStudentById,updateStudentById,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback,addComplaintById,
+  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, leaveTracker,fetchStudentById,updateStudentById,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback,addComplaintById,
   getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint
 };

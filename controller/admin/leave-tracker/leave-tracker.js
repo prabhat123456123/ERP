@@ -1,16 +1,16 @@
 
 
 // const sequelize = require("../../../config/db");
-const { AcademicManagement } = require("../../../services/admin");
+const { LeaveTrackerManagement } = require("../../../services/admin");
 // const moment = require("moment");
 // const {
 //   serviceSingleDocUploadUtil,
 //   formidableUpload,
 // } = require("../../../utils/upload");
 
-const admitCard = async (req, res, next) => {
+const leaveTracker = async (req, res, next) => {
   try {
-    // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
+    // const allHostel = await new LeaveTrackerManagement().addAdmission(req, res, next);
     return res.render("admin/academic/academic");
   } catch (error) {
     next(error);
@@ -67,6 +67,6 @@ const admitCard = async (req, res, next) => {
 
 
 module.exports = {
-  admitCard
+  leaveTracker
  
 };

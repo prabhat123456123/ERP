@@ -6,12 +6,12 @@ const { QueryTypes, Sequelize } = require("sequelize");
 //   casbinEnforcer,
 //   actionLogger,
 // } = require("../../../helper");
-// const {
-//   copyFiles,
-//   getDate,
-//   generateRandomNumber,
-//   addDate,
-// } = require("../../../utils");
+const {
+  copyFiles,
+  getDate,
+  generateRandomNumber,
+  addDate,
+} = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
 const { v4: uuidv4 } = require("uuid");
@@ -39,7 +39,7 @@ class ComplaintManagement {
 //  console.log(sequelize)
      
          const data = await sequelize.query(
-        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,student.email FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.name like "%${
+        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.name like "%${
           body.search.value
         }%" OR student.email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -58,7 +58,7 @@ class ComplaintManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm editBtn' onclick='addComplaint(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteComplaint(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewComplaint(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm editBtn' onclick='addComplaint(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].id},${data[i].school_id},${data[i].class_id},${data[i].cId})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteComplaint(${data[i].id},${data[i].school_id},${data[i].class_id},${data[i].cId})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewComplaint(${data[i].id},${data[i].school_id},${data[i].class_id},${data[i].cId})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -184,24 +184,28 @@ class ComplaintManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-     async addComplaintById(files, fields, req, res) {
+     async addComplaintById(req, res) {
      try {
-        
+      console.log(req.body);
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
-       
-       
-        const data = await sequelize.query(
-          "UPDATE `complaint` SET description=?,updated_by=?,updated_at=? WHERE id = ?",
+        const uniqueNum = uuidv4();
+         const data = await sequelize.query(
+          "INSERT INTO complaint(track_id,student_id,class_id,school_id,description,faculty_id,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
           {
             replacements: [
-              fields.description[0],
+             
+              uniqueNum,
+              req.body.student_id,
+              req.body.class_id,
+              req.body.school_id,
+              req.body.description,
+              req.body.faculty_id,
             
-              "STUDENT",
-              currentTime,
-               fields.complaint_id[0],
+              "FACULTY",
+               currentTime,
             ],
-            type: QueryTypes.UPDATE,
+            type: QueryTypes.INSERT,
           }
         );
       
