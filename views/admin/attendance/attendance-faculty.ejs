@@ -3,23 +3,7 @@
       <!-- Site wrapper -->
       <div class="wrapper">
          <%- include('../../partials/header') %>
-		  <style>
-      .loading-image {
-        position: absolute;
 		
-        top: 48%;
-        left: 32%;
-        transform: translateY(-50%) translateX(50%);
-      }
-      .loader {
-        display: none;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        position: fixed;
-        z-index: 99999;
-      }
-    </style>
          <!-- =============================================== -->
          <!-- Left side column. contains the sidebar -->
        <%- include('../../partials/sidebar') %>
@@ -28,13 +12,7 @@
          <!-- =============================================== -->
          <!-- Content Wrapper. Contains page content -->
          <div class="content-wrapper">
-			   <div class="loader" id="loader">
-      <img
-        class="loading-image" style="width: 100px;"
-        src="/assets/images/loader.webp"
-        alt="loading.."
-      />
-	   </div>
+			  
             <!-- Content Header (Page header) -->
             <section class="content-header">
                <div class="header-icon">

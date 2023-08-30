@@ -338,7 +338,7 @@ class AdmissionManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteAdmission(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewAdmission(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteAdmission(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewAdmission(${data[i].id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -443,9 +443,9 @@ class AdmissionManagement {
     try {
 
       const studentId = parseInt(body.studentId);
-      const schoolId = parseInt(body.schoolId);
+   
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${studentId} AND school_id = ${schoolId}`,
+        `DELETE FROM student WHERE id = ${studentId}`,
         {
           type: QueryTypes.DELETE,
          
@@ -465,10 +465,9 @@ class AdmissionManagement {
   async fetchStudentById(body) {
     try {
       const studentId = parseInt(body.studentId);
-      const classId = parseInt(body.classId);
-      const schoolId = parseInt(body.schoolId);
+     
      const data = await sequelize.query(
-        `SELECT * FROM student WHERE id = ${studentId} AND class_id = ${classId} AND school_id=${schoolId}`,
+        `SELECT * FROM student WHERE id = ${studentId}`,
         {
           type: QueryTypes.SELECT,
          
@@ -495,10 +494,9 @@ class AdmissionManagement {
    async viewStudentById(body) {
     try {
       const studentId = parseInt(body.studentId);
-      const classId = parseInt(body.classId);
-      const schoolId = parseInt(body.schoolId);
+     
      const data = await sequelize.query(
-        `SELECT student.*,class.class_name,school.school_name FROM student INNER JOIN school ON school.id = student.school_id INNER JOIN class ON class.id = student.class_id WHERE student.id = ${studentId} AND student.class_id = ${classId} AND student.school_id=${schoolId}`,
+        `SELECT student.*,class.class_name,school.school_name FROM student INNER JOIN school ON school.id = student.school_id INNER JOIN class ON class.id = student.class_id WHERE student.id = ${studentId}`,
         {
           type: QueryTypes.SELECT,
          

@@ -436,7 +436,7 @@
                   
 
        
-function viewAdmission(studentId,schoolId,classId) {
+function viewAdmission(studentId) {
     try {
      
       $("#viewStudentDiv").html("");
@@ -444,7 +444,7 @@ function viewAdmission(studentId,schoolId,classId) {
       $.ajax({
          url: `/admission/view-student-byid`,
          type: "post",
-         data:{studentId:studentId,schoolId:schoolId,classId:classId},
+         data:{studentId:studentId},
          dataType: "json",
          cache: false,
          success: function (data) {
@@ -475,7 +475,7 @@ function viewAdmission(studentId,schoolId,classId) {
   }
 
 
-                  function editAdmission(studentId,schoolId,classId) {
+                  function editAdmission(studentId) {
     try {
      
       $("#editStudentDiv").html("");
@@ -483,7 +483,7 @@ function viewAdmission(studentId,schoolId,classId) {
       $.ajax({
          url: `/admission/fetch-student-byid`,
          type: "post",
-         data:{studentId:studentId,schoolId:schoolId,classId:classId},
+         data:{studentId:studentId},
          dataType: "json",
          cache: false,
          success: function (data) {
@@ -494,9 +494,8 @@ function viewAdmission(studentId,schoolId,classId) {
         }
             let formDetails = ``;
             formDetails += `<form action="/admission/update-admission-by-id" method="post" enctype="multipart/form-data">
-                                  <input type="hidden"  value="${schoolId}" class="form-control" name="school_id">
+                             
                                   <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
-                                  <input type="hidden" value="${classId}" class="form-control" name="class_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
@@ -575,7 +574,7 @@ function viewAdmission(studentId,schoolId,classId) {
     }
   }
   
-   function deleteAdmission(studentId,schoolId,classId) {
+   function deleteAdmission(studentId) {
     try {
      
       $("#deleteStudentDiv").html("");
@@ -585,8 +584,7 @@ function viewAdmission(studentId,schoolId,classId) {
             let formDetails = ``;
             formDetails += `
                     <input type="hidden" class="form-control" name="studentId" id="studentId" value="${studentId}">
-                    <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
-                    <input type="hidden" class="form-control" name="classId" id="classId" value="${classId}">
+                   
                     
                    <div class="col-md-12">
                     Are You Sure. ?
@@ -704,13 +702,12 @@ $(document).ready(function(){
 	$(document).on("click",".delBtn",function(){
 		
  const studentId = $("#studentId").val();
- const schoolId = $("#schoolId").val();
   $.ajax({
         url: '/admission/delete-admission',
         type: "POST",
         data: {
           studentId:studentId,
-          schoolId:schoolId
+        
         },
         success: function () {
       $("#deleteStudentModal").modal("hide");

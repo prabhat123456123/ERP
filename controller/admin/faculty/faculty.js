@@ -65,8 +65,8 @@ const deleteFacultyData = async (req, res, next) => {
  
     const data = await new FacultyManagement().deleteFacultyData(
 
-      req,
-      res
+      req.body
+    
     );
     return res.send(data);
   } catch (error) {
@@ -116,18 +116,6 @@ const viewFacultyById = async (req, res, next) => {
 
 
 
-const updateFacultyById = async (req, res, next) => {
-  try {
-    const data = await new FacultyManagement().updateFacultyById(req.body);
-   
-    //  console.log(data)
-    return res.send(data);
-  } catch (error) {
-    next(error);
-  }
-};
-
-
 const bulkCreateFaculty = async (req, res, next) => {
   try {
      const { files, fields } = await formidableUpload(req);
@@ -145,20 +133,20 @@ const bulkCreateFaculty = async (req, res, next) => {
   }
 };
 
-const updateFacultyId = async (req, res, next) => {
+const updateFacultyById = async (req, res, next) => {
   try {
-    
+    console.log("tetetetetet######");
     const { files, fields } = await formidableUpload(req);
-    const data = await new FacultyManagement().updateFacultyId(
+    const data = await new FacultyManagement().updateFacultyById(
       files,
       fields,
       req,
       res
     );
    
-    req.flash("success_msg", "Student Records Updated Successfully !");
+    req.flash("success_msg", " Faculty Records Updated Successfully !");
       
-       return res.redirect("/admission/admission");
+       return res.redirect("/faculty/view-faculty");
   
   } catch (error) {
     next(error);
@@ -169,6 +157,6 @@ const updateFacultyId = async (req, res, next) => {
 
 
 module.exports = {
- viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFacultyId
+ viewFaculty,createFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty
  
 };

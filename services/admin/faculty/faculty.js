@@ -63,9 +63,9 @@ class FacultyManagement {
         let fileName =
           new Date().toISOString().replace(/:/g, "-") +
           "-" +
-          files.photo[0].originalFilename.toString().replace(/\s/g, "-");
+          files.faculty_photo[0].originalFilename.toString().replace(/\s/g, "-");
 
-        copyFiles(files.photo[0].filepath, `${dir}/${fileName}`, dir);
+        copyFiles(files.faculty_photo[0].filepath, `${dir}/${fileName}`, dir);
 
         const url = `${fileName}`;
 
@@ -132,7 +132,7 @@ class FacultyManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFaculty(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFaculty(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFaculty(${data[i].id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -235,7 +235,8 @@ class FacultyManagement {
 
     async deleteFacultyData(body) {
     try {
-
+console.log("$$$$$$$$$$$$$$$$$");
+console.log(body.facultyId);
       const id = parseInt(body.facultyId);
      const data = await sequelize.query(
         `DELETE FROM faculty WHERE id = ${id}`,
@@ -284,9 +285,8 @@ class FacultyManagement {
     try {
       const facultyId = parseInt(body.facultyId);
       
-      const schoolId = parseInt(body.schoolId);
      const data = await sequelize.query(
-        `SELECT * FROM faculty WHERE id = ${facultyId} AND school_id=${schoolId}`,
+        `SELECT * FROM faculty WHERE id = ${facultyId}`,
         {
           type: QueryTypes.SELECT,
          
@@ -313,9 +313,8 @@ class FacultyManagement {
    async viewFacultyById(body) {
     try {
       const facultyId = parseInt(body.facultyId);
-      const schoolId = parseInt(body.schoolId);
      const data = await sequelize.query(
-        `SELECT faculty.*,school.school_name FROM faculty INNER JOIN school ON school.id = faculty.school_id WHERE faculty.id = ${facultyId} AND faculty.school_id=${schoolId}`,
+        `SELECT faculty.*,school.school_name FROM faculty INNER JOIN school ON school.id = faculty.school_id WHERE faculty.id = ${facultyId}`,
         {
           type: QueryTypes.SELECT,
          
@@ -335,33 +334,7 @@ class FacultyManagement {
   }
    
  
-   async updateFacultyById(body) {
-    try {
-
-      const id = parseInt(body.id);
-      const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-          return data;
-
-    
-    } catch (error) {
-      if (error.statusCode) {
-        console.log("hello");
-        throw new ErrorHandler(error.statusCode, error.message);
-      }
-      throw new ErrorHandler(SERVER_ERROR, error);
-    }
-  }
-  async updateFacultyId(files, fields, req, res) {
+  async updateFacultyById(files, fields, req, res) {
      try {
         console.log(fields)
         console.log(files.faculty_photo[0].size)

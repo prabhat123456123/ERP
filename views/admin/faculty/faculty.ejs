@@ -151,7 +151,7 @@
                                
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
-                                    <input type="file" id="photo" class="form-control" name="photo">
+                                    <input type="file" id="faculty_photo" class="form-control" name="faculty_photo">
                                 </div>
                             </div>
                             <div align="center">
@@ -365,21 +365,20 @@
 								console.error(e)
 							}
 						});
-    function editFaculty(facultyId,schoolId) {
+    function editFaculty(facultyId) {
     try {
       $("#editFacultyDiv").html("");
       $("#editFacultyModal").modal("toggle");
       $.ajax({
          url: `/faculty/fetch-faculty-byid`,
          type: "post",
-         data:{facultyId:facultyId,schoolId:schoolId},
+         data:{facultyId:facultyId},
          dataType: "json",
          cache: false,
          success: function (data) {
-          alert("teteet")
             let formDetails = ``;
-            formDetails += `  <form action="/faculty/update-faculty-by-id">
-                                  <input type="hidden" id="school_id" value="<%= user[0].id %>" class="form-control" name="school_id">
+            formDetails += `  <form action="/faculty/update-faculty-by-id" method="post" enctype="multipart/form-data">
+                                  <input type="hidden" id="faculty_id" value="${facultyId}" class="form-control" name="faculty_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
@@ -391,7 +390,7 @@
                                 </div>
                                    <div class="form-group col-lg-6">
                                     <label>Mother Name</label>
-                                    <input type="text" id="mother_name"  value="${data.data[0].mother_name}" class="form-control" name="mother_name">
+                                    <input type="text" id="mother_name"  value="${data.data[0].mothers_name}" class="form-control" name="mother_name">
                                 </div>
                                
                              
@@ -411,8 +410,8 @@
                                     <label>Gender</label>
                                    <select name="gender" id="gender" class="form-control">
                                     <option value="">Please Select</option>
-                                    <option value="Male"${data.data[0].class_id=="Male"?'selected':""}>Male</option>
-                                    <option value="Female"${data.data[0].class_id=="Female"?'selected':""}>Female</option>
+                                    <option value="Male"${data.data[0].gender=="Male"?'selected':""}>Male</option>
+                                    <option value="Female"${data.data[0].gender=="Female"?'selected':""}>Female</option>
                                    </select>
                                 </div>
                                 <div class="form-group col-lg-6">
@@ -437,13 +436,13 @@
                                 <div class="form-group col-lg-6">
                                     <label>Upload Photo</label>
                                      <img src="/uploads/faculty/${data.data[0].email}/${data.data[0].photo}" width="100px">
-                                    <input type="file" id="photo" class="form-control" name="photo">
+                                    <input type="file" id="faculty_photo" class="form-control" name="faculty_photo">
                                 </div>
                             </div>
                             <div align="center">
                                <button class="	btn btn-success waves-effect waves-light "
 															data-callback="onSubmit" id="saveFaculty" data-action="submit">
-															Register
+															Update
 														</button>
                             </div>
                         </form>`;
@@ -455,7 +454,7 @@
       console.error(err);
     }
   }
-   function deleteFaculty(facultyId,schoolId) {
+   function deleteFaculty(facultyId) {
     try {
       $("#deleteFacultyDiv").html("");
       $("#deleteFacultyModal").modal("toggle");
@@ -464,7 +463,6 @@
             let formDetails = ``;
             formDetails += `
                     <input type="hidden" class="form-control" name="facultyId" id="facultyId" value="${facultyId}">
-                    <input type="hidden" class="form-control" name="schoolId" id="schoolId" value="${schoolId}">
                     
                    <div class="col-md-12">
                     Are You Sure. ?
@@ -546,7 +544,7 @@
                   
 
        
-function viewFaculty(facultyId,schoolId) {
+function viewFaculty(facultyId) {
     try {
      
       $("#viewFacultyDiv").html("");
@@ -554,7 +552,7 @@ function viewFaculty(facultyId,schoolId) {
       $.ajax({
          url: `/faculty/view-faculty-byid`,
          type: "post",
-         data:{facultyId:facultyId,schoolId:schoolId},
+         data:{facultyId:facultyId},
          dataType: "json",
          cache: false,
          success: function (data) {
@@ -679,15 +677,14 @@ function viewFaculty(facultyId,schoolId) {
 	$(document).on("click",".delBtn",function(){
 		
  const facultyId = $("#facultyId").val();
- const schoolId = $("#schoolId").val();
+ alert(facultyId)
   $.ajax({
         url: '/faculty/delete-faculty',
         type: "POST",
         data: {
           facultyId:facultyId,
-          schoolId:schoolId
         },
-        success: function () {
+        success: function (data) {
       $("#deleteFacultyModal").modal("hide");
      $('#sample_data').DataTable().ajax.reload();
 	toastr.error('Record Deleted Successfuly !!')

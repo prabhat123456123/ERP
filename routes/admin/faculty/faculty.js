@@ -4,7 +4,7 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
 
  
 const {
-  viewFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFacultyId
+  viewFaculty,getFacultyData,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty
  
 } = require("../../../controller/admin");
 
@@ -18,7 +18,7 @@ router.post("/delete-multiple-faculty",isAuthenticatedUser(), deleteMultipleFacu
 
 
 router.post("/update-faculty-by-id",isAuthenticatedUser(), updateFacultyById);
-router.post("/update-faculty-id",isAuthenticatedUser(), updateFacultyId);
+// router.post("/update-faculty-id",isAuthenticatedUser(), updateFacultyId);
 router.post("/fetch-faculty-byid",isAuthenticatedUser(), fetchFacultyById);
 router.post("/view-faculty-byid",isAuthenticatedUser(), viewFacultyById);
 router.post("/bulk-create-faculty", isAuthenticatedUser(),bulkCreateFaculty);

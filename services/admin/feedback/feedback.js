@@ -51,7 +51,7 @@ class FeedbackManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].fId}' class='delete_check'>`;
       
         data[i]["name"] = `${data[i].name}`;
         data[i]["title"] = `${data[i].title}`;
@@ -59,7 +59,7 @@ class FeedbackManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFeedback(${data[i].id},${data[i].school_id},${data[i].fId})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].id},${data[i].school_id})' data-id='${data[i].fId}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].fId})' data-id='${data[i].fId}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteFeedback(${data[i].fId})' data-id='${data[i].fId}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewFeedback(${data[i].fId})' data-id='${data[i].fId}' > View </button> `;
        
       }
 
@@ -150,10 +150,9 @@ class FeedbackManagement {
     }
   }
  
-   async updateFeedbackById(files, fields, req, res) {
+   async updateFeedbackById( req, res) {
      try {
-        console.log(fields)
-        console.log(files.student_photo[0].size)
+     
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
        
@@ -162,12 +161,12 @@ class FeedbackManagement {
           "UPDATE `feedback` SET title=?,rate=?,updated_by=?,updated_at=? WHERE id = ?",
           {
             replacements: [
-              fields.title[0],
-              fields.rate[0],
+              req.body.feedback,
+              req.body.rate,
             
               "STUDENT",
               currentTime,
-               fields.feedbackId[0],
+               req.body.feedback_id,
             ],
             type: QueryTypes.UPDATE,
           }
@@ -194,14 +193,13 @@ console.log(req.body);
        
 
         const data = await sequelize.query(
-          "INSERT INTO feedback(track_id,student_id,faculty_id,school_id,title,rate,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
+          "INSERT INTO feedback(track_id,student_id,faculty_id,title,rate,created_by,created_at) VALUES (?,?,?,?,?,?,?)",
           {
             replacements: [
              
               uniqueNum,
               req.body.student_id,
               req.body.faculty_id,
-              req.body.school_id,
               req.body.title,
               req.body.rate,
              
@@ -286,14 +284,8 @@ console.log(req.body);
          
         }
       );
-       const classes = await sequelize.query(
-        `SELECT * FROM class`,
-        {
-          type: QueryTypes.SELECT,
-         
-        }
-        );
-          return {data,classes};
+      
+          return data;
 
     
     } catch (error) {
@@ -309,7 +301,7 @@ console.log(req.body);
       const feedbackId = parseInt(body.feedbackId);
       
      const data = await sequelize.query(
-        `SELECT feedback.*,class.class_name,faculty.name as fname FROM feedback INNER JOIN student ON student.id = feedback.student_id INNER JOIN faculty ON faculty.id = feedback.faculty_id INNER JOIN class ON class.id = feedback.class_id WHERE feedback.id = ${feedbackId}`,
+        `SELECT feedback.title,feedback.rate,class.class_name,faculty.name as fname,student.name as sname FROM feedback INNER JOIN student ON student.id = feedback.student_id INNER JOIN faculty ON faculty.id = feedback.faculty_id INNER JOIN class ON class.id = student.class_id WHERE feedback.id = ${feedbackId}`,
         {
           type: QueryTypes.SELECT,
          
