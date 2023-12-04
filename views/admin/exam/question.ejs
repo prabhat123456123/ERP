@@ -1,0 +1,691 @@
+<%- include('../../partials/top-bar') %>
+
+
+      <!-- Site wrapper -->
+      <div class="wrapper">
+         <%- include('../../partials/header') %>
+		
+         <!-- =============================================== -->
+         <!-- Left side column. contains the sidebar -->
+       <%- include('../../partials/sidebar') %>
+	
+   
+         <!-- =============================================== -->
+         <!-- Content Wrapper. Contains page content -->
+         <div class="content-wrapper">
+			   
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="header-icon">
+                  <i class="fa fa-dashboard"></i>
+               </div>
+               <div class="header-title">
+                  <h1>SMART SCHOOL Dashboard</h1>
+                  <small>Very detailed & featured admin.</small>
+               </div>
+            </section>
+			
+            <!-- Main content -->
+            <section class="content">
+          
+			<div class="panel panel-bd lobidrag">
+                        <div class="panel-heading">
+                           <div class="btn-group" id="buttonexport">
+                              <a href="#">
+                                 <h4>All Question</h4>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="panel-body">
+                            <%- include('../../partials/message') %>
+                            <% if(user[0].role==="school"){ %>
+					 <div class="row"> 
+ <div class="col-md-6 text-left">
+								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
+
+               
+				
+            </div>
+           
+            <div class="col-md-6 text-right">
+ 
+                                 <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addQuestion-lg"><i class="fa fa-plus"></i> Add New</a>  
+                                 <a href="#" class="btn btn-add" data-toggle="modal" data-target="#bulkQuestionModal"><i class="fa fa-plus"></i> Bulk Create</a>  
+                                 
+                             
+            </div>
+			<br>
+        </div>
+
+        <% } %>
+		<br>
+
+					<div class="table-responsive">
+						
+						<table id="sample_data" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									<th></th>
+									<th>Exam Name</th>
+									<th>Question</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		
+            </section>
+		
+
+            <!-- /.content -->
+         </div>
+         <!-- /.content-wrapper -->
+        <%- include('../../partials/footer') %>
+      </div>
+	 <!-- Modal1 -->
+               <div class="modal fade" id="addQuestion-lg" tabindex="-1" role="dialog">
+                  <%- include('../../partials/loader') %>
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Add New Question</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="questionForm">
+                                  <input type="hidden" id="exam_id" value="<%= examId %>" class="form-control" name="exam_id" >
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Question</label>
+                                     <textarea id="question_title" placeholder="question" rows="5" class="form-control" required name="question_title"></textarea>
+                                </div>
+                                 
+                                 <div class="form-group col-lg-6">
+                                    <label>Option 1</label>
+                                    <input type="text" id="option_one" class="form-control" name="option_one" >
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 2</label>
+                                    <input type="text" id="option_two" class="form-control" name="option_two">
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 3</label>
+                                    <input type="text" id="option_three" class="form-control" name="option_three" >
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 4</label>
+                                    <input type="text" id="option_four" class="form-control" name="option_four">
+                                </div>
+                                
+                                <div class="form-group col-lg-6">
+                                    <label>Option Image 1</label>
+                                    <input type="file" id="option_image_one" class="form-control" name="option_image_one">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 2</label>
+                                    <input type="file" id="option_image_two" class="form-control" name="option_image_two" >
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 3</label>
+                                    <input type="file" id="option_image_three" class="form-control" name="option_image_three" >
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 4</label>
+                                    <input type="file" id="option_image_four" class="form-control" name="option_image_four" >
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Right option</label>
+                                    <input type="text" id="right_option" class="form-control" name="right_option" required>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Right Marks</label>
+                                    <input type="text" id="right_marks" class="form-control" name="right_marks" required>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Wrong Marks</label>
+                                    <input type="text" id="wrong_marks" class="form-control" name="wrong_marks" required>
+                                </div>
+                                 
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveStudent" data-action="submit">
+															Create
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                 <div class="modal fade" id="editQuestionModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Edit Question Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="editQuestionDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> View Question Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewQuestionDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+               
+                <div class="modal fade" id="deleteQuestionModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Question</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteQuestionDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="deleteMultipleQuestionModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Question</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteMultipleQuestionDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+      <!-- /.wrapper -->
+      <!-- Start Core Plugins
+         
+         =====================================================================-->
+   <%- include('../../partials/footer-script') %>
+
+   <script type="text/javascript" language="javascript">
+
+
+     
+        $("#questionForm").on("submit", async e => {
+         
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/exam/create-question`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                     
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Application Saved Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                $("#questionForm")[0].reset();
+                  $("#addQuestion-lg").modal("hide");
+                  $('#sample_data').DataTable().ajax.reload();
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+                 
+                
+                  
+
+       
+function viewQuestion(questionId) {
+    try {
+     
+      $("#viewQuestionDiv").html("");
+      $("#viewQuestionModal").modal("toggle");
+      $.ajax({
+         url: `/exam/view-question-byid`,
+         type: "post",
+         data:{questionId:questionId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+    console.log(data);
+    let img1 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_one}" width="100px">`;
+    let img2 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_two}" width="100px">`;
+    let img3 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_three}" width="100px">`;
+    let img4 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_four}" width="100px">`;
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               
+                <tr><td>Question</td><td>${data[0].question_title}</td></tr>
+               <tr><td>Option 1</td><td>${data[0].option_one==null?img1 : data[0].option_one}</td></tr>
+               <tr><td>Option 2</td><td>${data[0].option_two==null?img2 : data[0].option_two}</td></tr>
+               <tr><td>Option 3</td><td>${data[0].option_three==null?img3 : data[0].option_three}</td></tr>
+               <tr><td>Option 4</td><td>${data[0].option_four==null?img4 : data[0].option_four}</td></tr>
+              
+               <tr><td>Right option</td><td>${data[0].right_option}</td></tr>
+               <tr><td>Right marks</td><td>${data[0].right_marks}</td></tr>
+                <tr><td>Wrong marks</td><td>${data[0].wrong_marks}</td></tr>
+              
+              
+               </table>`;
+            $("#viewQuestionDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+                  function editQuestion(questionId) {
+    try {
+     
+      $("#editQuestionDiv").html("");
+      $("#editQuestionModal").modal("toggle");
+      $.ajax({
+         url: `/exam/fetch-question-byid`,
+         type: "post",
+         data:{questionId:questionId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+      
+            let formDetails = ``;
+            formDetails += `<form action="/exam/update-question-by-id" method="post" enctype="multipart/form-data">
+                             
+                                  <input type="hidden"  value="${data[0].exam_id}" class="form-control" name="examId">
+                                  <input type="hidden"  value="${questionId}" class="form-control" name="questionId">
+                           <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Question</label>
+                                     <textarea id="question" placeholder="question_title" rows="5" class="form-control" required name="question_title">${data[0].question_title}</textarea>
+                                </div>
+                                 
+                                 <div class="form-group col-lg-6">
+                                    <label>Option 1</label>
+                                    <input type="text" id="option_one" value="${data[0].option_one}" class="form-control" name="option_one" >
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 2</label>
+                                    <input type="text" id="option_two" class="form-control" value="${data[0].option_two}" name="option_two">
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 3</label>
+                                    <input type="text" id="option_three" class="form-control" value="${data[0].option_three}" name="option_three" >
+                                </div>
+                                   <div class="form-group col-lg-6">
+                                    <label>Option 4</label>
+                                    <input type="text" id="option_four" value="${data[0].option_four}" class="form-control" name="option_four">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Right option</label>
+                                    <input type="text" id="right_option" value="${data[0].right_option}" class="form-control" name="right_option" required>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Right Marks</label>
+                                    <input type="text" id="right_marks" value="${data[0].right_marks}" class="form-control" name="right_marks" required>
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Wrong Marks</label>
+                                    <input type="text" id="wrong_marks" value="${data[0].wrong_marks}" class="form-control" name="wrong_marks" required>
+                                </div>
+                                 
+                              
+                              
+                                <div class="form-group col-lg-6">
+                                    <label>Option Image 1</label>
+                                     <img src="/uploads/exam/${data[0].id}/${data[0].option_image_one}" width="100px">
+                                    <input type="file" id="option_image_one" class="form-control" name="option_image_one">
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 2</label>
+                                     <img src="/uploads/exam/${data[0].id}/${data[0].option_image_two}" width="100px">
+                                    <input type="file" id="option_image_two" class="form-control" name="option_image_two" >
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 3</label>
+                                     <img src="/uploads/exam/${data[0].id}/${data[0].option_image_three}" width="100px">
+                                    <input type="file" id="option_image_three" class="form-control" name="option_image_three" >
+                                </div>
+                                 <div class="form-group col-lg-6">
+                                    <label>Option Image 4</label>
+                                     <img src="/uploads/exam/${data[0].id}/${data[0].option_image_four}" width="100px">
+                                    <input type="file" id="option_image_four" class="form-control" name="option_image_four" >
+                                </div>
+                            </div>
+                            <div align="center">
+                               <input type="submit" class="btn btn-success"
+															value="Update">
+															
+														
+                            </div>
+                        </form>`;
+            $("#editQuestionDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
+   function deleteQuestion(questionId) {
+    try {
+     
+      $("#deleteQuestionDiv").html("");
+      $("#deleteQuestionModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                    <input type="hidden" class="form-control" name="questionId" id="questionId" value="${questionId}">
+                   
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary delBtn waves-effect waves-light"
+                       id="register"
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 </form> `;
+            $("#deleteQuestionDiv").html(formDetails);
+          
+       
+    } catch (err) {
+      console.error(err);
+    }
+  }
+    
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+     // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleQuestionDiv").html("");
+      $("#deleteMultipleQuestionModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleQuestionDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+
+   // Delete record
+   $(document).on('click','#delete_record',function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+        
+      
+            $.ajax({
+               url: '/exam/delete-multiple-question',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               success: function(response){
+                   $("#deleteMultipleQuestionModal").modal("hide");
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               }
+            });
+         
+      }
+   });
+	$(document).on("click",".delBtn",function(){
+		
+ const questionId = $("#questionId").val();
+  $.ajax({
+        url: '/exam/delete-question',
+        type: "POST",
+        data: {
+          questionId:questionId,
+        
+        },
+        success: function () {
+      $("#deleteQuestionModal").modal("hide");
+     $('#sample_data').DataTable().ajax.reload();
+	toastr.error('Record Deleted Successfuly !!')
+
+        }
+    });
+	
+ 
+});
+	
+var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/exam/get-question",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "exam" },
+        { data: "question" },
+       
+        { data: "action" },
+	],
+		createdRow:function(row, data, rowIndex)
+		{
+			$.each($('td', row), function(colIndex){
+				if(colIndex == 1)
+				{
+					$(this).attr('data-name', 'question');
+					$(this).attr('class', 'question');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				
+			});
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.question',
+		url:'/admission/update-admission',
+		title:'Question',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+				toastr.success('Record Updated Successfuly !!')
+
+		}
+		
+	});
+
+	
+
+  
+	
+});	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
+</script>

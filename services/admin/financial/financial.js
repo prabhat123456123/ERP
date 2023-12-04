@@ -33,13 +33,52 @@ const BASEURL = process.env.BASEURL;
 
 class FinancialManagement {
   constructor() {}
-
-  async getAdmission(body) {
+  async getClass(req,res) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT * FROM class`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+    
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+    async getFeeDetails(req,res) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT * FROM student_financial where student_id = ?`,
+         {
+           replacements: [req.params.studentId],
+          type: QueryTypes.SELECT,
+        }
+      );
+    
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getStudentFinancial(body) {
+    try {
+     
+       const data = await sequelize.query(
+        `SELECT id,class_id,school_id,name,email,fathers_name FROM student WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -53,12 +92,12 @@ class FinancialManagement {
       for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
+        data[i]["fathername"] = `${data[i].fathers_name}`;
         data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<a href="/financial/view-student-fee-details/${data[i].id}" class='btn btn-success btn-sm'  data-id='${data[i].id}'> View Fee Details </a> `;
        
       }
 
@@ -96,60 +135,60 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async updateAdmission(body) {
+     async getFacultyFinancial(body) {
     try {
- console.log(body)
-      let id = parseInt(body.pk)
-
-      if (body.name === "name") {
-         const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE id = ${id}`,
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE name like "%${
+          body.search.value
+        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
+          body.length
+        )} OFFSET ${parseInt(body.start)}`,
         {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
+          type: QueryTypes.SELECT,
         }
-        );
-          return data;
-      }
-       if (body.name == "email") {
-         const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
-       if (body.name == "gender") {
-         const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
+      );
       
+
+      for (let i = 0; i < data.length; i++) {
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["name"] = `${data[i].name}`;
+        data[i]["email"] = `${data[i].email}`;
+        data[i]["gender"] = `${data[i].gender}`;
+
+        data[i][
+          "action"
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteAdmission(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewAdmission(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+       
+      }
+
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+    async countFaculty(body) {
+    try {
+//  console.log(sequelize)
+     
+       const data = await sequelize.query(
+        `SELECT * FROM faculty`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
       
 
      
 
 
-    
+      return data;
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -158,55 +197,6 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-
-    async deleteAdmission(body) {
-    try {
-
-      const id = parseInt(body.id);
-     const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${id}`,
-        {
-          type: QueryTypes.DELETE,
-         
-        }
-        );
-          return data;
-
-    
-    } catch (error) {
-      if (error.statusCode) {
-        console.log("hello");
-        throw new ErrorHandler(error.statusCode, error.message);
-      }
-      throw new ErrorHandler(SERVER_ERROR, error);
-    }
-  }
-    async deleteMultiple(body) {
-    try {
-
-      let ids = body.deleteids_arr;
-      for (let index = 0; index < ids.length; index++) {
-     
-     const data = await sequelize.query(
-        `DELETE FROM student WHERE id = (${ids[index]})`,
-        {
-          type: QueryTypes.DELETE,
-         
-        }
-        );
-        }
-          return true;
-
-    
-    } catch (error) {
-      if (error.statusCode) {
-        console.log("hello");
-        throw new ErrorHandler(error.statusCode, error.message);
-      }
-      throw new ErrorHandler(SERVER_ERROR, error);
-    }
-  }
-  
  
 }
 

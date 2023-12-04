@@ -7,17 +7,72 @@ const { FinancialManagement } = require("../../../services/admin");
 // } = require("../../../utils/upload");
 
 
-const financialStudent = async (req, res, next) => {
+const addStudentFinancial = async (req, res, next) => {
   try {
-     return res.render("admin/financial/financial-student");
+      const data = await new FinancialManagement().getClass(req, res);
+     return res.render("admin/financial/financial-student",{data:data});
 
   } catch (error) {
     next(error);
   }
 };
-const financialFaculty = async (req, res, next) => {
+const getStudentFinancial = async (req, res, next) => {
   try {
-        return res.render("admin/financial/financial-faculty");
+
+        const adm = await new FinancialManagement().getStudentFinancial(req.body);
+     const count = await new FinancialManagement().countStudent(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+
+  } catch (error) {
+    next(error);
+  }
+};
+const addFacultyFinancial = async (req, res, next) => {
+  try {
+      const data = await new FinancialManagement().getClass(req, res);
+     return res.render("admin/financial/financial-student",{data:data});
+
+  } catch (error) {
+    next(error);
+  }
+};
+const getFacultyFinancial = async (req, res, next) => {
+  try {
+        const adm = await new FinancialManagement().getFacultyFinancial(req.body);
+     const count = await new FinancialManagement().countFaculty(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+
+  } catch (error) {
+    next(error);
+  }
+};
+const viewStudentFeeDetails = async (req, res, next) => {
+  try {
+      const data = await new FinancialManagement().getFeeDetails(req, res);
+
+     return res.render("admin/financial/view-student-fee-details",{data:data});
+
+  } catch (error) {
+    next(error);
+  }
+};
+const viewFacultyFeeDetails = async (req, res, next) => {
+  try {
+        return res.render("admin/financial/view-faculty-fee-details");
 
   } catch (error) {
     next(error);
@@ -28,6 +83,6 @@ const financialFaculty = async (req, res, next) => {
 
 
 module.exports = {
- financialStudent,financialFaculty
+addStudentFinancial,getStudentFinancial,addFacultyFinancial,getFacultyFinancial,viewStudentFeeDetails,viewFacultyFeeDetails
  
 };

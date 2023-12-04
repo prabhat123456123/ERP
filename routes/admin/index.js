@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 
 const { admission } = require("./admission");
+const { classes } = require("./classes");
+const { subject } = require("./subject");
 const { auth } = require("./auth");
 const { exam } = require("./exam");
 const { financial } = require("./financial");
@@ -19,6 +21,8 @@ const { calender } = require("./calender");
 
 app.use("/", auth);
 app.use("/admission", admission);
+app.use("/classes", classes);
+app.use("/subject", subject);
 app.use("/exam", exam);
 app.use("/financial", financial);
 app.use("/leave", leaveTracker);

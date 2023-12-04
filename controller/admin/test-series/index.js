@@ -1,9 +1,9 @@
 let {
-   onlineTest,practiceTest
+   onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPrevQuestion,getNextQuestion,getPracticeQuestion,getQuizQuestion,submitExam
  
 } = require("./test-series");
 
 module.exports = {
-  onlineTest,practiceTest
+  onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPracticeQuestion,getPrevQuestion,getNextQuestion,getQuizQuestion,submitExam
  
 };

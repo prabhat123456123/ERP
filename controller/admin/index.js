@@ -5,6 +5,16 @@ const {
 } = require("./admission");
 
 const {
+addClasses,getClasses,updateClassesById,fetchClassesById,viewClassesById,updateClasses,deleteClasses,deleteMultipleClasses,createClasses
+ 
+} = require("./classes");
+
+const {
+addSubject,getSubject,updateSubjectById,fetchSubjectById,viewSubjectById,updateSubject,deleteSubject,deleteMultipleSubject,createSubject
+ 
+} = require("./subject");
+
+const {
   login,register,createSchool,postLogin,logout
  
 } = require("./auth");
@@ -18,11 +28,12 @@ const {
 } = require("./leave-tracker");
 
 const {
- viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam
+  viewExam, getExam, updateExamById, fetchExamById, viewExamById, examWiseQuestion, updateExam, deleteExam, deleteMultipleExam, createExam
+  ,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks
 } = require("./exam");
 
 const {
- financialStudent,financialFaculty
+addStudentFinancial,getStudentFinancial,addFacultyFinancial,getFacultyFinancial,viewStudentFeeDetails,viewFacultyFeeDetails,
 } = require("./financial");
 
 const {
@@ -54,13 +65,13 @@ const {
 } = require("./report");
 
 const {
-  onlineTest,practiceTest
+  onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPrevQuestion,getNextQuestion,getPracticeQuestion,getQuizQuestion,submitExam
  
 } = require("./test-series");
 
 module.exports = {
-  addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById, financialStudent, financialFaculty, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,getStudentLeave,updateStudentLeaveById,fetchStudentLeaveById,viewStudentLeaveById,updateStudentLeave,deleteStudentLeave,deleteStudentMultipleLeave,createStudentLeave,getFacultyLeave,updateFacultyLeaveById,fetchFacultyLeaveById,viewFacultyLeaveById,updateFacultyLeave,deleteFacultyLeave,deleteFacultyMultipleLeave,createFacultyLeave,
-  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,getFeedback,addFeedbackById,
-  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest, practiceTest, leaveStudentTracker,leaveFacultyTracker,fetchStudentById,updateStudentById,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback,addComplaintById,
-  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData,getExam,updateExamById,fetchExamById,viewExamById,updateExamId,updateExam,deleteExam,deleteMultipleExam,createExam,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint
+  addAdmission, attendanceStudent, attendanceFaculty,getComplaint, reportStudent,reportFaculty,viewStudentById,addStudentFinancial,getStudentFinancial,addFacultyFinancial,getFacultyFinancial,viewStudentFeeDetails,viewFacultyFeeDetails, viewCalender,updateFacultyData,deleteFacultyData,deleteMultipleFacultyData,getStudentLeave,updateStudentLeaveById,fetchStudentLeaveById,viewStudentLeaveById,updateStudentLeave,deleteStudentLeave,deleteStudentMultipleLeave,createStudentLeave,getFacultyLeave,updateFacultyLeaveById,fetchFacultyLeaveById,viewFacultyLeaveById,updateFacultyLeave,deleteFacultyLeave,deleteFacultyMultipleLeave,createFacultyLeave,
+  viewHoliday, viewComplaint, viewDownload, viewExam, viewFaculty, viewFeedback,postLogin, login, register, getAdmission,createSchool,createStudent,bulkCreateStudent,exportExcel,exportPdf,getFeedback,addFeedbackById,viewExplaination,getQuestionExamWise,
+  updateAdmission, deleteAdmission,logout, deleteMultiple, onlineTest,FullLengthTest,QuizTest,PracticeTest, leaveStudentTracker,leaveFacultyTracker,fetchStudentById,updateStudentById,createFaculty,updateFacultyById,fetchFacultyById,viewFacultyById,bulkCreateFaculty,updateFeedbackById,fetchFeedbackById,viewFeedbackById,deleteFeedback,deleteMultipleFeedback,createFeedback,addComplaintById,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,getFullLengthQuestion,getPracticeQuestion,getQuizQuestion,getPrevQuestion,getNextQuestion,submitExam,
+  getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,updateAdmissionById,getStudent,updateStudent,deleteStudent,getFacultyData,getExam,updateExamById,fetchExamById,viewExamById,examWiseQuestion,updateExam,deleteExam,deleteMultipleExam,createExam,updateComplaintById,fetchComplaintById,viewComplaintById,deleteComplaint,deleteMultipleComplaint,createComplaint,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,addClasses,getClasses,updateClassesById,fetchClassesById,viewClassesById,updateClasses,deleteClasses,deleteMultipleClasses,createClasses,addSubject,getSubject,updateSubjectById,fetchSubjectById,viewSubjectById,updateSubject,deleteSubject,deleteMultipleSubject,createSubject,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks
 };

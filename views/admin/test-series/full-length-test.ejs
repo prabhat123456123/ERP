@@ -1,0 +1,557 @@
+<%- include('../../partials/top-bar') %>
+
+
+      <!-- Site wrapper -->
+      <div class="wrapper">
+         <%- include('../../partials/header') %>
+		
+         <!-- =============================================== -->
+         <!-- Left side column. contains the sidebar -->
+       <%- include('../../partials/sidebar') %>
+	
+   
+         <!-- =============================================== -->
+         <!-- Content Wrapper. Contains page content -->
+         <div class="content-wrapper">
+			   
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="header-icon">
+                  <i class="fa fa-dashboard"></i>
+               </div>
+               <div class="header-title">
+                  <h1>SMART SCHOOL Dashboard</h1>
+                  <small>Very detailed & featured admin.</small>
+               </div>
+            </section>
+			
+            <!-- Main content -->
+            <section class="content">
+          
+			<div class="panel panel-bd lobidrag">
+                        <div class="panel-heading">
+                           <div class="btn-group" id="buttonexport">
+                              <a href="#">
+                                 <h4>All Full Length Test</h4>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="panel-body">
+                            <%- include('../../partials/message') %>
+                           
+		<br>
+
+                     <!-- Nav tabs -->
+                     <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">New Test</a></li>
+                        <li><a href="#tab2" data-toggle="tab">Completed Test</a></li>
+                     </ul>
+                     <!-- Tab panels -->
+                     <div class="tab-content">
+                         
+                        <div class="tab-pane fade in active" id="tab1">
+                           
+						<table id="newTest" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									
+									<th>Exam Name</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Exam Mode</th>
+									<th>Total Marks</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+                  
+                        </div>
+                        
+                        
+                        <div class="tab-pane fade" id="tab2">
+                         
+						
+						<table id="completedTest" style="width:100%" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									
+									<th>Exam Name</th>
+									<th>Start Date</th>
+									<th>End Date</th>
+									<th>Exam Mode</th>
+									<th>Total Marks</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+                
+                        </div>
+                        </div>
+                     </div>
+                 
+					
+				</div>
+			</div>
+		
+            </section>
+		
+
+            <!-- /.content -->
+         </div>
+         <!-- /.content-wrapper -->
+        <%- include('../../partials/footer') %>
+      </div>
+	 <!-- Modal1 -->
+              
+           
+                <div class="modal fade" id="viewFullLengthModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Exam Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewFullLengthDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                        <div align="center">
+                           <button type="button" class="btn btn-primary startWithCheck">Next</button> 
+                           </div>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+
+                <div class="modal fade" id="viewExplainationModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Exam Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewExplainationDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                <div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i>Question Palate</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewQuestionDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+               
+
+               
+      <!-- /.wrapper -->
+      <!-- Start Core Plugins
+         
+         =====================================================================-->
+   <%- include('../../partials/footer-script') %>
+
+   <script type="text/javascript" language="javascript">
+
+
+     
+    
+function startExam(examId) {
+    try {
+     
+      $("#viewFullLengthDiv").html("");
+      $("#viewFullLengthModal").modal("toggle");
+      $.ajax({
+         url: `/test-series/get-question-exam-wise`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+    console.log(data);
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               
+               <tr><td>Exam Name</td><td>${data[0].exam_name}</td></tr>
+               <tr><td>Number of Question</td><td>${data.length}</td></tr>
+               <tr><td>Right marks</td><td>${data[0].right_marks}</td></tr>
+               <tr><td>Wrong marks</td><td>${data[0].wrong_marks}</td></tr>
+               </table>
+               </br>
+               <input type="checkbox" id="terms"> Please Select and Proccede to Next.
+    </br>
+
+               `;
+            $("#viewPracticeDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function viewExplaination(examId) {
+    try {
+     
+      $("#viewExplainationDiv").html("");
+      $("#viewExplainationModal").modal("toggle");
+      $.ajax({
+         url: `/test-series/view-explaination`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+    console.log(data);
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               
+               <tr><td>Exam Name</td><td>${data[0].exam_name}</td></tr>
+               <tr><td>Number of Question</td><td>${data.length}</td></tr>
+               <tr><td>Right marks</td><td>${data[0].right_marks}</td></tr>
+               <tr><td>Wrong marks</td><td>${data[0].wrong_marks}</td></tr>
+               </table>
+               </br>
+               <input type="checkbox" id="terms"> Please Select and Proccede to Next.`;
+            $("#viewExplainationDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+
+    
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+     // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleStudentDiv").html("");
+      $("#deleteMultipleStudentModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleStudentDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+
+   // Delete record
+   $(document).on('click','#delete_record',function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+        
+      
+            $.ajax({
+               url: '/admission/delete-multiple',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               success: function(response){
+                   $("#deleteMultipleStudentModal").modal("hide");
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               }
+            });
+         
+      }
+   });
+	$(document).on("click",".startWithCheck",function(){
+		 if($('#terms').is(':checked')){
+            const examId = $("#examId").val();
+          $("#viewFullLengthModal").modal("hide");
+          $("#viewQuestionDiv").html("");
+      $("#viewQuestionModal").modal("toggle");
+      $.ajax({
+         url: `/test-series/get-full-length-question`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+       
+            let formDetails = ``;
+            formDetails += `<form method="post" enctype="multipart/form-data">
+                             
+                                  <input type="hidden"  value="${examId}" class="form-control" name="student_id">
+                            <div class="row">
+                              
+                              
+                              
+                            </div>
+                             <div class="row">
+                            <div align="left">
+                               <input type="submit" class="btn btn-success"
+															value="Prev"> </div>
+                              <div align="right">
+                               <input type="submit" class="btn btn-success"
+															value="Next"></div>
+                            </div>
+                        </form>`;
+            $("#viewQuestionDiv").html(formDetails);
+          
+        },
+      });
+  }else{
+   alert("Please Select Checkbox to Procede.")
+
+ }
+	
+ 
+});
+$(document).on("click",".nextFullLength",function(){
+		
+            const examId = $("#examId").val();
+          $("#viewQuestionDiv").html("");
+      // $("#viewQuestionModal").modal("toggle");
+      $.ajax({
+         url: `/test-series/get-next-full-length-question`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+       
+            let formDetails = ``;
+            formDetails += `<form method="post" enctype="multipart/form-data">
+                             
+                                  <input type="hidden"  value="${examId}" class="form-control" name="student_id">
+                            <div class="row">
+                              
+                              
+                              
+                            </div>
+                             <div class="row">
+                            <div align="left">
+                               <input type="submit" class="btn btn-success"
+															value="Prev"> </div>
+                              <div align="right">
+                               <input type="submit" class="btn btn-success"
+															value="Next"></div>
+                            </div>
+                        </form>`;
+            $("#viewQuestionDiv").html(formDetails);
+          
+        },
+      });
+ 
+});
+
+$(document).on("click",".prevFullLength",function(){
+		
+            const examId = $("#examId").val();
+          
+          $("#viewQuestionDiv").html("");
+      // $("#viewQuestionModal").modal("toggle");
+      $.ajax({
+         url: `/test-series/get-prev-full-length-question`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+       
+            let formDetails = ``;
+            formDetails += `<form method="post" enctype="multipart/form-data">
+                             
+                                  <input type="hidden"  value="${examId}" class="form-control" name="student_id">
+                            <div class="row">
+                              
+                              
+                              
+                            </div>
+                             <div class="row">
+                            <div align="left">
+                               <input type="submit" class="btn btn-success"
+															value="Prev"> </div>
+                              <div align="right">
+                               <input type="submit" class="btn btn-success"
+															value="Next"></div>
+                            </div>
+                        </form>`;
+            $("#viewQuestionDiv").html(formDetails);
+          
+        },
+      });
+ 
+});
+	
+var dataTable = $('#newTest').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/test-series/get-new-fulllength-test",
+			type:"POST",
+		},
+         columns: [
+        { data: "name" },
+        { data: "startDate" },
+        { data: "endDate" },
+        { data: "mode" },
+        { data: "totalMarks" },
+        { data: "action" },
+	],
+		
+	});
+   var dataTable = $('#completedTest').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+		url:"/test-series/get-completed-fulllength-test",
+			type:"POST",
+		},
+         columns: [
+        { data: "name" },
+        { data: "startDate" },
+        { data: "endDate" },
+        { data: "mode" },
+        { data: "totalMarks" },
+        { data: "action" },
+	],
+		
+	});
+
+	
+	
+});	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
+</script>

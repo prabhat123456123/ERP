@@ -1,9 +1,9 @@
 let {
- financialStudent,financialFaculty
+addStudentFinancial,getStudentFinancial,addFacultyFinancial,getFacultyFinancial,viewStudentFeeDetails,viewFacultyFeeDetails,
  
 } = require("./financial");
 
 module.exports = {
- financialStudent,financialFaculty
+ addStudentFinancial,getStudentFinancial,addFacultyFinancial,getFacultyFinancial,viewStudentFeeDetails,viewFacultyFeeDetails
  
 };

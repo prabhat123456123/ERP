@@ -14,9 +14,198 @@ const onlineTest = async (req, res, next) => {
     next(error);
   }
 };
-const practiceTest = async (req, res, next) => {
+const FullLengthTest = async (req, res, next) => {
+  try {
+    return res.render("admin/test-series/full-length-test");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const QuizTest = async (req, res, next) => {
+  try {
+    return res.render("admin/test-series/quiz-test");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const PracticeTest = async (req, res, next) => {
   try {
     return res.render("admin/test-series/practice-test");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCompletedQuizTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getCompletedQuizTest(req.body);
+     const count = await new TestManagement().countCompletedQuizTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getNewQuizTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getNewQuizTest(req.body);
+     const count = await new TestManagement().countNewQuizTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getNewPracticeTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getNewPracticeTest(req.body);
+     const count = await new TestManagement().countNewPracticeTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCompletedPracticeTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getCompletedPracticeTest(req.body);
+     const count = await new TestManagement().countCompletedPracticeTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCompletedFulllengthTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getCompletedFulllengthTest(req.body);
+     const count = await new TestManagement().countCompletedFulllengthTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getNewFulllengthTest = async (req, res, next) => {
+  try {
+    const adm = await new TestManagement().getNewFulllengthTest(req.body);
+     const count = await new TestManagement().countNewFulllengthTest(req.body);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getQuestionExamWise = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getQuestionExamWise(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const viewExplaination = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().viewExplaination(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFullLengthQuestion = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getFullLengthQuestion(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPrevQuestion = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getPrevQuestion(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getNextQuestion = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getNextQuestion(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPracticeQuestion = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getPracticeQuestion(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+const getQuizQuestion = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getQuizQuestion(req.body);
+    
+    return res.send(data);
   } catch (error) {
     next(error);
   }
@@ -26,7 +215,23 @@ const practiceTest = async (req, res, next) => {
 
 
 
+
+const submitExam = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().submitExam(req.body);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
+
+
 module.exports = {
- onlineTest,practiceTest
+ onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPracticeQuestion,getPrevQuestion,getNextQuestion,getQuizQuestion,submitExam
  
 };

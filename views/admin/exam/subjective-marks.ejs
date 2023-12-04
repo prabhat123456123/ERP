@@ -1,0 +1,702 @@
+<%- include('../../partials/top-bar') %>
+
+
+      <!-- Site wrapper -->
+      <div class="wrapper">
+         <%- include('../../partials/header') %>
+		
+         <!-- =============================================== -->
+         <!-- Left side column. contains the sidebar -->
+       <%- include('../../partials/sidebar') %>
+	
+   
+         <!-- =============================================== -->
+         <!-- Content Wrapper. Contains page content -->
+         <div class="content-wrapper">
+			   
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="header-icon">
+                  <i class="fa fa-dashboard"></i>
+               </div>
+               <div class="header-title">
+                  <h1>SMART SCHOOL Dashboard</h1>
+                  <small>Very detailed & featured admin.</small>
+               </div>
+            </section>
+			
+            <!-- Main content -->
+            <section class="content">
+          
+			<div class="panel panel-bd lobidrag">
+                        <div class="panel-heading">
+                           <div class="btn-group" id="buttonexport">
+                              <a href="#">
+                                 <h4>All Subject</h4>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="panel-body">
+                            <%- include('../../partials/message') %>
+                            <% if(user[0].role==="school"){ %>
+					 <div class="row"> 
+ <div class="col-md-6 text-left">
+								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
+
+               
+				
+            </div>
+           
+            <div class="col-md-6 text-right">
+ 
+                                 <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addSubjectMarks-lg"><i class="fa fa-plus"></i> Add New</a>  
+                                
+                                 
+                             
+            </div>
+			<br>
+        </div>
+
+        <% } %>
+		<br>
+
+					<div class="table-responsive">
+						
+						<table id="sample_data" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									<th></th>
+									<th>Student Name</th>
+									<th> Subject Name</th>
+									<th> Total Marks</th>
+									<th> Obtained Marks</th>
+									<th> Passing Marks</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		
+            </section>
+		
+
+            <!-- /.content -->
+         </div>
+         <!-- /.content-wrapper -->
+        <%- include('../../partials/footer') %>
+      </div>
+	 <!-- Modal1 -->
+               <div class="modal fade" id="addSubjectMarks-lg" tabindex="-1" role="dialog">
+                  <%- include('../../partials/loader') %>
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Add Subject Marks</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="subjectMarksForm">
+                                  
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Class Name</label>
+                                    <select name="classesId" class="form-control" id="classesId">
+                                       <option value="">please Select</option>
+                                       <% if(data.length){ %>
+                                       <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+
+                                        <% } %>
+                                        <% } %>
+                                    </select>
+                                </div>
+
+                                 <div class="form-group col-lg-6">
+                                    <label>Student Name</label>
+                                   <select name="studentId" class="form-control" id="studentId">
+                                       <option value="">please Select</option>
+                                       <% if(data.length){ %>
+                                       <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+
+                                        <% } %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                               
+                            </div>
+
+                            <div align="center">
+                            
+                                <table class="table table-bordered" id="subMarks">
+              <tbody>
+                <tr>
+                  <td align="center"><b>Subject</b></td>
+
+                  <td align="center"><b>Total Marks</b></td>
+                  <td align="center"><b>Passing Marks</b></td>
+                  <td align="center"><b>Obtained Marks</b></td>
+                 
+                </tr>
+                <tr>
+                  <input
+                    type="text"
+                    id="lenghtMarks"
+                    name="lenghtMarks"
+                    value="1"
+                    hidden
+                  />
+                
+                  <td align="center">
+                   
+                     <select  class="form-control" name="subject1" id="subject1" required>
+                         <option value="">Please Select.</option>
+                         <% if(data.length){ %>
+                                       <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+
+                                        <% } %>
+                                        <% } %>
+                          
+                      </select>
+                  </td>
+
+                  <td align="center">
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="total_marks1"
+                      id="total_marks1"
+                      placeholder="Total Marks"
+                    />
+                  </td>
+                    <td align="center">
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="passing_marks1"
+                      id="passing_marks1"
+                      placeholder="Passing Marks"
+                    />
+                  </td>
+                  
+                   <td align="center">
+                    <input
+                      type="number"
+                      class="form-control"
+                      name="obtained_marks1"
+                      id="obtained_marks1"
+                      placeholder="Obtained Marks"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      type="button"
+                      name="add"
+                      id="addMarks"
+                      class="btn btn-success"
+                    >
+                      add more
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveStudent" data-action="submit">
+															Save
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                 <div class="modal fade" id="editSubjectMarksModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Edit Subject Marks</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="editSubjectMarksDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                 
+              
+                <div class="modal fade" id="deleteSubjectMarksModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Subject Marks</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteSubjectMarksDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="deleteMultipleSubjectMarksModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Subjects Marks</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteMultipleSubjectMarksDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+      <!-- /.wrapper -->
+      <!-- Start Core Plugins
+         
+         =====================================================================-->
+   <%- include('../../partials/footer-script') %>
+
+   <script type="text/javascript" language="javascript">
+
+ let i = 1,
+      lenghtMarks = [];
+    files = [];
+    files.push();
+    lenghtMarks.push(1);
+    $("#addMarks").click(function () {
+   
+         
+ i++;
+      $(
+        "#subMarks"
+      ).append(`<tr id="row${i}"><td><select  class="form-control" name="subject${i}" id="subject${i}">
+                        <option value="">Choose..</option>
+                          <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+
+                                        <% } %>
+                       
+                      </select></td><td><input
+                      name="total_marks${i}"
+                      id="total_marks${i}"
+                      type="number"
+                      class="form-control"
+                      placeholder="Total Marks"
+                    /></td><td><input
+                      name="passing_marks${i}"
+                      id="passing_marks${i}"
+                      type="number"
+                      class="form-control"
+                      placeholder="Passing Marks"
+                    /></td>
+                   
+                      <td><input
+                      name="obtained_marks${i}"
+                      id="obtained_marks${i}"
+                      type="number"
+                      class="form-control"
+                      placeholder="Obtained Marks"
+                    /></td>
+                      <td><button type="button " name="remove" id="${i}" class="btn btn-remove btn btn-danger removeMarks">remove</button></td></tr>`);
+                     lenghtMarks.push(i);
+      $("#lenghtMarks").val(lenghtMarks.join(","));
+      console.log($("#lenghtMarks").val());
+       
+                  
+     
+    });
+
+    $(document).on("click", ".removeMarks", function () {
+      var button_id = $(this).attr("id");  
+      const index = lenghtMarks.indexOf(button_id);
+      if (index > -2) {
+        lenghtMarks.splice(index, 1);
+         $("#lenghtMarks").val(lenghtMarks.join(","));
+      console.log(lenghtMarks);
+      }
+      $("#row" + button_id + "").remove();
+      // 
+      });
+     
+        $("#subjectMarksForm").on("submit", async e => {
+         
+							e.preventDefault();
+							try {
+								
+									const formData = new FormData($(`#${e.target.id}`)[0]);
+									e.preventDefault();
+									$.ajax({
+										url: `/exam/create-subject-marks`,
+										type: "post",
+										processData: false,
+										contentType: false,
+										
+										data: formData,
+										dataType: "json",
+                     beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+										success: function (data) {
+                      
+                     
+                  if (data) {
+                      
+                     Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Subject Added Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                $("#subjectMarksForm")[0].reset();
+                  $("#addSubjectMarks-lg").modal("hide");
+                  $('#sample_data').DataTable().ajax.reload();
+                
+                } else {
+                    Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Data Allready Exist !",
+                  });
+                
+                }
+										
+										},
+                      complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+									});
+
+								
+
+							} catch (e) {
+								console.error(e)
+							}
+						});
+                 
+               
+
+
+                  function editSubjectMarks(subjectId) {
+    try {
+     
+      $("#editSubjectMarksDiv").html("");
+      $("#editSubjectMarksModal").modal("toggle");
+      $.ajax({
+         url: `/exam/fetch-subject-marks-byid`,
+         type: "post",
+         data:{subjectId:subjectId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        console.log(data);
+         let option;
+        for(let i=0; i<data.classes.length; i++){
+           option += `<option value="${data.classes[i].id}"${data.data[0].class_id==data.classes[i].id?'selected':""}>${data.classes[i].class_name}</option>`
+        }
+            let formDetails = ``;
+            formDetails += `<form action="/exam/update-subject-marks-by-id" method="post">
+                             
+                                  <input type="hidden"  value="${subjectId}" class="form-control" name="subjectId">
+                            <div class="row">
+                                <div class="form-group col-lg-6">
+                                    <label>Class Name</label>
+                                    <select name="classesId" class="form-control">
+                                    <option value="">Please Select</option>
+                                   ${option}
+                                   </select>
+                                </div>
+
+                                 <div class="form-group col-lg-6">
+                                    <label>Subject Name</label>
+                                    <input type="text" class="form-control" value="${data.data[0].subject_name}" name="subject_name">
+                                </div>
+                                
+                              
+                               
+                            </div>
+                            <div align="center">
+                               <input type="submit" class="btn btn-success"
+															value="Update">
+															
+														
+                            </div>
+                        </form>`;
+            $("#editSubjectMarksDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  
+   function deleteSubjectMarks(subjectId) {
+    try {
+     
+      $("#deleteSubjectMarksDiv").html("");
+      $("#deleteSubjectMarksModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                    <input type="hidden" class="form-control" name="subjectId" id="subjectId" value="${subjectId}">
+                   
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary delBtn waves-effect waves-light"
+                       id="register"
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 </form> `;
+            $("#deleteSubjectMarksDiv").html(formDetails);
+          
+       
+    } catch (err) {
+      console.error(err);
+    }
+  }
+    
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+     // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleSubjectMarksDiv").html("");
+      $("#deleteMultipleSubjectMarksModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleSubjectMarksDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+
+   // Delete record
+   $(document).on('click','#delete_record',function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+        
+      
+            $.ajax({
+               url: '/exam/delete-multiple-subject-marks',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               success: function(response){
+                   $("#deleteMultipleSubjectMarksModal").modal("hide");
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               }
+            });
+         
+      }
+   });
+	$(document).on("click",".delBtn",function(){
+		
+ const subjectId = $("#subjectId").val();
+  $.ajax({
+        url: '/exam/delete-subject-marks',
+        type: "POST",
+        data: {
+          subjectId:subjectId,
+        
+        },
+        success: function () {
+      $("#deleteSubjectMarksModal").modal("hide");
+     $('#sample_data').DataTable().ajax.reload();
+	toastr.error('Record Deleted Successfuly !!')
+
+        }
+    });
+	
+ 
+});
+	
+var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/exam/get-subject-marks",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "name" },
+        { data: "subject" },
+        { data: "total" },
+        { data: "obtained" },
+        { data: "pass" },
+        { data: "action" },
+	],
+		createdRow:function(row, data, rowIndex)
+		{
+			$.each($('td', row), function(colIndex){
+				if(colIndex == 1)
+				{
+					$(this).attr('data-name', 'name');
+					$(this).attr('class', 'name');
+					$(this).attr('data-type', 'text');
+					$(this).attr('data-pk', data.id);
+				}
+				
+			});
+		}
+	});
+
+	$('#sample_data').editable({
+		container:'body',
+		selector:'td.name',
+		url:'/subject/update-subject-marks',
+		title:'Name',
+		type:'POST',
+		validate:function(value){
+			if($.trim(value) == '')
+			{
+				return 'This field is required';
+			}
+				toastr.success('Record Updated Successfuly !!')
+
+		}
+		
+	});
+
+});	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
+</script>
