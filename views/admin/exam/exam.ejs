@@ -355,9 +355,9 @@
                                     <label>Type of Exam</label>
                                    <select name="type_exam" id="type_exam" class="form-control">
                                     <option value="">Please Select</option>
-                                    <option value="practice"${data.data[0].type_exam=="practice"?'selected':""}>Practice</option>
-                                    <option value="online"${data.data[0].type_exam=="online"?'selected':""}>Online</option>
-                                    <option value="quiz"${data.data[0].type_exam=="quiz"?'selected':""}>Quiz</option>
+                                    <option value="practice"${data.data[0].exam_type=="practice"?'selected':""}>Practice</option>
+                                    <option value="online"${data.data[0].exam_type=="online"?'selected':""}>Online</option>
+                                    <option value="quiz"${data.data[0].exam_type=="quiz"?'selected':""}>Quiz</option>
                                    </select>
                                 </div>
                                     
@@ -444,7 +444,9 @@ function viewExam(examId,schoolId,classId) {
                <tr><td>Class</td><td>${data[0].class_name}</td></tr>
                 <tr><td>Start Date</td><td>${data[0].start_date}</td></tr>
                <tr><td>End Date</td><td>${data[0].end_date}</td></tr>
-               <tr><td>Type of Exam</td><td>${data[0].type_exam}</td></tr>
+               <tr><td>Type of Exam</td><td>${data[0].exam_type}</td></tr>
+               <tr><td>Mode of Exam</td><td>${data[0].exam_mode}</td></tr>
+               <tr><td>Total Marks</td><td>${data[0].total_marks}</td></tr>
               
               
                </table>`;

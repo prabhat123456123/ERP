@@ -198,7 +198,7 @@
                </div>
       <!-- /.wrapper -->
       <!-- Start Core Plugins
-         
+       
          =====================================================================-->
    <%- include('../../partials/footer-script') %>
 
@@ -287,10 +287,8 @@ function viewComplaint(complaintId) {
                <tr><td>Student Name</td><td>${data[0].sname}</td></tr>
                <tr><td>Class</td><td>${data[0].class_name}</td></tr>
                <tr><td>Complaint</td><td>${data[0].description}</td></tr>
-               <tr><td>Complaint By (Faculty)</td><td>${data[0].fname}</td></tr>
-                
-               
-              
+          <tr><td>Complaint By ${data[0].role=="school" ? "(School)" : "(faculty)"}</td><td> ${ data[0].role=="school" ? data[0].school_name : data[0].fname} %></td></tr>
+            
                </table>`;
             $("#viewComplaintDiv").html(formDetails);
           
@@ -358,7 +356,7 @@ function viewComplaint(complaintId) {
             let formDetails = ``;
             formDetails += `<form action="/complaint/add-complaint-by-id" method="post" id="complaintForm">
                                   <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
-                                  <input type="hidden" value="2" class="form-control" name="faculty_id">
+                                  <input type="hidden" value="<%= user[0].id %>" class="form-control" name="faculty_school_id">
                             <div class="row">
                                
                                  <div class="form-group col-lg-12">

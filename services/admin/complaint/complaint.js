@@ -185,12 +185,12 @@ class ComplaintManagement {
   }
      async addComplaintById(req, res) {
      try {
-      console.log(req.body);
+      // console.log(req.user[0]);
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
         const uniqueNum = uuidv4();
          const data = await sequelize.query(
-          "INSERT INTO complaint(track_id,student_id,description,faculty_id,created_by,created_at) VALUES (?,?,?,?,?,?)",
+          "INSERT INTO complaint(track_id,student_id,description,faculty_school_id,created_by,created_at) VALUES (?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -198,9 +198,9 @@ class ComplaintManagement {
               req.body.student_id,
            
               req.body.description,
-              req.body.faculty_id,
+              req.body.faculty_school_id,
             
-              "FACULTY",
+              req.user[0].role=="school"? "SCHOOL" : "FACULTY",
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -298,18 +298,28 @@ class ComplaintManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async viewComplaintById(body) {
+   async viewComplaintById(req) {
     try {
-      const complaintId = parseInt(body.complaintId);
-      
-     const data = await sequelize.query(
-        `SELECT complaint.description,class.class_name,faculty.name as fname,student.name as sname FROM complaint INNER JOIN student ON student.id = complaint.student_id INNER JOIN faculty ON faculty.id = complaint.faculty_id INNER JOIN class ON class.id = student.class_id WHERE complaint.id = ${complaintId}`,
+      const complaintId = parseInt(req.body.complaintId);
+      let joinClause = "";
+      let selectClause = "";
+      if (req.user[0].role == "school") {
+        selectClause = `school.school_name,school.role,`
+        joinClause = `INNER JOIN school ON school.id = complaint.faculty_school_id`
+      }
+      if (req.user[0].role == "faculty") {
+           selectClause = `faculty.name as fname,faculty.role,`
+        joinClause = `INNER JOIN faculty ON faculty.id = complaint.faculty_school_id`
+      }
+      const data = await sequelize.query(
+        `SELECT complaint.description,class.class_name,` + selectClause + `student.name as sname FROM complaint INNER JOIN student ON student.id = complaint.student_id ` + joinClause + ` INNER JOIN class ON class.id = student.class_id WHERE complaint.id = ${complaintId}`,
         {
           type: QueryTypes.SELECT,
-         
+          
         }
-      );
-      
+        );
+        
+        console.log(">?????????????????????????????????????/",data);
           return data;
 
     

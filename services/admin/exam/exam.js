@@ -297,17 +297,17 @@ async createExam(files, fields, req, res) {
    async fetchExamById(body) {
     try {
       const examId = parseInt(body.examId);
-      const classId = parseInt(body.classId);
+      // const classId = parseInt(body.classId);
       const schoolId = parseInt(body.schoolId);
      const examData = await sequelize.query(
-        `SELECT * FROM exam WHERE id = ${examId} AND class_id = ${classId} AND school_id=${schoolId}`,
+        `SELECT * FROM exam WHERE id = ${examId}`,
         {
           type: QueryTypes.SELECT,
          
         }
       );
        const classes = await sequelize.query(
-        `SELECT * FROM class`,
+        `SELECT * FROM class WHERE school_id=${schoolId}`,
         {
           type: QueryTypes.SELECT,
          

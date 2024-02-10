@@ -209,7 +209,7 @@ class AdmissionManagement {
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "UPDATE student SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,school_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,photo=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE student SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,photo=?,updated_by=?,updated_at=? WHERE id = ?",
           {
             replacements: [
              
@@ -219,7 +219,6 @@ class AdmissionManagement {
               fields.student_gender[0],
               fields.student_phone[0],
               fields.student_class_id[0],
-              fields.school_id[0],
             
               fields.student_address[0],
               fields.student_father_name[0],
@@ -242,7 +241,7 @@ class AdmissionManagement {
         
      
         const data = await sequelize.query(
-          "UPDATE `student` SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,school_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE `student` SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,updated_by=?,updated_at=? WHERE id = ?",
           {
             replacements: [
               fields.student_name[0],
@@ -251,7 +250,7 @@ class AdmissionManagement {
               fields.student_gender[0],
               fields.student_phone[0],
               fields.student_class_id[0],
-              fields.school_id[0],
+             
               fields.student_address[0],
               fields.student_father_name[0],
               fields.student_mother_name[0],

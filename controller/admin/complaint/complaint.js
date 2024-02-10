@@ -67,7 +67,7 @@ const fetchComplaintById = async (req, res, next) => {
 
 const viewComplaintById = async (req, res, next) => {
   try {
-    const data = await new ComplaintManagement().viewComplaintById(req.body);
+    const data = await new ComplaintManagement().viewComplaintById(req);
    
     //  console.log(data)
     return res.send(data);

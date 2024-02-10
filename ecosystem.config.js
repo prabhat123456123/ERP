@@ -70,14 +70,6 @@ module.exports = {
         BASEURL: "https://bipard-hostel.codebucketstage.online",
       },
     },
-    {
-      name: "BIPARD-HOSTEL-MANAGEMENT-PROD",
-      script: "./app.js",
-      env: {
-        NODE_ENV: "production",
-        PORT: 5000,
-        BASEURL: "https://bipard-hostel.codebucketstage.online",
-      },
-    },
+   
   ],
 };

@@ -57,7 +57,7 @@ class FacultyManagement {
         const uniqueNum = uuidv4();
         const dir = path.join(
           __dirname,
-          `../../../public/uploads/teacher/${fields.email[0]}`
+          `../../../public/uploads/faculty/${fields.email[0]}`
         );
 
         let fileName =
@@ -336,8 +336,8 @@ console.log(body.facultyId);
  
   async updateFacultyById(files, fields, req, res) {
      try {
-        console.log(fields)
-        console.log(files.faculty_photo[0].size)
+        // console.log(fields)
+        // console.log(files.faculty_photo[0].size)
        const currentTime = getDate("YYYY-MM-DD hh:mm");
       if (files.faculty_photo[0].size>0) {
         
@@ -385,8 +385,6 @@ console.log(body.facultyId);
       
       } else {
         
-     
-       
        const data = await sequelize.query(
           "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,updated_by=?,updated_at=? WHERE id = ?",
           {

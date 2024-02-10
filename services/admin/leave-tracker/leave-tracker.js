@@ -121,7 +121,7 @@ class LeaveTrackerManagement {
           type: QueryTypes.SELECT,
         }
       );
-      
+    
 
       for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
