@@ -1,9 +1,9 @@
 let {
- reportStudent,reportFaculty
+ reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass
  
 } = require("./report");
 
 module.exports = {
-reportStudent,reportFaculty
+reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass
  
 };

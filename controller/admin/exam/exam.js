@@ -247,7 +247,7 @@ const updateQuestionById = async (req, res, next) => {
 
 const subjectMarks = async (req, res, next) => {
   try {
-    const data = await new ExamManagement().getClass(req, res);
+    const data = await new ExamManagement().getData(req, res);
     return res.render("admin/exam/subjective-marks",{data:data});
   } catch (error) {
     next(error);
@@ -303,7 +303,19 @@ const deleteMultipleSubjectMarks = async (req, res, next) => {
 
 const fetchSubjectMarksById = async (req, res, next) => {
   try {
-    const data = await new ExamManagement().fetchSubjectMarksById(req.body);
+    const data = await new ExamManagement().fetchSubjectMarksById(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
+
+const fetchStudentAndSubjectByClass = async (req, res, next) => {
+  try {
+    const data = await new ExamManagement().fetchStudentAndSubjectByClass(req);
    
     //  console.log(data)
     return res.send(data);
@@ -333,7 +345,7 @@ const updateSubjectMarksById = async (req, res, next) => {
    
     req.flash("success_msg", "Subject Updated Successfully !");
       
-       return res.redirect(`/subject/subject/${req.body.classesId}`);
+       return res.redirect(`/exam/subject-marks`);
   } catch (error) {
     next(error);
   }
@@ -360,5 +372,5 @@ const createSubjectMarks = async (req, res, next) => {
 
 
 module.exports = {
-  viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks
+  viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass
 };

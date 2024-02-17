@@ -1,8 +1,8 @@
 let {
-  attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,
+  attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,checkinStudentAttendance,checkoutStudentAttendance,getStudentAttendanceReport,checkinFacultyAttendance,checkoutFacultyAttendance,getFacultyAttendanceReport,getReportByStudent,getReportByFaculty
  
 } = require("./attendance");
 
 module.exports = {
- attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,
+ attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,checkinStudentAttendance,checkoutStudentAttendance,getStudentAttendanceReport,checkinFacultyAttendance,checkoutFacultyAttendance,getFacultyAttendanceReport,getReportByStudent,getReportByFaculty
 };

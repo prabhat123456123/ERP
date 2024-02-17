@@ -198,21 +198,21 @@ async createExam(files, fields, req, res) {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
- async getClass(req,res) {
+ async getData(req,res) {
     try {
-//  console.log(sequelize)
+const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
      
        const data = await sequelize.query(
-        `SELECT * FROM class`,
-        {
+        `SELECT * FROM class WHERE school_id = ?`,
+         {
+           replacements: [
+             id
+           ],
           type: QueryTypes.SELECT,
         }
       );
-      
 
-    
-
-
+     
       return data;
     } catch (error) {
       if (error.statusCode) {
@@ -809,7 +809,7 @@ async createExam(files, fields, req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
       const dataNum = fields.lenghtMarks[0].split(",");
-    console.log(fields)
+  
       
       console.log(dataNum);
       for (let i = 1; i <= dataNum.length; i++) {
@@ -851,12 +851,15 @@ async createExam(files, fields, req, res) {
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
         const data = await sequelize.query(
-          "UPDATE subject SET class_id=?, subject_name=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE subject_marks SET student_id=?,subject_id=?,total_marks=?,obtained_marks=?,passing_marks=?,updated_by=?,updated_at=? WHERE id = ?",
           {
             replacements: [
              
-              body.classesId,
-              body.subject_name,
+              body.studentId1,
+              body.subject2,
+              body.total_marks,
+              body.obtained_marks,
+              body.passing_marks,
            
               "SCHOOL",
               currentTime,
@@ -1001,7 +1004,7 @@ console.log(data);
       const subjectId = parseInt(body.subjectId);
    
      const data = await sequelize.query(
-        `DELETE FROM subject WHERE id = ${subjectId}`,
+        `DELETE FROM subject_marks WHERE id = ${subjectId}`,
         {
           type: QueryTypes.DELETE,
          
@@ -1018,25 +1021,71 @@ console.log(data);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  async fetchSubjectMarksById(body) {
+  async fetchSubjectMarksById(req) {
     try {
-      const subjectId = parseInt(body.subjectId);
-     
+      const subjectId = parseInt(req.body.subjectId);
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
      const data = await sequelize.query(
-        `SELECT * FROM subject WHERE id = ${subjectId}`,
+        `SELECT subject_marks.total_marks,subject_marks.student_id,subject_marks.subject_id,subject_marks.passing_marks,subject_marks.obtained_marks,class.id as cId FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN class ON class.id = subject.class_id WHERE subject_marks.id = ${subjectId}`,
         {
           type: QueryTypes.SELECT,
          
         }
       );
-      const classes = await sequelize.query(
-        `SELECT * FROM class`,
+      const classData = await sequelize.query(
+        `SELECT * FROM class WHERE school_id = ${id}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+      
+       const studentData = await sequelize.query(
+        `SELECT * FROM student WHERE class_id = ${data[0].cId}`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+       const subjectData = await sequelize.query(
+        `SELECT * FROM subject WHERE class_id = ${data[0].cId}`,
         {
           type: QueryTypes.SELECT,
          
         }
         );
-          return {data,classes};
+          return {data,classData,studentData,subjectData};
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async fetchStudentAndSubjectByClass(req) {
+     try {
+       
+       const classId = parseInt(req.body.classId);
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       
+       const studentData = await sequelize.query(
+         `SELECT * FROM student WHERE class_id = ${classId} AND school_id = ${id}`,
+         {
+           type: QueryTypes.SELECT,
+           
+          }
+          );
+          const subjectData = await sequelize.query(
+            `SELECT subject.id,subject.subject_name FROM subject INNER JOIN class ON class.id = subject.class_id WHERE class_id = ${classId} AND class.school_id = ${id}`,
+            {
+              type: QueryTypes.SELECT,
+              
+            }
+            );
+          return {studentData,subjectData};
 
     
     } catch (error) {
@@ -1052,7 +1101,7 @@ console.log(data);
       const subjectId = parseInt(body.subjectId);
      
      const data = await sequelize.query(
-        `SELECT * FROM subject WHERE id = ${subjectId}`,
+        `SELECT subject_marks.id,subject.subject_name,subject_marks.total_marks,subject_marks.obtained_marks,subject_marks.passing_marks,student.name,class.class_name FROM subject_marks INNER JOIN student ON student.id = subject_marks.student_id INNER JOIN subject ON subject.id =  subject_marks.subject_id INNER JOIN class ON class.id = student.class_id  WHERE subject_marks.id = ${subjectId}`,
         {
           type: QueryTypes.SELECT,
          
@@ -1079,7 +1128,7 @@ console.log(data);
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM subject WHERE id = (${ids[index]})`,
+        `DELETE FROM subject_marks WHERE id = (${ids[index]})`,
         {
           type: QueryTypes.DELETE,
          

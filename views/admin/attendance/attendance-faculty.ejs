@@ -36,8 +36,78 @@
                            </div>
                         </div>
                         <div class="panel-body">
+ <% if(user[0].role == "faculty"){ %> 
+                                <div align="right">
+                                  <% if(data.length>0){ %>
 
-			
+                                    <% if(data[0].check_in_flag === "0" && data[0].check_out_flag === "0"){ %>
+                                    <a href="#" class="btn btn-add checkedIn text-right" id="checkedIn"><i class="fa fa-plus"></i>Check IN</a> 
+
+                                     <% }else if(data[0].check_in_flag === "1" && data[0].check_out_flag === "0"){  %>
+                               
+                                  <a href="#" class="btn btn-add checkedOut text-right" id="checkedOut"><i class="fa fa-plus"></i>Check OUT</a> 
+                                    <% }else{%>
+                               
+                                  <a href="#" class="btn btn-add text-right" disabled><i class="fa fa-plus"></i>Checked OUT</a> 
+                                    <% } %>
+                                       <% }else{ %> 
+                                 <a href="#" class="btn btn-add checkedIn text-right" id="checkedIn"><i class="fa fa-plus"></i>Check IN</a> 
+                                 <% } %>
+                                 </div>
+                                    <% } %>
+                                     <% if(user[0].role == "faculty"){ %> 
+                                <div class="row"> 
+                 
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                       <b> Checkin Time :  <span id="checkin_time"> </span></b>
+                       
+                  </div>
+                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                       <b> Checkout Time : <span id="checkout_time"> </span></b>
+                       
+                  </div>
+                  </div>
+                    <% } %>
+                  <br>
+			<div class="row"> 
+  <% if(user[0].role == "school"){ %> 
+								  <div class="form-group col-lg-4">
+                                    <label>Faculty Name( only for school)</label>
+                                   <select name="faculty_id" id="faculty_id" class="form-control" required="">
+                                    <option value="">Please Select</option>
+                                     <% if(data.length){ %>
+                                       <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].name  %></option>
+
+                                        <% } %>
+                                        <% } %>
+                                       
+                                   </select> 
+                                </div>
+
+                                <% } %>
+                                 <div class="form-group col-lg-4">
+                                      <label>Select Date Range</label><br>
+                                  <div id="reportrange"  class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                    <span></span> <b class="caret"></b>
+                                 </div>
+                                
+                                 </div>
+         <div class="form-group col-lg-3">
+                                      <label></label><br>
+                                       <% if(user[0].role == "school"){ %> 
+                                <button class="btn btn-success" id="filter_records">Filter</button>
+                                  <% } %> 
+                                   <% if(user[0].role == "faculty"){ %> 
+                                <button class="btn btn-success" id="filter_records_by_faculty">Filter</button>
+                                  <% } %> 
+                              
+                              </div>
+           
+			<br>
+        </div>
 					 
 		<br>
 
@@ -47,12 +117,11 @@
 						
 							<thead>
 								<tr>
-									<th> Name</th>
+									<th> Date</th>
 								
 									<th>Status</th>
 									<th>Check IN</th>
 									<th>Check OUT</th>
-									<th>Action</th>
 								</tr>
 							</thead>
 						</table>
@@ -222,11 +291,172 @@ $(document).ready(function(){
          { data: "attendance_status" },
         { data: "check_in" },
         { data: "check_out" },
-        { data: "action" },
 	],
 		
 	});
+let startDates;
+let endDates;
+$(function() {
+
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        startDates = start.format('YYYY-MM-DD');
+         endDates = end.format('YYYY-MM-DD');
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+    
+});
+ $(document).on('click','#filter_records', function () {
+    
+var facultyId = $("#faculty_id").val(); 
+
+        if(facultyId == ""){
+         alert("please select Faculty")
+        }
+   $.ajax({
+         url: `/attendance/get-faculty-attendance-report`,
+         type: "post",
+         data:{startDates:startDates,endDates:endDates,facultyId:facultyId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+       
+          
+        },
+      });
+       
+})
+$(document).on('click','#filter_records_by_faculty', function () {
+    
+   $.ajax({
+         url: `/attendance/get-report-by-faculty`,
+         type: "post",
+         data:{startDates:startDates,endDates:endDates},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+        
+          
+          
+          
+        },
+      });
+       
+})
+ $(document).on('click','.checkedIn', function () {
+   var currentDate = new Date();
+// Extract individual time components
+var hours = currentDate.getHours();
+var minutes = currentDate.getMinutes();
+var seconds = currentDate.getSeconds();
+
+// Format the time
+var formattedTime = hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+// Display formatted time
+console.log("Formatted Time (HH:MM:SS):", formattedTime);
+     if ('geolocation' in navigator) {
+       navigator.geolocation.getCurrentPosition(function(position) { 
+        let latitude = position.coords.latitude;
+         let longitude = position.coords.longitude;
+          $.ajax({
+         url: `/attendance/checkin-faculty-attendance`,
+         type: "post",
+       data:{formattedTime:formattedTime,latitude:latitude,longitude:longitude},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+        if(data){
+         toastr.success('Checked IN Successfuly !!')
+        
+$('#checkedIn').html("");
+$('#checkedIn').removeClass("checkedIn");
+$('#checkedIn').addClass("checkedOut");
+$('#checkedIn').html("Check OUT");
+      }else{
+          toastr.error('You are not in range !!')
+      }
+          
+          
+        },
+      });
+          });
+          } else { 
+            console.log('Geolocation is not supported by this browser.');
+          } 
+
+   
+       
+})
+
+$(document).on('click','.checkedOut', function () {
+  
+var currentDate = new Date();
+// Extract individual time components
+var hours = currentDate.getHours();
+var minutes = currentDate.getMinutes();
+var seconds = currentDate.getSeconds();
+
+// Format the time
+var formattedTime = hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
 
 
+     if ('geolocation' in navigator) {
+       navigator.geolocation.getCurrentPosition(function(position) { 
+         console.log('Latitude:', position.coords.latitude);
+          let latitude = position.coords.latitude;
+          let longitude = position.coords.longitude;
+          $.ajax({
+         url: `/attendance/checkout-faculty-attendance`,
+         type: "post",
+         data:{formattedTime:formattedTime,latitude:latitude,longitude:longitude},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+             if( data.data === "not"){
+           toastr.error('You are not in range !!')
+       }
+          if(data.data === "yes"){
+         toastr.success('Checked OUT Successfuly !!')
+                 // Get the element
+               
+$('#checkedOut').html("");
+$('#checkedOut').removeClass("checkedOut");
+$('#checkedOut').html("Checked OUT");
+      }
+      if(data.data === "no"){
+          toastr.error('Check IN First to checkout !!')
+      }
+        },
+      });
+          });
+          } else { 
+            console.log('Geolocation is not supported by this browser.');
+          } 
+
+   
+       
+})
 });	
 </script>

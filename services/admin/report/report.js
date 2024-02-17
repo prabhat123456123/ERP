@@ -158,7 +158,81 @@ class ReportManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
+ async fetchStudentByClass(req) {
+     try {
+       
+       const classId = parseInt(req.body.classId);
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       
+       const studentData = await sequelize.query(
+         `SELECT * FROM student WHERE class_id = ${classId} AND school_id = ${id}`,
+         {
+           type: QueryTypes.SELECT,
+           
+          }
+          );
+        
+          return studentData;
 
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  async fetchStudentReportByClass(req) {
+     try {
+       
+       const classId = parseInt(req.body.classes);
+       const studentId = parseInt(req.body.studentId);
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       
+       const studentData = await sequelize.query(
+         `SELECT * FROM student WHERE class_id = ${classId} AND school_id = ${id}`,
+         {
+           type: QueryTypes.SELECT,
+           
+          }
+          );
+        
+          return studentData;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getClass(req) {
+     try {
+       
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       
+       const data = await sequelize.query(
+         `SELECT * FROM class WHERE school_id = ${id}`,
+         {
+           type: QueryTypes.SELECT,
+           
+          }
+          );
+        
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
     async deleteAdmission(body) {
     try {
 

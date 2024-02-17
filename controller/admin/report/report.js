@@ -9,7 +9,8 @@ const { ReportManagement } = require("../../../services/admin");
 
 const reportStudent = async (req, res, next) => {
   try {
-   return res.render("admin/report/report-student");
+      const data = await new ReportManagement().getClass(req);
+   return res.render("admin/report/report-student",{data:data});
   } catch (error) {
     next(error);
   }
@@ -23,11 +24,32 @@ const reportFaculty = async (req, res, next) => {
   }
 };
 
+const fetchStudentByClass = async (req, res, next) => {
+  try {
+    const data = await new ReportManagement().fetchStudentByClass(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
 
+};
+const fetchStudentReportByClass = async (req, res, next) => {
+  try {
+    const data = await new ReportManagement().fetchStudentReportByClass(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
 
 
 
 module.exports = {
- reportStudent,reportFaculty
+ reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass
  
 };

@@ -9,8 +9,9 @@ const { AttendanceManagement } = require("../../../services/admin");
 
 const attendanceStudent = async (req, res, next) => {
   try {
-    // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
-    return res.render("admin/attendance/attendance-student");
+    const data = await new AttendanceManagement().getClass(req);
+    console.log("{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",data);
+    return res.render("admin/attendance/attendance-student",{data:data});
   } catch (error) {
     next(error);
   }
@@ -64,8 +65,8 @@ const deleteMultipleStudent = async (req, res, next) => {
 
 const attendanceFaculty = async (req, res, next) => {
   try {
-    // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
-    return res.render("admin/attendance/attendance-faculty");
+      const data = await new AttendanceManagement().getFacultyBySchool(req);
+    return res.render("admin/attendance/attendance-faculty",{data:data});
   } catch (error) {
     next(error);
   }
@@ -117,9 +118,95 @@ const deleteMultipleFaculty = async (req, res, next) => {
   }
 };
 
+const checkinStudentAttendance = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().checkinStudentAttendance(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const checkoutStudentAttendance = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().checkoutStudentAttendance(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getStudentAttendanceReport = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().getStudentAttendanceReport(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const checkinFacultyAttendance = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().checkinFacultyAttendance(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const checkoutFacultyAttendance = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().checkoutFacultyAttendance(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFacultyAttendanceReport = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().getFacultyAttendanceReport(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+const getReportByStudent = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().getReportByStudent(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getReportByFaculty = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().getReportByFaculty(req);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
 module.exports = {
- attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,
+ attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,checkinStudentAttendance,checkoutStudentAttendance,getStudentAttendanceReport,checkinFacultyAttendance,checkoutFacultyAttendance,getFacultyAttendanceReport,getReportByStudent,getReportByFaculty
 };

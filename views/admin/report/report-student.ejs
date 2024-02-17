@@ -28,13 +28,7 @@
          <!-- =============================================== -->
          <!-- Content Wrapper. Contains page content -->
          <div class="content-wrapper">
-			   <div class="loader" id="loader">
-      <img
-        class="loading-image" style="width: 100px;"
-        src="/assets/images/loader.webp"
-        alt="loading.."
-      />
-	   </div>
+			 
             <!-- Content Header (Page header) -->
             <section class="content-header">
                <div class="header-icon">
@@ -65,25 +59,27 @@
 						<div class="row">
 							<div class="col-md-6">
                                  <label>Select Class</label>
-                                 <select class="form-control" id="role">
+                                 <select class="form-control" id="classes">
                                     <option value="">Please Select Class</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    <% if(data.length){ %>
+                                       <% for(let i=0; i<data.length; i++){ %>
+
+                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+
+                                        <% } %>
+                                        <% } %>
                                  </select>
 								 </div>
 								<div class="col-md-6">
 								  <label>Select Student</label>
-                                 <select class="form-control" id="role">
+                                 <select class="form-control" id="studentId">
                                     <option value="">Please Select Student</option>
-                                    <option value="1">Mohan</option>
-                                    <option value="2">abx</option>
-                                    <option value="3">cvb</option>
+                                  
                                  </select>
 								 </div>
 								 </div>
 								 <br>
-								 <div align="center"><input type="submit" class="btn btn-primary" value="Find"> </div>
+								 <div align="center"><input type="submit" class="btn btn-primary" value="Find" id="find"> </div>
                               </div>
                              
                               </div>
@@ -100,11 +96,11 @@
                               </a>
                            </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" id="dataReport">
 		
 		
                       
-                    <h3 class="text-center">Please Select the above to see the reports</h3>
+                   
                              
                              
 				</div>
@@ -176,7 +172,55 @@
    <%- include('../../partials/footer-script') %>
 
    <script type="text/javascript" language="javascript">
-
+$(document).on('change','#classes', function () {
+   var id = $(this).val(); 
+  $.ajax({
+         url: `/report/fetch-student-by-class`,
+         type: "post",
+         data:{classId:id},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].id}">${data[i].name}</option>`
+        }
+             $("#studentId").html("");
+             
+             $("#studentId").html(`<option value="">Please Select.</option>`);
+            $("#studentId").append(option);
+          
+          
+          
+        },
+      });
+})
+$(document).on('click','#find', function () {
+   var classId = $('#classes').val(); 
+   var studentId = $('#studentId').val(); 
+  $.ajax({
+         url: `/report/fetch-studentReport-by-class`,
+         type: "post",
+         data:{classId:classId,studentId:studentId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].id}">${data[i].name}</option>`
+        }
+             $("#dataReport").html("");
+             
+            
+            $("#dataReport").append(option);
+          
+          
+          
+        },
+      });
+})
 $(document).ready(function(){
 	
 
