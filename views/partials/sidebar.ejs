@@ -9,6 +9,7 @@
                      </span>
                      </a>
                   </li>
+                   <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                   <li class="treeview">
                      <a href="#">
                      <i class="fa fa-users"></i><span>Class</span>
@@ -20,7 +21,7 @@
                         <li><a href="/classes/classes">All Class</a></li>
                      </ul>
                   </li>
-                 
+                 <% } %>
                    <li class="treeview">
                      <a href="#">
                      <i class="fa fa-users"></i><span>Admission Module</span>
@@ -32,6 +33,8 @@
                         <li><a href="/admission/admission">All Student</a></li>
                      </ul>
                   </li>
+                 
+                   <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                    <li class="treeview">
                      <a href="#">
                      <i class="fa fa-users"></i><span>Faculty/Staff Module</span>
@@ -45,6 +48,8 @@
                      </ul>
                   </li>
                   
+                   <% } %>
+                   <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                     <li class="treeview">
                      <a href="#">
                      <i class="fa fa-users"></i><span>Exam Module</span>
@@ -58,6 +63,8 @@
                      </ul>
                   </li>
                   
+
+                  <%  }  %>
                   <li class="treeview">
                      <a href="#">
                      <i class="fa fa-shopping-basket"></i><span>Financial Module</span>
@@ -66,12 +73,15 @@
                      </span>
                      </a>
                      <ul class="treeview-menu">
+                         <% if(user[0].role == "student" || user[0].role == "school" || user[0].role == "faculty"){ %> 
                         <li><a href="/financial/student-financial">Student Wise</a></li>
+                        <% } %>
+                         <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                         <li><a href="/financial/faculty-financial">Faculty Wise</a></li>
-                      
+                      <% } %>
                      </ul>
                   </li>
-                 
+                  <% if(user[0].role == "student"){ %> 
                   <li class="treeview">
                      <a href="#">
                      <i class="fa fa-book"></i><span>Test Series</span>
@@ -84,6 +94,8 @@
                        
                      </ul>
                   </li>
+                  
+                   <% } %>
                   <!-- <li class="treeview">
                      <a href="#">
                      <i class="fa fa-shopping-bag"></i><span>Accounting</span>
@@ -97,6 +109,7 @@
                         <li><a href="ecategory.html">Expense Category</a></li>
                      </ul>
                   </li> -->
+                 
                   <li class="treeview">
                      <a href="#">
                      <i class="fa fa-file-text"></i><span>Report</span>
@@ -110,6 +123,7 @@
                       
                      </ul>
                   </li>
+
                   <li class="treeview">
                      <a href="#">
                      <i class="fa fa-bell"></i><span>Attendance Module</span>
@@ -118,8 +132,12 @@
                      </span>
                      </a>
                      <ul class="treeview-menu">
+                         <% if(user[0].role == "student" || user[0].role == "school" || user[0].role == "faculty"){ %> 
                         <li><a href="/attendance/attendance-student">Student Attendence</a></li>
+                        <% } %>
+                         <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                         <li><a href="/attendance/attendance-faculty">Faculty/Staff Attendence</a></li>
+                        <% } %>
                      </ul>
                   </li>
                  <li class="treeview">
@@ -130,10 +148,12 @@
                      </span>
                      </a>
                      <ul class="treeview-menu">
-                      
+                       <% if(user[0].role == "student" || user[0].role == "school" || user[0].role == "faculty"){ %> 
                         <li><a href="/leave/leave-student-tracker">Student Leave Tracker</a></li>
+                        <% } %>
+                        <% if(user[0].role == "school" || user[0].role == "faculty"){ %> 
                         <li><a href="/leave/leave-faculty-tracker"> Faculty Leave Tracker</a></li>
-                      
+                      <% } %>
                      </ul>
                   </li>
                 
@@ -160,6 +180,7 @@
                      </span>
                      </a>
                   </li> -->
+                   <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                    <li>
                      <a href="/complaint/view-complaint">
                      <i class="fa fa-file-text"></i> <span>Complaint</span>
@@ -167,6 +188,8 @@
                      </span>
                      </a>
                   </li>
+                  <% } %>
+                   <% if(user[0].role == "student"){ %> 
                    <li>
                      <a href="/feedback/view-feedback">
                      <i class="fa fa-file-text"></i> <span>Feddback</span>
@@ -174,6 +197,7 @@
                      </span>
                      </a>
                   </li>
+                  <% } %>
                    <li>
                      <a href="/download/view-download">
                      <i class="fa fa-file-text"></i> <span>Download Center</span>

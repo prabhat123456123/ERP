@@ -113,7 +113,7 @@ if (req.user[0].role == "faculty") {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT student.id,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student LEFT JOIN student_attendance ON student_attendance.student_id = student.id  WHERE student.name like "%${
+        `SELECT student.id,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student_attendance.created_at FROM student LEFT JOIN student_attendance ON student_attendance.student_id = student.id  WHERE student.name like "%${
           body.search.value
         }%" OR student.email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -126,15 +126,13 @@ if (req.user[0].role == "faculty") {
 
       for (let i = 0; i < data.length; i++) {
        
-        data[i]["name"] = `${data[i].name}`;
+        data[i]["created_at"] = `${data[i].created_at}`;
       
         data[i]["attendance_status"] = `${data[i].attendance_status}`;
         data[i]["check_in"] = `${data[i].check_in}`;
         data[i]["check_out"] = `${data[i].check_out}`;
 
-        data[i][
-          "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewStudentAttendance(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> `;
+      
        
       }
 
@@ -153,7 +151,7 @@ if (req.user[0].role == "faculty") {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM student INNER JOIN student_attendance ON student_attendance.student_id = student.id`,
         {
           type: QueryTypes.SELECT,
         }
@@ -207,13 +205,13 @@ if (req.user[0].role == "faculty") {
   }
     async getReportByFaculty(req) {
     try {
-     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
-       const data = await sequelize.query(
+      const data = await sequelize.query(
         `SELECT faculty_attendance.created_at,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty_attendance.faculty_id = ${req.user[0].id} AND faculty.school_id = ${req.user[0].school_id} AND faculty_attendance.created_at BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`,
         {
           type: QueryTypes.SELECT,
         }
-      );
+        );
+      console.log("?????????????????????????????????????????????????????????????????",data);
       
       return data;
     } catch (error) {
@@ -480,7 +478,7 @@ async getFaculty(body) {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT faculty.id,faculty.school_id,faculty.name,faculty.email,faculty.gender,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty LEFT JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE name like "%${
+        `SELECT faculty.id,faculty.school_id,faculty.name,faculty.email,faculty.gender,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out,faculty_attendance.created_at FROM faculty LEFT JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -492,14 +490,12 @@ async getFaculty(body) {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["name"] = `${data[i].name}`;
+        data[i]["created_at"] = `${data[i].created_at}`;
       
 data[i]["attendance_status"] = `${data[i].attendance_status}`;
         data[i]["check_in"] = `${data[i].check_in}`;
         data[i]["check_out"] = `${data[i].check_out}`;
-        data[i][
-          "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewFacultyAttendance(${data[i].id},${data[i].school_id})' data-id='${data[i].id}' > View </button> `;
+       
        
       }
 
@@ -518,7 +514,7 @@ data[i]["attendance_status"] = `${data[i].attendance_status}`;
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM faculty`,
+        `SELECT * FROM faculty INNER JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id`,
         {
           type: QueryTypes.SELECT,
         }

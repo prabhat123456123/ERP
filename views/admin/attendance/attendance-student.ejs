@@ -230,7 +230,7 @@ $(document).ready(function(){
 		},
          columns: [
        
-        { data: "name" },
+        { data: "created_at" },
       
         { data: "attendance_status" },
         { data: "check_in" },
@@ -286,9 +286,51 @@ var studentId = $("#student_id").val();
          data:{startDates:startDates,endDates:endDates,classId:classId,studentId:studentId},
          dataType: "json",
          cache: false,
-         success: function (data) {
-            console.log(data);
-       
+         success: function (datas) {
+            console.log("..............",datas);
+       if (dataTable) {
+                  dataTable.destroy();
+                  dataTable.clear().draw();
+    }
+            if (datas && datas.length > 0) {
+                var dataArray = datas.map(function (item) {
+                    return [
+                        item.created_at,
+                        item.attendance_status,
+                        item.check_in,
+                        item.check_out
+                    ];
+                });
+                dataTable = $('#sample_data').DataTable({
+                    "processing": true,
+                    "serverSide": false, // Since you are processing data client-side
+                    "order": [],
+                    "data": dataArray,
+                    "columns": [
+                        { dataArray: "created_at" },
+                        { dataArray: "attendance_status" },
+                        { dataArray: "check_in" },
+                        { dataArray: "check_out" }
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'csv',
+                            exportOptions: { columns: 'th:not(:last-child)' }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: { columns: 'th:not(:last-child)' }
+                        }
+                    ]
+                });
+            } else {
+                if (dataTable) {
+                  dataTable.destroy();
+                  dataTable.clear().draw();
+    }
+                alert("No data found.");
+            }
           
         },
       });
@@ -303,10 +345,48 @@ var studentId = $("#student_id").val();
          data:{startDates:startDates,endDates:endDates},
          dataType: "json",
          cache: false,
-         success: function (data) {
-            console.log(data);
+         success: function (datas) {
+            console.log(datas);
        
-          
+             if (dataTable) {
+                dataTable.destroy(); // Destroy previous DataTable instance
+            }
+            if (datas && datas.length > 0) {
+                var dataArray = datas.map(function (item) {
+                    return [
+                        item.created_at,
+                        item.attendance_status,
+                        item.check_in,
+                        item.check_out
+                    ];
+                });
+                dataTable = $('#sample_data').DataTable({
+                    "processing": true,
+                    "serverSide": false, // Since you are processing data client-side
+                    "order": [],
+                    "data": dataArray,
+                    "columns": [
+                        { dataArray: "created_at" },
+                        { dataArray: "attendance_status" },
+                        { dataArray: "check_in" },
+                        { dataArray: "check_out" }
+                    ],
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'csv',
+                            exportOptions: { columns: 'th:not(:last-child)' }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: { columns: 'th:not(:last-child)' }
+                        }
+                    ]
+                });
+            } else {
+               dataTable.clear().draw(); // Destroy previous DataTable instance
+                alert("No data found.");
+            }
           
         },
       });
