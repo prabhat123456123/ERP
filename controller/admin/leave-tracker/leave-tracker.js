@@ -29,8 +29,8 @@ const leaveFacultyTracker = async (req, res, next) => {
 
 const getStudentLeave = async (req, res, next) => {
   try {
-    const adm = await new LeaveTrackerManagement().getStudentLeave(req.body);
-     const count = await new LeaveTrackerManagement().countStudentLeave(req.body);
+    const adm = await new LeaveTrackerManagement().getStudentLeave(req,res);
+     const count = await new LeaveTrackerManagement().countStudentLeave(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -134,8 +134,8 @@ const updateStudentLeaveById = async (req, res, next) => {
 
 const getFacultyLeave = async (req, res, next) => {
   try {
-    const adm = await new LeaveTrackerManagement().getFacultyLeave(req.body);
-     const count = await new LeaveTrackerManagement().countFacultyLeave(req.body);
+    const adm = await new LeaveTrackerManagement().getFacultyLeave(req,res);
+     const count = await new LeaveTrackerManagement().countFacultyLeave(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

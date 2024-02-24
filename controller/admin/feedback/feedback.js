@@ -18,8 +18,8 @@ const viewFeedback = async (req, res, next) => {
 
 const getFeedback = async (req, res, next) => {
   try {
-    const adm = await new FeedbackManagement().getFeedback(req.body);
-     const count = await new FeedbackManagement().countFeedback(req.body);
+    const adm = await new FeedbackManagement().getFeedback(req,res);
+     const count = await new FeedbackManagement().countFeedback(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

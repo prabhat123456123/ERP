@@ -16,8 +16,8 @@ const addAdmission = async (req, res, next) => {
 };
 const getAdmission = async (req, res, next) => {
   try {
-    const adm = await new AdmissionManagement().getAdmission(req.body);
-     const count = await new AdmissionManagement().countStudent(req.body);
+    const adm = await new AdmissionManagement().getAdmission(req,res);
+     const count = await new AdmissionManagement().countStudent(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

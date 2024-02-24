@@ -101,16 +101,17 @@ class ClassesManagement {
     }
   }
    
-  async getClasses(body) {
+  async getClasses(req,res) {
     try {
 //  console.log(sequelize)
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
      
        const data = await sequelize.query(
-        `SELECT id,class_name,annual_fee FROM class WHERE class_name like "%${
-          body.search.value
+        `SELECT id,class_name,annual_fee FROM class WHERE school_id = ${id} AND class_name like "%${
+          req.body.search.value
         }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -139,12 +140,13 @@ class ClassesManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countClasses(body) {
+    async countClasses(req,res) {
     try {
-//  console.log(sequelize)
-     
+ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      
+    
        const data = await sequelize.query(
-        `SELECT * FROM class`,
+        `SELECT * FROM class WHERE school_id = ${id}`,
         {
           type: QueryTypes.SELECT,
         }

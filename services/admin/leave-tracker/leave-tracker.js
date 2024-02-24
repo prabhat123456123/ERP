@@ -107,16 +107,20 @@ class LeaveTrackerManagement {
     }
   }
   
-  async getStudentLeave(body) {
+  async getStudentLeave(req, res) {
     try {
 //  console.log(sequelize)
-
+    const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student.id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.name like "%${
-          body.search.value
-        }%" OR student_leave.leave_status like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} AND ` + whereClause + `(student.name like "%${
+          req.body.search.value
+        }%" OR student_leave.leave_status like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -153,12 +157,16 @@ class LeaveTrackerManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudentLeave(body) {
+    async countStudentLeave(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM student_leave`,
+        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -455,16 +463,21 @@ console.log(req.body);
     }
   }
   
-  async getFacultyLeave(body) {
+  async getFacultyLeave(req,res) {
     try {
 //  console.log(sequelize)
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `id = ${req.user[0].id} AND `
+      }
 
        const data = await sequelize.query(
-        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE faculty.name like "%${
-          body.search.value
-        }%" OR faculty_leave.leave_status like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE school_id = ${id} AND ` + whereClause + `(faculty.name like "%${
+          req.body.search.value
+        }%" OR faculty_leave.leave_status like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -501,12 +514,16 @@ console.log(req.body);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countFacultyLeave(body) {
+    async countFacultyLeave(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `faculty.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM faculty_leave`,
+        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE faculty.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }

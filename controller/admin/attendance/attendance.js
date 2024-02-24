@@ -10,7 +10,6 @@ const { AttendanceManagement } = require("../../../services/admin");
 const attendanceStudent = async (req, res, next) => {
   try {
     const data = await new AttendanceManagement().getClass(req);
-    console.log("{}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}",data);
     return res.render("admin/attendance/attendance-student",{data:data});
   } catch (error) {
     next(error);
@@ -18,8 +17,8 @@ const attendanceStudent = async (req, res, next) => {
 };
 const getStudent = async (req, res, next) => {
   try {
-    const adm = await new AttendanceManagement().getStudent(req.body);
-     const count = await new AttendanceManagement().countStudent(req.body);
+    const adm = await new AttendanceManagement().getStudent(req,res);
+     const count = await new AttendanceManagement().countStudent(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -73,8 +72,8 @@ const attendanceFaculty = async (req, res, next) => {
 };
 const getFaculty = async (req, res, next) => {
   try {
-    const adm = await new AttendanceManagement().getFaculty(req.body);
-     const count = await new AttendanceManagement().countFaculty(req.body);
+    const adm = await new AttendanceManagement().getFaculty(req,res);
+     const count = await new AttendanceManagement().countFaculty(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

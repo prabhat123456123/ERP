@@ -108,16 +108,20 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
- async getStudent(body) {
+ async getStudent(req,res) {
     try {
 //  console.log(sequelize)
-     
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student.id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT student.id,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student_attendance.created_at FROM student LEFT JOIN student_attendance ON student_attendance.student_id = student.id  WHERE student.name like "%${
-          body.search.value
-        }%" OR student.email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT student.id,student.school_id,student.class_id,student.name,student.email,student.gender,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student_attendance.created_at FROM student LEFT JOIN student_attendance ON student_attendance.student_id = student.id WHERE student.school_id = ${id} AND ` + whereClause + `(student.name like "%${
+          req.body.search.value
+        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -146,12 +150,17 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countStudent(req,res) {
     try {
 //  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND student.id = ${req.user[0].id}`
+      }
      
        const data = await sequelize.query(
-        `SELECT * FROM student INNER JOIN student_attendance ON student_attendance.student_id = student.id`,
+        `SELECT * FROM student INNER JOIN student_attendance ON student_attendance.student_id = student.id WHERE student.school_id = ${id}`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -473,16 +482,20 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-async getFaculty(body) {
+async getFaculty(req,res) {
     try {
 //  console.log(sequelize)
-     
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `faculty.id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT faculty.id,faculty.school_id,faculty.name,faculty.email,faculty.gender,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out,faculty_attendance.created_at FROM faculty LEFT JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE name like "%${
-          body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT faculty.id,faculty.school_id,faculty.name,faculty.email,faculty.gender,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out,faculty_attendance.created_at FROM faculty LEFT JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE faculty.school_id = ${id} AND ` + whereClause + `(name like "%${
+          req.body.search.value
+        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -509,12 +522,16 @@ data[i]["attendance_status"] = `${data[i].attendance_status}`;
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countFaculty(body) {
+    async countFaculty(req,res) {
     try {
 //  console.log(sequelize)
-     
+     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = ` AND faculty.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM faculty INNER JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id`,
+        `SELECT * FROM faculty INNER JOIN faculty_attendance ON faculty_attendance.faculty_id = faculty.id WHERE faculty.school_id = ${id}`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }

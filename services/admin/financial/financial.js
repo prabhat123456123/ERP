@@ -74,15 +74,19 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async getStudentFinancial(body) {
+   async getStudentFinancial(req,res) {
     try {
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` student.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT id,class_id,school_id,name,email,fathers_name FROM student WHERE name like "%${
-          body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,class_id,school_id,name,email,fathers_name FROM student INNER JOIN student_financial ON student_financial.student_id = student.id WHERE student.school_id = ${id} AND ` + whereClause + `(name like "%${
+          req.body.search.value
+        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -111,12 +115,16 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countStudent(req,res) {
     try {
 //  console.log(sequelize)
-     
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` student.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT id,class_id,school_id,name,email,fathers_name FROM student INNER JOIN student_financial ON student_financial.student_id = student.id WHERE student.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -135,16 +143,20 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-     async getFacultyFinancial(body) {
+     async getFacultyFinancial(req,res) {
     try {
 //  console.log(sequelize)
-     
+     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `faculty.id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE name like "%${
-          body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,class_id,school_id,name,email,gender FROM faculty INNER JOIN faculty_financial ON faculty_financial.faculty_id = faculty.id WHERE faculty.school_id = ${id} AND ` + whereClause + `(name like "%${
+          req.body.search.value
+        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -173,12 +185,16 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countFaculty(body) {
+    async countFaculty(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `faculty.id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM faculty`,
+        `SELECT id,class_id,school_id,name,email,gender FROM faculty INNER JOIN faculty_financial ON faculty_financial.faculty_id = faculty.id WHERE faculty.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }

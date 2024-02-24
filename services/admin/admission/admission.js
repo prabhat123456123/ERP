@@ -39,7 +39,7 @@ class AdmissionManagement {
    async createStudent(files, fields, req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-
+const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       const userExist = await sequelize.query(
         "SELECT * FROM student WHERE email =? OR phone=?",
         {
@@ -280,9 +280,11 @@ class AdmissionManagement {
    async getClass(req,res) {
     try {
 //  console.log(sequelize)
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      
      
        const data = await sequelize.query(
-        `SELECT * FROM class`,
+        `SELECT * FROM class WHERE school_id = ${id}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -301,16 +303,21 @@ class AdmissionManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  async getAdmission(body) {
+  async getAdmission(req,res) {
     try {
 //  console.log(sequelize)
-     
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `id = ${req.user[0].id} AND `
+      }
+    
        const data = await sequelize.query(
-        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE name like "%${
-          body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE school_id = ${id} AND ` + whereClause + `(name like "%${
+          req.body.search.value
+        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -329,7 +336,6 @@ class AdmissionManagement {
        
       }
 
-
       return data;
     } catch (error) {
       if (error.statusCode) {
@@ -339,12 +345,16 @@ class AdmissionManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countStudent(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM student WHERE school_id = ${id}`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -503,8 +513,7 @@ class AdmissionManagement {
   }
    async exportExcel(req,res) {
      try {
-      console.log("#$%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      console.log(req.user);
+     
        const id = parseInt(req.user[0].id)
 
        // Create a new workbook and worksheet

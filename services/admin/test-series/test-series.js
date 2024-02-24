@@ -34,15 +34,20 @@ const BASEURL = process.env.BASEURL;
 class TestManagement {
   constructor() {}
 
-   async getCompletedQuizTest(body) {
+   async getCompletedQuizTest(req,res) {
     try {
-
+   const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
+    
       const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "completed" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -117,12 +122,16 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countCompletedQuizTest(body) {
+    async countCompletedQuizTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -138,14 +147,19 @@ class TestManagement {
     }
   }
 
-   async getNewQuizTest(body) {
-    try {
+   async getNewQuizTest(req,res) {
+     try {
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
  const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "new" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -181,12 +195,16 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countNewQuizTest(body) {
+    async countNewQuizTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -206,16 +224,20 @@ class TestManagement {
     }
   }
 
-   async getNewPracticeTest(body) {
+   async getNewPracticeTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "new" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -251,11 +273,15 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countNewPracticeTest(body) {
+    async countNewPracticeTest(req,res) {
     try {
-
+ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -271,16 +297,20 @@ class TestManagement {
     }
   }
 
-   async getCompletedPracticeTest(body) {
+   async getCompletedPracticeTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
      const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "completed" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -316,12 +346,16 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countCompletedPracticeTest(body) {
+    async countCompletedPracticeTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -341,15 +375,20 @@ class TestManagement {
     }
   }
 
-   async getCompletedFulllengthTest(body) {
-    try {
+   async getCompletedFulllengthTest(req,res) {
+     try {
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
 //  console.log(sequelize)
      const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "completed" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -385,12 +424,16 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countCompletedFulllengthTest(body) {
+    async countCompletedFulllengthTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "completed" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -410,15 +453,20 @@ class TestManagement {
     }
   }
 
-   async getNewFulllengthTest(body) {
+   async getNewFulllengthTest(req,res) {
     try {
 //  console.log(sequelize)
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "new" AND exam_name like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -454,12 +502,16 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countNewFulllengthTest(body) {
+    async countNewFulllengthTest(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.class_id = ${req.user[0].class_id} `
+      }
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "new" AND exam.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }

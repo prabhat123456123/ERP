@@ -16,8 +16,8 @@ const viewComplaint = async (req, res, next) => {
 };
 const getComplaint = async (req, res, next) => {
   try {
-    const adm = await new ComplaintManagement().getComplaint(req.body);
-     const count = await new ComplaintManagement().countComplaint(req.body);
+    const adm = await new ComplaintManagement().getComplaint(req,res);
+     const count = await new ComplaintManagement().countComplaint(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

@@ -89,16 +89,17 @@ async createExam(files, fields, req, res) {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async getExam(body) {
+   async getExam(req, res) {
     try {
 //  console.log(sequelize)
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
      
        const data = await sequelize.query(
-        `SELECT exam.id,exam.school_id,exam.exam_name,class.id as class_id,class.class_name FROM exam INNER JOIN class ON class.id = exam.class_id WHERE exam.exam_name like "%${
-          body.search.value
-        }%" OR class.class_name like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT exam.id,exam.school_id,exam.exam_name,class.id as class_id,class.class_name FROM exam INNER JOIN class ON class.id = exam.class_id WHERE exam.school_id = ${id} AND (exam.exam_name like "%${
+          req.body.search.value
+        }%" OR class.class_name like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -126,12 +127,13 @@ async createExam(files, fields, req, res) {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countExam(body) {
+    async countExam(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+    
        const data = await sequelize.query(
-        `SELECT * FROM exam`,
+        `SELECT * FROM exam WHERE school_id = ${id}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -584,16 +586,17 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     }
   }
  
-  async getQuestion(body) {
+  async getQuestion(req,res) {
     try {
 //  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
      
        const data = await sequelize.query(
-        `SELECT question.id,exam.exam_name,question.question_title FROM question INNER JOIN exam ON exam.id = question.exam_id WHERE question_title like "%${
-          body.search.value
-        }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT question.id,exam.exam_name,question.question_title FROM question INNER JOIN exam ON exam.id = question.exam_id WHERE exam.school_id = ${id} AND (question_title like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -621,12 +624,12 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countQuestion(body) {
+    async countQuestion( req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
        const data = await sequelize.query(
-        `SELECT * FROM question`,
+        `SELECT * FROM question INNER JOIN exam ON exam.id = question.exam_id WHERE exam.school_id = ${id}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -884,16 +887,16 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     }
   }
   
-  async getSubjectMarks(body) {
+  async getSubjectMarks(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id 
        const data = await sequelize.query(
-        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE name like "%${
-          body.search.value
+        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id} AND (name like "%${
+          req.body.search.value
         }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -925,12 +928,12 @@ console.log(data);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countSubjectMarks(body) {
+    async countSubjectMarks(req,res) {
     try {
 //  console.log(sequelize)
-     
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id 
        const data = await sequelize.query(
-        `SELECT * FROM subject_marks`,
+        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id}`,
         {
           type: QueryTypes.SELECT,
         }

@@ -31,8 +31,8 @@ const examWiseQuestion = async (req, res, next) => {
 
 const getExam = async (req, res, next) => {
   try {
-    const adm = await new ExamManagement().getExam(req.body);
-     const count = await new ExamManagement().countExam(req.body);
+    const adm = await new ExamManagement().getExam(req,res);
+     const count = await new ExamManagement().countExam(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -140,8 +140,8 @@ const updateExamById = async (req, res, next) => {
 
 const getQuestion = async (req, res, next) => {
   try {
-    const adm = await new ExamManagement().getQuestion(req.body);
-     const count = await new ExamManagement().countQuestion(req.body);
+    const adm = await new ExamManagement().getQuestion(req,res);
+     const count = await new ExamManagement().countQuestion(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -255,8 +255,8 @@ const subjectMarks = async (req, res, next) => {
 };
 const getSubjectMarks = async (req, res, next) => {
   try {
-    const adm = await new ExamManagement().getSubjectMarks(req.body);
-     const count = await new ExamManagement().countSubjectMarks(req.body);
+    const adm = await new ExamManagement().getSubjectMarks(req,res);
+     const count = await new ExamManagement().countSubjectMarks(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

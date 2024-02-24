@@ -40,8 +40,8 @@ const PracticeTest = async (req, res, next) => {
 
 const getCompletedQuizTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getCompletedQuizTest(req.body);
-     const count = await new TestManagement().countCompletedQuizTest(req.body);
+    const adm = await new TestManagement().getCompletedQuizTest(req,res);
+     const count = await new TestManagement().countCompletedQuizTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -57,8 +57,8 @@ const getCompletedQuizTest = async (req, res, next) => {
 
 const getNewQuizTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getNewQuizTest(req.body);
-     const count = await new TestManagement().countNewQuizTest(req.body);
+    const adm = await new TestManagement().getNewQuizTest(req,res);
+     const count = await new TestManagement().countNewQuizTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -74,8 +74,8 @@ const getNewQuizTest = async (req, res, next) => {
 
 const getNewPracticeTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getNewPracticeTest(req.body);
-     const count = await new TestManagement().countNewPracticeTest(req.body);
+    const adm = await new TestManagement().getNewPracticeTest(req,res);
+     const count = await new TestManagement().countNewPracticeTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -91,8 +91,8 @@ const getNewPracticeTest = async (req, res, next) => {
 
 const getCompletedPracticeTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getCompletedPracticeTest(req.body);
-     const count = await new TestManagement().countCompletedPracticeTest(req.body);
+    const adm = await new TestManagement().getCompletedPracticeTest(req,res);
+     const count = await new TestManagement().countCompletedPracticeTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -108,8 +108,8 @@ const getCompletedPracticeTest = async (req, res, next) => {
 
 const getCompletedFulllengthTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getCompletedFulllengthTest(req.body);
-     const count = await new TestManagement().countCompletedFulllengthTest(req.body);
+    const adm = await new TestManagement().getCompletedFulllengthTest(req,res);
+     const count = await new TestManagement().countCompletedFulllengthTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -125,8 +125,8 @@ const getCompletedFulllengthTest = async (req, res, next) => {
 
 const getNewFulllengthTest = async (req, res, next) => {
   try {
-    const adm = await new TestManagement().getNewFulllengthTest(req.body);
-     const count = await new TestManagement().countNewFulllengthTest(req.body);
+    const adm = await new TestManagement().getNewFulllengthTest(req,res);
+     const count = await new TestManagement().countNewFulllengthTest(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

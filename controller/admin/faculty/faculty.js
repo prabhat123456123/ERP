@@ -17,8 +17,8 @@ const viewFaculty = async (req, res, next) => {
 };
 const getFacultyData = async (req, res, next) => {
   try {
-    const adm = await new FacultyManagement().getFaculty(req.body);
-     const count = await new FacultyManagement().countFaculty(req.body);
+    const adm = await new FacultyManagement().getFaculty(req,res);
+     const count = await new FacultyManagement().countFaculty(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

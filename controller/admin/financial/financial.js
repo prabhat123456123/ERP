@@ -19,8 +19,8 @@ const addStudentFinancial = async (req, res, next) => {
 const getStudentFinancial = async (req, res, next) => {
   try {
 
-        const adm = await new FinancialManagement().getStudentFinancial(req.body);
-     const count = await new FinancialManagement().countStudent(req.body);
+        const adm = await new FinancialManagement().getStudentFinancial(req,res);
+     const count = await new FinancialManagement().countStudent(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -45,8 +45,8 @@ const addFacultyFinancial = async (req, res, next) => {
 };
 const getFacultyFinancial = async (req, res, next) => {
   try {
-        const adm = await new FinancialManagement().getFacultyFinancial(req.body);
-     const count = await new FinancialManagement().countFaculty(req.body);
+        const adm = await new FinancialManagement().getFacultyFinancial(req,res);
+     const count = await new FinancialManagement().countFaculty(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

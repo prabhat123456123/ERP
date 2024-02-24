@@ -34,16 +34,20 @@ const BASEURL = process.env.BASEURL;
 class FeedbackManagement {
   constructor() {}
 
- async getFeedback(body) {
+ async getFeedback(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.name like "%${
-          body.search.value
-        }%" OR faculty.email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.school_id = ${id} AND ` + whereClause + `(faculty.name like "%${
+          req.body.search.value
+        }%" OR faculty.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -73,12 +77,16 @@ class FeedbackManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countFeedback(body) {
+    async countFeedback(req,res) {
     try {
 //  console.log(sequelize)
-     
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = ` AND id = ${req.user[0].id}`
+      }
        const data = await sequelize.query(
-        `SELECT * FROM faculty`,
+        `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE  WHERE faculty.school_id = ${id} AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }

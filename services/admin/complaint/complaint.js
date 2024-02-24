@@ -34,14 +34,15 @@ const BASEURL = process.env.BASEURL;
 class ComplaintManagement {
   constructor() {}
 
- async getComplaint(body) {
+ async getComplaint(req,res) {
     try {
-//  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+     
      
          const data = await sequelize.query(
-        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.name like "%${
+        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} AND (student.name like "%${
           body.search.value
-        }%" OR student.email like "%${body.search.value}%" LIMIT ${parseInt(
+        }%" OR student.email like "%${body.search.value}%") LIMIT ${parseInt(
           body.length
         )} OFFSET ${parseInt(body.start)}`,
         {
@@ -72,12 +73,16 @@ class ComplaintManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countComplaint(body) {
+    async countComplaint(req,res) {
     try {
-//  console.log(sequelize)
+ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND id = ${req.user[0].id}`
+      }
      
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT * FROM complaint `,
         {
           type: QueryTypes.SELECT,
         }
