@@ -36,15 +36,18 @@ class ComplaintManagement {
 
  async getComplaint(req,res) {
     try {
-        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
-     
+      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `complaint.student_id = ${req.user[0].id} AND `
+      }
      
          const data = await sequelize.query(
-        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} AND (student.name like "%${
-          body.search.value
-        }%" OR student.email like "%${body.search.value}%") LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} AND ` + whereClause + ` (student.name like "%${
+          req.body.search.value
+        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+         req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -76,13 +79,13 @@ class ComplaintManagement {
     async countComplaint(req,res) {
     try {
  const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
-      let whereClause = "";
+     let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = ` AND id = ${req.user[0].id}`
+        whereClause = `complaint.student_id = ${req.user[0].id} AND `
       }
      
        const data = await sequelize.query(
-        `SELECT * FROM complaint `,
+        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} AND ` + whereClause ,
         {
           type: QueryTypes.SELECT,
         }

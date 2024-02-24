@@ -40,7 +40,7 @@ class FeedbackManagement {
       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `id = ${req.user[0].id} AND `
+        whereClause = `faculty.id = ${req.user[0].id} AND `
       }
        const data = await sequelize.query(
         `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE faculty.school_id = ${id} AND ` + whereClause + `(faculty.name like "%${
@@ -83,7 +83,7 @@ class FeedbackManagement {
        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = ` AND id = ${req.user[0].id}`
+        whereClause = `faculty.id = ${req.user[0].id}`
       }
        const data = await sequelize.query(
         `SELECT faculty.id,faculty.school_id,feedback.title,feedback.rate,faculty.name,feedback.id as fId FROM feedback RIGHT JOIN faculty ON faculty.id =feedback.faculty_id  WHERE  WHERE faculty.school_id = ${id} AND ` + whereClause,
