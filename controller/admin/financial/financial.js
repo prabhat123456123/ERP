@@ -10,7 +10,7 @@ const { FinancialManagement } = require("../../../services/admin");
 const addStudentFinancial = async (req, res, next) => {
   try {
       const data = await new FinancialManagement().getClass(req, res);
-     return res.render("admin/financial/financial-student",{data:data});
+     return res.render("admin/financial/financial-student",{nonce: res.locals.nonce,data:data});
 
   } catch (error) {
     next(error);
@@ -37,7 +37,7 @@ const getStudentFinancial = async (req, res, next) => {
 const addFacultyFinancial = async (req, res, next) => {
   try {
       const data = await new FinancialManagement().getClass(req, res);
-     return res.render("admin/financial/financial-student",{data:data});
+     return res.render("admin/financial/financial-student",{nonce: res.locals.nonce,data:data});
 
   } catch (error) {
     next(error);
@@ -64,7 +64,7 @@ const viewStudentFeeDetails = async (req, res, next) => {
   try {
       const data = await new FinancialManagement().getFeeDetails(req, res);
 
-     return res.render("admin/financial/view-student-fee-details",{data:data});
+     return res.render("admin/financial/view-student-fee-details",{nonce: res.locals.nonce,data:data});
 
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ const viewStudentFeeDetails = async (req, res, next) => {
 };
 const viewFacultyFeeDetails = async (req, res, next) => {
   try {
-        return res.render("admin/financial/view-faculty-fee-details");
+        return res.render("admin/financial/view-faculty-fee-details",{nonce: res.locals.nonce});
 
   } catch (error) {
     next(error);

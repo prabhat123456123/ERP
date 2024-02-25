@@ -9,7 +9,7 @@ const {
 const addSubject = async (req, res, next) => {
   try {
     const data = await new SubjectManagement().getClass(req, res);
-    return res.render("admin/subject/subject",{data:data});
+    return res.render("admin/subject/subject",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }

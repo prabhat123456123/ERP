@@ -10,7 +10,7 @@ const { AttendanceManagement } = require("../../../services/admin");
 const attendanceStudent = async (req, res, next) => {
   try {
     const data = await new AttendanceManagement().getClass(req);
-    return res.render("admin/attendance/attendance-student",{data:data});
+    return res.render("admin/attendance/attendance-student",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }
@@ -65,7 +65,7 @@ const deleteMultipleStudent = async (req, res, next) => {
 const attendanceFaculty = async (req, res, next) => {
   try {
       const data = await new AttendanceManagement().getFacultyBySchool(req);
-    return res.render("admin/attendance/attendance-faculty",{data:data});
+    return res.render("admin/attendance/attendance-faculty",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }

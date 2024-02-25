@@ -9,7 +9,7 @@ const {
 
 const viewComplaint = async (req, res, next) => {
   try {
-     return res.render("admin/complaint/complaint");
+     return res.render("admin/complaint/complaint",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

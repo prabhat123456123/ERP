@@ -9,7 +9,7 @@ const {
 
 const viewFeedback = async (req, res, next) => {
   try {
-   return res.render("admin/feedback/feedback");
+   return res.render("admin/feedback/feedback",{nonce: res.locals.nonce});
 
   } catch (error) {
     next(error);

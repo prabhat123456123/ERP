@@ -11,7 +11,7 @@ const viewExam = async (req, res, next) => {
   try {
      const data = await new ExamManagement().getClass(req, res);
      const subject = await new ExamManagement().getSubject(req, res);
-     return res.render("admin/exam/exam",{data:data,subject:subject});
+     return res.render("admin/exam/exam",{nonce: res.locals.nonce,data:data,subject:subject});
 
   } catch (error) {
     next(error);
@@ -22,7 +22,7 @@ const examWiseQuestion = async (req, res, next) => {
   try {
     
     
-     return res.render("admin/exam/question",{examId:req.params.id});
+     return res.render("admin/exam/question",{nonce: res.locals.nonce,examId:req.params.id});
 
   } catch (error) {
     next(error);
@@ -248,7 +248,7 @@ const updateQuestionById = async (req, res, next) => {
 const subjectMarks = async (req, res, next) => {
   try {
     const data = await new ExamManagement().getData(req, res);
-    return res.render("admin/exam/subjective-marks",{data:data});
+    return res.render("admin/exam/subjective-marks",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }

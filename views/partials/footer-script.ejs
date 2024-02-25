@@ -8,9 +8,13 @@
       <!-- jquery-ui --> 
     
 
- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+ <!-- <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script> -->
+
+ <script src="/assets/dist/js/jquery.min.js"></script>
+<script src="/assets/dist/js/moment.min.js"></script>
+<script src="/assets/dist/js/daterangepicker.js"></script>
      
 
 <!-- 
@@ -52,7 +56,7 @@
         <!-- Buttons examples -->
         <script src="/assets/plugins/dataTables/dataTables.buttons.min.js"></script>
         <script src="/assets/plugins/dataTables/buttons.bootstrap4.min.js"></script>
-        <script src="/assets/plugins/dataTables/jszip.min.js"></script>
+        <!-- <script src="/assets/plugins/dataTables/jszip.min.js"></script> -->
         <script src="/assets/plugins/dataTables/pdfmake.min.js"></script>
         <script src="/assets/plugins/dataTables/vfs_fonts.js"></script>
         <script src="/assets/plugins/dataTables/buttons.html5.min.js"></script>
@@ -72,7 +76,7 @@
       
       <!-- End Theme label Script
          =====================================================================-->
-      <script>
+      <script nonce="<%= nonce %>">
         //  function dash() {
         //  // single bar chart
         //  var ctx = document.getElementById("singelBarChart");

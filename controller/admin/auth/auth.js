@@ -11,7 +11,7 @@ const {
 const login = async (req, res, next) => {
   try {
     // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
-    return res.render("admin/login");
+    return res.render("admin/login",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
 const register = async (req, res, next) => {
   try {
     // const allHostel = await new AdmissionManagement().addAdmission(req, res, next);
-    return res.render("admin/register");
+    return res.render("admin/register",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

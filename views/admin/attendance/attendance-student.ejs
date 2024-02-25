@@ -155,7 +155,7 @@
    <%- include('../../partials/footer-script') %>
 
 
-   <script type="text/javascript" language="javascript">
+   <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 $(document).on('change','#class_id', function () {
    var id = $(this).val(); 
   $.ajax({

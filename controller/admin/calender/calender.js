@@ -9,7 +9,7 @@ const { CalenderManagement } = require("../../../services/admin");
 
 const viewCalender = async (req, res, next) => {
   try {
-      return res.render("admin/calender/calender");
+      return res.render("admin/calender/calender",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

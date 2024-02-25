@@ -9,7 +9,7 @@ const {
 
 const viewFaculty = async (req, res, next) => {
   try {
-    return res.render("admin/faculty/faculty");
+    return res.render("admin/faculty/faculty",{nonce: res.locals.nonce});
 
   } catch (error) {
     next(error);

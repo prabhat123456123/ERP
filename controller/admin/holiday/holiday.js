@@ -10,7 +10,7 @@ const { HolidayManagement } = require("../../../services/admin");
 
 const viewHoliday = async (req, res, next) => {
   try {
-         return res.render("admin/holiday/holiday");
+         return res.render("admin/holiday/holiday",{nonce: res.locals.nonce});
 
   } catch (error) {
     next(error);

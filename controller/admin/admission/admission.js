@@ -9,7 +9,7 @@ const {
 const addAdmission = async (req, res, next) => {
   try {
     const data = await new AdmissionManagement().getClass(req, res);
-    return res.render("admin/admission/admission",{data:data});
+    return res.render("admin/admission/admission",{nonce: res.locals.nonce,data:data });
   } catch (error) {
     next(error);
   }

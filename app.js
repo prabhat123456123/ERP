@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
 
 const session = require("express-session");
 
@@ -25,12 +26,12 @@ const { admin } = require("./routes");
 // const { handleError } = require("./middleware");
 
 const sequelize = require("./config/database");
-// const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
+const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
 
 app.use(express.json());
 app
-  // .use(logger("dev", { stream: accessLogStream }))
+  .use(logger("dev", { stream: accessLogStream }))
   .use(logger("dev"))
   .use(
     bodyParser.urlencoded({
@@ -41,7 +42,7 @@ app
   )
   .use(bodyParser.json({ limit: "100mb" }))
   .use(cors())
-  // .use(helmet());
+  .use(helmet());
 // app.use(helmet({
 // contentSecurityPolicy: {
 // directives: {
@@ -101,6 +102,23 @@ app.use((req, res, next) => {
     res.locals.user = req.user || null;
 
   next();
+});
+
+// Middleware to generate nonce for each request
+app.use((req, res, next) => {
+    // Generate a random nonce for each request
+    const nonce = crypto.randomBytes(16).toString('base64');
+    // Set the nonce in a response local variable
+    res.locals.nonce = nonce;
+    next();
+});
+
+// Set CSP header with nonce included
+app.use((req, res, next) => {
+  const nonce = res.locals.nonce;
+  console.log(">??????????????????????????????????????",nonce);
+    res.setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`);
+    next();
 });
 
 

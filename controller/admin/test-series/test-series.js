@@ -9,14 +9,14 @@ const { TestManagement } = require("../../../services/admin");
 const onlineTest = async (req, res, next) => {
   try {
    
-    return res.render("admin/test-series/online-test");
+    return res.render("admin/test-series/online-test",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
 };
 const FullLengthTest = async (req, res, next) => {
   try {
-    return res.render("admin/test-series/full-length-test");
+    return res.render("admin/test-series/full-length-test",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
@@ -24,7 +24,7 @@ const FullLengthTest = async (req, res, next) => {
 
 const QuizTest = async (req, res, next) => {
   try {
-    return res.render("admin/test-series/quiz-test");
+    return res.render("admin/test-series/quiz-test",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
@@ -32,7 +32,7 @@ const QuizTest = async (req, res, next) => {
 
 const PracticeTest = async (req, res, next) => {
   try {
-    return res.render("admin/test-series/practice-test");
+    return res.render("admin/test-series/practice-test",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

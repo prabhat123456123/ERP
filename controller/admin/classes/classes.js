@@ -9,7 +9,7 @@ const {
 const addClasses = async (req, res, next) => {
   try {
     // const data = await new ClassesManagement().getClass(req, res);
-    return res.render("admin/classes/classes");
+    return res.render("admin/classes/classes",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

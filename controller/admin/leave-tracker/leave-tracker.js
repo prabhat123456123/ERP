@@ -11,7 +11,7 @@ const { LeaveTrackerManagement } = require("../../../services/admin");
 const leaveStudentTracker = async (req, res, next) => {
   try {
     // const allHostel = await new LeaveTrackerManagement().addAdmission(req, res, next);
-    return res.render("admin/leave-tracker/leave-student-tracker");
+    return res.render("admin/leave-tracker/leave-student-tracker",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
@@ -20,7 +20,7 @@ const leaveStudentTracker = async (req, res, next) => {
 const leaveFacultyTracker = async (req, res, next) => {
   try {
     // const allHostel = await new LeaveTrackerManagement().addAdmission(req, res, next);
-    return res.render("admin/leave-tracker/leave-faculty-tracker");
+    return res.render("admin/leave-tracker/leave-faculty-tracker",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

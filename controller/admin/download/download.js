@@ -10,7 +10,7 @@ const { DownloadManagement } = require("../../../services/admin");
 
 const viewDownload = async (req, res, next) => {
   try {
-  return res.render("admin/download/download");
+  return res.render("admin/download/download",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }

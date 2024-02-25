@@ -10,7 +10,7 @@ const { ReportManagement } = require("../../../services/admin");
 const reportStudent = async (req, res, next) => {
   try {
       const data = await new ReportManagement().getClass(req);
-   return res.render("admin/report/report-student",{data:data});
+   return res.render("admin/report/report-student",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }
@@ -18,7 +18,7 @@ const reportStudent = async (req, res, next) => {
 
 const reportFaculty = async (req, res, next) => {
   try {
-   return res.render("admin/report/report-faculty");
+   return res.render("admin/report/report-faculty",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
