@@ -26,12 +26,12 @@ const { admin } = require("./routes");
 // const { handleError } = require("./middleware");
 
 const sequelize = require("./config/database");
-const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
+// const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
 
 app.use(express.json());
 app
-  .use(logger("dev", { stream: accessLogStream }))
+  // .use(logger("dev", { stream: accessLogStream }))
   .use(logger("dev"))
   .use(
     bodyParser.urlencoded({
@@ -53,7 +53,22 @@ app
 // },
 // }));
 
+// Middleware to generate nonce for each request
+app.use((req, res, next) => {
+  res.locals.nonce = crypto.randomBytes(16).toString('base64');
+  next();
+});
 
+// Helmet middleware for Content Security Policy (CSP)
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
+      // Add other directives as needed
+    },
+  })
+);
 
 // app.use(`${process.env.URL_PREFIX?process.env.URL_PREFIX:''}/`, require('./routes'));
 // const csrfProtection = csrf();
@@ -77,6 +92,7 @@ app.use(
     resave: false,
   })
 );
+
 // app.use(csrfProtection);
 
 //   app.use(function (err, req, res, next) {
@@ -104,22 +120,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware to generate nonce for each request
-app.use((req, res, next) => {
-    // Generate a random nonce for each request
-    const nonce = crypto.randomBytes(16).toString('base64');
-    // Set the nonce in a response local variable
-    res.locals.nonce = nonce;
-    next();
-});
 
-// Set CSP header with nonce included
-app.use((req, res, next) => {
-  const nonce = res.locals.nonce;
-  console.log(">??????????????????????????????????????",nonce);
-    res.setHeader('Content-Security-Policy', `script-src 'self' 'nonce-${nonce}'`);
-    next();
-});
 
 
 // app.use((req, res, next) => {

@@ -206,6 +206,18 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("addBtn")) {
+        addFeedback(target.dataset.id);
+    }else if(target.classList.contains("editBtn")) {
+         editFeedback(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteFeedback(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewFeedback(target.dataset.id);
+    }
+});
 
 
      

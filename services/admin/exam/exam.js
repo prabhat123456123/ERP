@@ -113,7 +113,7 @@ async createExam(files, fields, req, res) {
       
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> <a href="/exam/examWiseQuestion/${data[i].id}" class='btn btn-success btn-sm' data-id='${data[i].id}' > Go To Question Section </a> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewExam(${data[i].id},${data[i].school_id},${data[i].class_id})' data-id='${data[i].id}' > View </button> <a href="/exam/examWiseQuestion/${data[i].id}" class='btn btn-success btn-sm' data-id='${data[i].id}' > Go To Question Section </a> `;
        
       }
 
@@ -610,7 +610,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editQuestion(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteQuestion(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewQuestion(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editQuestion(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteQuestion(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewQuestion(${data[i].id})' data-id='${data[i].id}' > View </button> `;
        
       }
 
@@ -919,7 +919,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubjectMarks(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteSubjectMarks(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewSubjectMarks(${data[i].id})' data-id='${data[i].id}' > View Marks </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubjectMarks(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteSubjectMarks(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewSubjectMarks(${data[i].id})' data-id='${data[i].id}' > View Marks </button>`;
        
       }
 console.log(data);

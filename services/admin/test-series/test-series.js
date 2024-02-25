@@ -69,7 +69,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' >View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm viewBtn' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' >View Explaination </button> `;
        
       }
 
@@ -181,7 +181,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='startExam(${data[i].id})' data-id='${data[i].id}' >Start Quiz </button> `;
+        ] = `<button class='btn btn-success btn-sm newQuizBtn' onclick='startExam(${data[i].id})' data-id='${data[i].id}' >Start Quiz </button> `;
        
       }
 
@@ -259,7 +259,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='startExam(${data[i].id})' data-id='${data[i].id}' >Start Exam </button> `;
+        ] = `<button class='btn btn-success btn-sm newPracticeBtn' onclick='startExam(${data[i].id})' data-id='${data[i].id}' >Start Exam </button> `;
        
       }
 
@@ -332,7 +332,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' > View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm completedBtn' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' > View Explaination </button> `;
        
       }
 
@@ -410,7 +410,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' > View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm completedFullBtn' onclick='viewExplaination(${data[i].id})' data-id='${data[i].id}' > View Explaination </button> `;
        
       }
 
@@ -488,7 +488,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm' onclick='startExam(${data[i].id})' data-id='${data[i].id}' > Start Exam </button> `;
+        ] = `<button class='btn btn-success btn-sm fullNewBtn' onclick='startExam(${data[i].id})' data-id='${data[i].id}' > Start Exam </button> `;
        
       }
 

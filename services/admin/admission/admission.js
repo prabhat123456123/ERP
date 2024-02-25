@@ -305,7 +305,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
   }
   async getAdmission(req,res) {
     try {
-//  console.log(sequelize)
+    
        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
@@ -332,7 +332,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteAdmission(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewAdmission(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id})' data-id='${data[i].id}'> Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteAdmission(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewAdmission(${data[i].id})' data-id='${data[i].id}'> View </button> `;
        
       }
 

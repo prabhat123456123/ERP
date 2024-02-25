@@ -265,6 +265,16 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
+    document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("editBtn")) {
+        editExam(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteExam(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewExam(target.dataset.id);
+    }
+});
  $("#examForm").on("submit", async e => {
 							e.preventDefault();
 							try {

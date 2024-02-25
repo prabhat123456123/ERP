@@ -203,7 +203,18 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
-
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("addBtn")) {
+        addComplaint(target.dataset.id);
+    }else if(target.classList.contains("editBtn")) {
+         editComplaint(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteComplaint(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewComplaint(target.dataset.id);
+    }
+});
 
      
       //   $("#complaintForm").on("submit", async e => {

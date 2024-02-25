@@ -127,7 +127,7 @@ class SubjectManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubject(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteSubject(${data[i].id})' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubject(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteSubject(${data[i].id})' data-id='${data[i].id}' > Delete </button>`;
        
       }
 

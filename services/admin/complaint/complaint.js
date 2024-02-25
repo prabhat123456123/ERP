@@ -62,7 +62,7 @@ class ComplaintManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm editBtn' onclick='addComplaint(${data[i].id})' data-id='${data[i].cId}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].cId})' data-id='${data[i].cId}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteComplaint(${data[i].cId})' data-id='${data[i].cId}' > Delete </button> <button class='btn btn-success btn-sm' onclick='viewComplaint(${data[i].cId})' data-id='${data[i].cId}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addComplaint(${data[i].id})' data-id='${data[i].cId}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].cId})' data-id='${data[i].cId}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteComplaint(${data[i].cId})' data-id='${data[i].cId}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewComplaint(${data[i].cId})' data-id='${data[i].cId}' > View </button> `;
        
       }
 

@@ -126,7 +126,7 @@ class ClassesManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editClasses(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm' onclick='deleteClasses(${data[i].id})' data-id='${data[i].id}' > Delete </button> <a href="/subject/subject/${data[i].id}" class='btn btn-success btn-sm' data-id='${data[i].id}' > View Subject</a> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editClasses(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteClasses(${data[i].id})' data-id='${data[i].id}' > Delete </button> <a href="/subject/subject/${data[i].id}" class='btn btn-success btn-sm' data-id='${data[i].id}' > View Subject</a> `;
        
       }
 

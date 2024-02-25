@@ -318,7 +318,16 @@
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 
-
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("editBtn")) {
+        editAdmission(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteAdmission(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewAdmission(target.dataset.id);
+    }
+});
      
         $("#studentForm").on("submit", async e => {
          
@@ -438,6 +447,7 @@
        
 function viewAdmission(studentId) {
     try {
+alert("hhhhh")
      
       $("#viewStudentDiv").html("");
       $("#viewStudentModal").modal("toggle");
@@ -473,7 +483,6 @@ function viewAdmission(studentId) {
       console.error(err);
     }
   }
-
 
                   function editAdmission(studentId) {
     try {

@@ -208,7 +208,14 @@
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 
-
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("editBtn")) {
+        editClasses(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteClasses(target.dataset.id);
+    }
+});
      
         $("#classesForm").on("submit", async e => {
          
