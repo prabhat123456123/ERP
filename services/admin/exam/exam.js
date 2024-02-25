@@ -590,7 +590,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     try {
 //  console.log(sequelize)
         const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
-     
+    
        const data = await sequelize.query(
         `SELECT question.id,exam.exam_name,question.question_title FROM question INNER JOIN exam ON exam.id = question.exam_id WHERE exam.school_id = ${id} AND (question_title like "%${
           req.body.search.value
@@ -627,7 +627,8 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     async countQuestion( req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id
+      
        const data = await sequelize.query(
         `SELECT * FROM question INNER JOIN exam ON exam.id = question.exam_id WHERE exam.school_id = ${id}`,
         {
@@ -890,11 +891,15 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
   async getSubjectMarks(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id 
+      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id 
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student.id = ${req.user[0].id} AND `
+      }
        const data = await sequelize.query(
-        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id} AND (name like "%${
+        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id} AND `+whereClause+`(name like "%${
           req.body.search.value
-        }%" LIMIT ${parseInt(
+        }%") LIMIT ${parseInt(
           req.body.length
         )} OFFSET ${parseInt(req.body.start)}`,
         {
@@ -931,9 +936,14 @@ console.log(data);
     async countSubjectMarks(req,res) {
     try {
 //  console.log(sequelize)
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id 
+      
+      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id 
+       let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student.id = ${req.user[0].id} `
+      }
        const data = await sequelize.query(
-        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id}`,
+        `SELECT subject_marks.id,student.name,subject_marks.total_marks,subject_marks.passing_marks,subject.subject_name,subject_marks.obtained_marks FROM subject_marks INNER JOIN subject ON subject.id = subject_marks.subject_id INNER JOIN student ON student.id = subject_marks.student_id WHERE student.school_id = ${id}`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }

@@ -71,7 +71,7 @@ app.use(
       secure: process.env.NODE_ENV === "PROD" ? true : false,
       proxy: true,
       sameSite: "lax",
-      maxAge: 300000, // 5 minutes in milliseconds
+      maxAge: 300000000, // 5 minutes in milliseconds
     },
     resave: false,
   })

@@ -163,10 +163,10 @@ class LeaveTrackerManagement {
       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `student.id = ${req.user[0].id}`
+        whereClause = `AND student.id = ${req.user[0].id}`
       }
        const data = await sequelize.query(
-        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} AND ` + whereClause,
+        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -469,7 +469,7 @@ console.log(req.body);
        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `id = ${req.user[0].id} AND `
+        whereClause = `faculty.id = ${req.user[0].id} AND `
       }
 
        const data = await sequelize.query(
@@ -520,10 +520,10 @@ console.log(req.body);
       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `faculty.id = ${req.user[0].id}`
+        whereClause = `AND faculty.id = ${req.user[0].id}`
       }
        const data = await sequelize.query(
-        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE faculty.school_id = ${id} AND ` + whereClause,
+        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE faculty.school_id = ${id} ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
