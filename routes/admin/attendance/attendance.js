@@ -12,7 +12,7 @@ router.get("/attendance-student",isAuthenticatedUser(), attendanceStudent);
 router.post("/get-student",isAuthenticatedUser(), getStudent);
 router.post("/checkin-student-attendance",isAuthenticatedUser(), checkinStudentAttendance);
 router.post("/checkout-student-attendance",isAuthenticatedUser(), checkoutStudentAttendance);
-router.post("/get-student",isAuthenticatedUser(), getStudent);
+// router.post("/get-student",isAuthenticatedUser(), getStudent);
 router.post("/get-student-attendance-report",isAuthenticatedUser(), getStudentAttendanceReport);
 router.post("/get-report-by-student",isAuthenticatedUser(), getReportByStudent);
 router.post("/update-student", updateStudent);

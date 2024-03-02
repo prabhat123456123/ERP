@@ -141,9 +141,16 @@ const checkoutStudentAttendance = async (req, res, next) => {
 
 const getStudentAttendanceReport = async (req, res, next) => {
   try {
-    const data = await new AttendanceManagement().getStudentAttendanceReport(req);
-   
-    //  console.log(data)
+     const adm = await new AttendanceManagement().getStudentAttendanceReport(req,res);
+     const count = await new AttendanceManagement().countStudentReportBySchool(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     
+ 
     return res.send(data);
   } catch (error) {
     next(error);
@@ -174,20 +181,36 @@ const checkoutFacultyAttendance = async (req, res, next) => {
 
 const getFacultyAttendanceReport = async (req, res, next) => {
   try {
-    const data = await new AttendanceManagement().getFacultyAttendanceReport(req);
-   
-    //  console.log(data)
+    const adm = await new AttendanceManagement().getFacultyAttendanceReport(req,res);
+     const count = await new AttendanceManagement().countFacultyReportByAll(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     
+ 
     return res.send(data);
+    //  console.log(data)
   } catch (error) {
     next(error);
   }
 };
 const getReportByStudent = async (req, res, next) => {
   try {
-    const data = await new AttendanceManagement().getReportByStudent(req);
-   
-    //  console.log(data)
+     const adm = await new AttendanceManagement().getReportByStudent(req,res);
+     const count = await new AttendanceManagement().countStudentReportByStudent(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     
+ 
     return res.send(data);
+    //  console.log(data)
   } catch (error) {
     next(error);
   }
@@ -195,8 +218,16 @@ const getReportByStudent = async (req, res, next) => {
 
 const getReportByFaculty = async (req, res, next) => {
   try {
-    const data = await new AttendanceManagement().getReportByFaculty(req);
-   
+    const adm = await new AttendanceManagement().getReportByFaculty(req,res);
+     const count = await new AttendanceManagement().countFacultyReportByFaculty(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     
+ 
     //  console.log(data)
     return res.send(data);
   } catch (error) {

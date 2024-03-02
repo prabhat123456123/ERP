@@ -330,125 +330,87 @@ var facultyId = $("#faculty_id").val();
         if(facultyId == ""){
          alert("please select Faculty")
         }
-   $.ajax({
-         url: `/attendance/get-faculty-attendance-report`,
-         type: "post",
-         data:{startDates:startDates,endDates:endDates,facultyId:facultyId},
-         dataType: "json",
-         cache: false,
-         success: function (datas) {
-            console.log(datas);
-            if (dataTable) {
+        if (dataTable) {
                   dataTable.destroy();
                   dataTable.clear().draw();
     }
-            if (datas && datas.length > 0) {
-                var dataArray = datas.map(function (item) {
-                    return [
-                        item.created_at,
-                        item.attendance_status,
-                        item.check_in,
-                        item.check_out
-                    ];
-                });
-                dataTable = $('#sample_data').DataTable({
-                    "processing": true,
-                    "serverSide": false, // Since you are processing data client-side
-                    "order": [],
-                    "data": dataArray,
-                    "columns": [
-                        { dataArray: "created_at" },
-                        { dataArray: "attendance_status" },
-                        { dataArray: "check_in" },
-                        { dataArray: "check_out" }
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'csv',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        },
-                        {
-                            extend: 'pdf',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        }
-                    ]
-                });
-            } else {
-                 if (dataTable) {
-                  dataTable.destroy();
-                  dataTable.clear().draw();
-    }
-                alert("No data found.");
-            }
-          
-        },
-      });
+         dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+			 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/attendance/get-faculty-attendance-report",
+			type:"POST",
+     data:{startDates:startDates,endDates:endDates,facultyId:facultyId},
+
+		},
+         columns: [
+        { data: "created_at" },
+        { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
+	],
+		
+	});
+ 
        
 })
 $(document).on('click','#filter_records_by_faculty', function () {
-    
-               
-   $.ajax({
-         url: `/attendance/get-report-by-faculty`,
-         type: "post",
-         data:{startDates:startDates,endDates:endDates},
-         dataType: "json",
-         cache: false,
-         success: function (datas) {
-           
-       
-            if (datas && datas.length > 0) {
-                if (dataTable) {
+     if (dataTable) {
                   dataTable.destroy();
                   dataTable.clear().draw();
     }
-                var dataArray = datas.map(function (item) {
-                    return [
-                        item.created_at,
-                        item.attendance_status,
-                        item.check_in,
-                        item.check_out
-                    ];
-                });
-                
-                dataTable = $('#sample_data').DataTable({
-                    "processing": true,
-                    "serverSide": false, // Since you are processing data client-side
-                    "order": [],
-                    "data": dataArray,
-                    "columns": [
-                        { dataArray: "created_at" },
-                        { dataArray: "attendance_status" },
-                        { dataArray: "check_in" },
-                        { dataArray: "check_out" }
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'csv',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        },
-                        {
-                            extend: 'pdf',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        }
-                    ]
-                });
-            } else {
-              if (dataTable) {
-                 dataTable.destroy();
-                  dataTable.clear().draw();
-
-                
-    }
-               alert("No data found.");
-             
-            }
-           
-          
-        },
-      });
+         dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+			 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/attendance/get-report-by-faculty",
+			type:"POST",
+    data:{startDates:startDates,endDates:endDates},
+		},
+         columns: [
+        { data: "created_at" },
+        { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
+	],
+		
+	});
        
 })
  $(document).on('click','.checkedIn', function () {

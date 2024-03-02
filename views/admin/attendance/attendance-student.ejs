@@ -229,9 +229,7 @@ $(document).ready(function(){
 			type:"POST",
 		},
          columns: [
-       
         { data: "created_at" },
-      
         { data: "attendance_status" },
         { data: "check_in" },
         { data: "check_out" },
@@ -270,6 +268,7 @@ $(function() {
     cb(start, end);
     
 });
+var dataTable;
  $(document).on('click','#filter_records', function () {
      var classId = $("#class_id").val(); 
 var studentId = $("#student_id").val(); 
@@ -280,116 +279,89 @@ var studentId = $("#student_id").val();
         if(studentId == ""){
          alert("please select Student")
         }
-   $.ajax({
-         url: `/attendance/get-student-attendance-report`,
-         type: "post",
-         data:{startDates:startDates,endDates:endDates,classId:classId,studentId:studentId},
-         dataType: "json",
-         cache: false,
-         success: function (datas) {
-            console.log("..............",datas);
-       if (dataTable) {
+         if (dataTable) {
                   dataTable.destroy();
                   dataTable.clear().draw();
     }
-            if (datas && datas.length > 0) {
-                var dataArray = datas.map(function (item) {
-                    return [
-                        item.created_at,
-                        item.attendance_status,
-                        item.check_in,
-                        item.check_out
-                    ];
-                });
-                dataTable = $('#sample_data').DataTable({
-                    "processing": true,
-                    "serverSide": false, // Since you are processing data client-side
-                    "order": [],
-                    "data": dataArray,
-                    "columns": [
-                        { dataArray: "created_at" },
-                        { dataArray: "attendance_status" },
-                        { dataArray: "check_in" },
-                        { dataArray: "check_out" }
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'csv',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        },
-                        {
-                            extend: 'pdf',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        }
-                    ]
-                });
-            } else {
-                if (dataTable) {
-                  dataTable.destroy();
-                  dataTable.clear().draw();
-    }
-                alert("No data found.");
-            }
-          
-        },
-      });
+         dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+			 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/attendance/get-student-attendance-report",
+			type:"POST",
+      data:{startDates:startDates,endDates:endDates,classId:classId,studentId:studentId},
+		},
+         columns: [
+        { data: "created_at" },
+        { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
+	],
+		
+	});
+  
        
 })
 
  $(document).on('click','#filter_records_by_student', function () {
-   
-   $.ajax({
-         url: `/attendance/get-report-by-student`,
-         type: "post",
-         data:{startDates:startDates,endDates:endDates},
-         dataType: "json",
-         cache: false,
-         success: function (datas) {
-            console.log(datas);
-       
-             if (dataTable) {
-                dataTable.destroy(); // Destroy previous DataTable instance
-            }
-            if (datas && datas.length > 0) {
-                var dataArray = datas.map(function (item) {
-                    return [
-                        item.created_at,
-                        item.attendance_status,
-                        item.check_in,
-                        item.check_out
-                    ];
-                });
-                dataTable = $('#sample_data').DataTable({
-                    "processing": true,
-                    "serverSide": false, // Since you are processing data client-side
-                    "order": [],
-                    "data": dataArray,
-                    "columns": [
-                        { dataArray: "created_at" },
-                        { dataArray: "attendance_status" },
-                        { dataArray: "check_in" },
-                        { dataArray: "check_out" }
-                    ],
-                    dom: 'Bfrtip',
-                    buttons: [
-                        {
-                            extend: 'csv',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        },
-                        {
-                            extend: 'pdf',
-                            exportOptions: { columns: 'th:not(:last-child)' }
-                        }
-                    ]
-                });
-            } else {
-               dataTable.clear().draw(); // Destroy previous DataTable instance
-                alert("No data found.");
-            }
-          
-        },
-      });
+   if (dataTable) {
+                  dataTable.destroy();
+                  dataTable.clear().draw();
+    }
+         dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+			 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdf',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/attendance/get-report-by-student",
+			type:"POST",
+      data:{startDates:startDates,endDates:endDates},
+
+		},
+         columns: [
+        { data: "created_at" },
+        { data: "attendance_status" },
+        { data: "check_in" },
+        { data: "check_out" },
+	],
+		
+	});
+  
        
 })
 

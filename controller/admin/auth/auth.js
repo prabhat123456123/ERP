@@ -25,6 +25,22 @@ const register = async (req, res, next) => {
     next(error);
   }
 };
+const dashboard = async (req, res, next) => {
+  try {
+    // const allHostel = await new AuthManagement().addAdmission(req, res, next);
+    return res.render("admin/dashboard");
+  } catch (error) {
+    next(error);
+  }
+};
+const getDashboardDataBySchool = async (req, res, next) => {
+  try {
+    const data = await new AuthManagement().getDashboardDataBySchool(req, res);
+    return data;
+  } catch (error) {
+    next(error);
+  }
+};
 const createSchool = async (req, res, next) => {
   try {
     const { files, fields } = await formidableUpload(req);
@@ -84,6 +100,6 @@ const logout = async (req, res) => {
 
 
 module.exports = {
-  login,register,createSchool,postLogin,logout
+  login,register,createSchool,postLogin,logout,dashboard,getDashboardDataBySchool
  
 };

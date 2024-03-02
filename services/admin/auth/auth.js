@@ -144,6 +144,27 @@ class AuthManagement {
     }
   }
   
+
+
+   async getDashboardDataBySchool(req,res) {
+     try {
+      
+       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",req.body)
+      // const userData = await sequelize.query(
+      //   "SELECT * FROM `school` WHERE principal_email = ?",
+      //   {
+      //     type: QueryTypes.SELECT,
+      //     replacements: [username],
+      //   }
+      // );
+
+      // return userData;
+    } catch (error) {
+      console.error(error);
+      dashLogger.error(`Error : ${error}`);
+    }
+  }
+  
   async getStudent( username) {
     try {
       const userData = await sequelize.query(

@@ -175,17 +175,141 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async getFacultyAttendanceReport(req) {
+    async countStudentReportBySchool(req,res) {
     try {
-     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+//  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND student_attendance.student_id = ${req.user[0].id}`
+      }
+     
        const data = await sequelize.query(
-        `SELECT faculty_attendance.created_at,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty_attendance.faculty_id = ${req.body.facultyId} AND faculty.school_id = ${id} AND faculty_attendance.created_at BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`,
+        `SELECT * FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student.school_id = ${id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
       
       return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async countStudentReportByStudent(req,res) {
+    try {
+//  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND student_attendance.student_id = ${req.user[0].id}`
+      }
+     
+       const data = await sequelize.query(
+        `SELECT * FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student.school_id = ${id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`+ whereClause,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async countFacultyReportByAll(req,res) {
+    try {
+//  console.log(sequelize)
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = ` AND faculty_attendance.faculty_id = ${req.user[0].id}`
+      }
+     
+       const data = await sequelize.query(
+        `SELECT * FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty.school_id = ${id} AND DATE(faculty_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`+ whereClause,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async countFacultyReportByFaculty(req,res) {
+    try {
+//  console.log(sequelize)
+      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      
+      if (req.user[0].role == "faculty") {
+        whereClause = ` AND faculty_attendance.faculty_id = ${req.user[0].id}`
+      }
+     
+       const data = await sequelize.query(
+        `SELECT * FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty.school_id = ${id} AND DATE(faculty_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`+ whereClause,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+    
+      console.log("?>???????",data);
+      
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getFacultyAttendanceReport(req,res) {
+     try {
+      
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      // let whereClause = "";
+      // if (req.user[0].role == "student") {
+      //   whereClause = `student.id = ${req.user[0].id} AND `
+      // }
+       const data = await sequelize.query(
+        `SELECT faculty_attendance.created_at,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty_attendance.faculty_id = ${req.body.facultyId} AND faculty.school_id = ${id} AND DATE(faculty_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' AND (faculty.name like "%${
+          req.body.search.value
+        }%" OR faculty.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+      for (let i = 0; i < data.length; i++) {
+       
+        data[i]["created_at"] = `${data[i].created_at}`;
+      
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+
+      }
+
+      return data;
+    
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -196,13 +320,36 @@ if (req.user[0].role == "faculty") {
   }
     async getReportByStudent(req) {
     try {
-    
-        const data = await sequelize.query(
-        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student_attendance.student_id = ${req.user[0].id} AND student.school_id = ${req.user[0].school_id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`,
+     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student_attendance.student_id = ${req.user[0].id} AND `
+      }
+       const data = await sequelize.query(
+        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.class_id,student.school_id FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE ` +whereClause+ ` student.school_id = ${id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' AND (student.name like "%${
+          req.body.search.value
+        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
       );
+      
+
+      for (let i = 0; i < data.length; i++) {
+       
+        data[i]["created_at"] = `${data[i].created_at}`;
+      
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+
+      
+       
+      }
+
+     
       return data;
     } catch (error) {
       if (error.statusCode) {
@@ -212,16 +359,36 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async getReportByFaculty(req) {
+    async getReportByFaculty(req,res) {
     try {
-      const data = await sequelize.query(
-        `SELECT faculty_attendance.created_at,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE faculty_attendance.faculty_id = ${req.user[0].id} AND faculty.school_id = ${req.user[0].school_id} AND faculty_attendance.created_at BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`,
+       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      if (req.user[0].role == "faculty") {
+        whereClause = `faculty_attendance.faculty_id = ${req.user[0].id} AND `
+      }
+       const data = await sequelize.query(
+        `SELECT faculty_attendance.created_at,faculty_attendance.attendance_status,faculty_attendance.check_in,faculty_attendance.check_out FROM faculty_attendance INNER JOIN faculty ON faculty.id = faculty_attendance.faculty_id WHERE ` +whereClause+ ` faculty.school_id = ${id} AND DATE(faculty_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' AND (faculty.name like "%${
+          req.body.search.value
+        }%" OR faculty.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
-        );
-      console.log("?????????????????????????????????????????????????????????????????",data);
+      );
       
+
+      for (let i = 0; i < data.length; i++) {
+       
+        data[i]["created_at"] = `${data[i].created_at}`;
+      
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+
+      }
+
+      console.log("{{{{{{{{{{{{{{{{{{{{{{{{{{{",data)
       return data;
     } catch (error) {
       if (error.statusCode) {
@@ -346,18 +513,40 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async getStudentAttendanceReport(req) {
+   async getStudentAttendanceReport(req,res) {
      try {
-      console.log(req.body);
-  const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      // let whereClause = "";
+      // if (req.user[0].role == "student") {
+      //   whereClause = `student.id = ${req.user[0].id} AND `
+      // }
        const data = await sequelize.query(
-        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student_attendance.student_id = ${req.body.studentId} AND student.class_id = ${req.body.classId} AND student.school_id = ${id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}'`,
+        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.class_id,student.school_id FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student_attendance.student_id = ${req.body.studentId} AND student.class_id = ${req.body.classId} AND student.school_id = ${id} AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' AND (student.name like "%${
+          req.body.search.value
+        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
       );
-      console.log(data);
+      
+
+      for (let i = 0; i < data.length; i++) {
+       
+        data[i]["created_at"] = `${data[i].created_at}`;
+      
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+
+      
+       
+      }
+
       return data;
+     
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
