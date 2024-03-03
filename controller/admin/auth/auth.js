@@ -28,14 +28,21 @@ const register = async (req, res, next) => {
 const dashboard = async (req, res, next) => {
   try {
     // const allHostel = await new AuthManagement().addAdmission(req, res, next);
-    return res.render("admin/dashboard");
+    return res.render("admin/dashboard",{nonce: res.locals.nonce});
   } catch (error) {
     next(error);
   }
 };
 const getDashboardDataBySchool = async (req, res, next) => {
   try {
-    const data = await new AuthManagement().getDashboardDataBySchool(req, res);
+    const adm = await new AuthManagement().getDashboardDataBySchool(req,res);
+     const count = await new AuthManagement().countDashboardDataBySchool(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
     return data;
   } catch (error) {
     next(error);

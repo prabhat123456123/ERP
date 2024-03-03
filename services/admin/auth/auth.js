@@ -144,27 +144,81 @@ class AuthManagement {
     }
   }
   
-
-
-   async getDashboardDataBySchool(req,res) {
-     try {
+ async getDashboardDataBySchool(req,res) {
+    try {
+     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      let dateClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `student_attendance.student_id = ${req.user[0].id} AND `
+      }
+         if (req.body.startDates != undefined && req.body.endDates != undefined) {
+        dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
+      }
+       const data = await sequelize.query(
+        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.class_id,student.school_id FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE ` +whereClause+ `student.school_id = ${id} `+ dateClause +`AND (student.name like "%${
+          req.body.search.value
+        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
       
-       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",req.body)
-      // const userData = await sequelize.query(
-      //   "SELECT * FROM `school` WHERE principal_email = ?",
-      //   {
-      //     type: QueryTypes.SELECT,
-      //     replacements: [username],
-      //   }
-      // );
 
-      // return userData;
+      for (let i = 0; i < data.length; i++) {
+       
+        data[i]["created_at"] = `${data[i].created_at}`;
+      
+        data[i]["attendance_status"] = `${data[i].attendance_status}`;
+        data[i]["check_in"] = `${data[i].check_in}`;
+        data[i]["check_out"] = `${data[i].check_out}`;
+
+      
+       
+      }
+
+     
+      return data;
     } catch (error) {
-      console.error(error);
-      dashLogger.error(`Error : ${error}`);
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  
+
+   async countDashboardDataBySchool(req,res) {
+    try {
+      console.log("?????????????????????????????????????????????????????????",req.body.startDates);
+      console.log(req.body.endDates);
+        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      let whereClause = "";
+      let dateClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND student_attendance.student_id = ${req.user[0].id}`
+      }
+       if (req.body.startDates != undefined && req.body.endDates != undefined) {
+        dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
+      }
+       const data = await sequelize.query(
+        `SELECT * FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student.school_id = ${id} `+ dateClause + whereClause,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
   async getStudent( username) {
     try {
       const userData = await sequelize.query(
