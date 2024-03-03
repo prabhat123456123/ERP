@@ -1,21 +1,29 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('notice_board', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
+     track_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
     school_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
+     title: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
+      description: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+      image: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
@@ -45,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'notice_board',
     timestamps: false,
     indexes: [
       {

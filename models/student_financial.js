@@ -1,29 +1,61 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('student_financial', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
-    school_id: {
+      },
+     
+    
+    student_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
-      type: DataTypes.STRING(100),
-      allowNull: true
+    
+  
+       total_amount: {
+      type: DataTypes.STRING(255),
+			 allowNull: true
       },
-      annual_fee: {
-      type: DataTypes.STRING(100),
-      allowNull: true
+       paid_amount: {
+      type: DataTypes.STRING(255),
+			 allowNull: true
       },
-   
-    Status: {
+     
+       payment_type: {
+      type: DataTypes.ENUM("monthly", "quartly","halfyearly","yearly"),
+			 allowNull: true
+      },
+       transaction_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+     
+
+      },
+       transaction_status: {
+      type: DataTypes.ENUM("paid", "notPaid"),
+			 allowNull: true
+      },
+        transaction_mode: {
+      type: DataTypes.ENUM("cash", "online"),
+			 allowNull: true
+      },
+        
+         online_mode_name: {
+     type: DataTypes.STRING(255),
+			 allowNull: true
+     
+
+      },
+      
+         Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
-    },
+      },
+       
+   
     created_by: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -45,7 +77,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'student_financial',
     timestamps: false,
     indexes: [
       {

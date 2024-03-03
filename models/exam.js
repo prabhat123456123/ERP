@@ -1,29 +1,70 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('exam', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
+      },
+      track_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      slug: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      exam_name: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
     school_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
-      type: DataTypes.STRING(100),
+     class_id: {
+      type: DataTypes.INTEGER,
       allowNull: true
       },
-      annual_fee: {
-      type: DataTypes.STRING(100),
+      subject_id: {
+      type: DataTypes.INTEGER,
       allowNull: true
       },
+
    
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
-    },
+      },
+    exam_status: {
+       type: DataTypes.ENUM("new", "resumed","completed"),
+			 defaultValue: "new"
+      },
+    exam_mode: {
+      type: DataTypes.ENUM("practice", "online","quiz"),
+			 allowNull: true
+      },
+    exam_type: {
+    type: DataTypes.ENUM("subjective", "objective"),
+			 allowNull: true
+      },
+    exam_level: {
+     type: DataTypes.ENUM("easy", "medium","hard"),
+      allowNull: true
+      },
+     start_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+      },
+      end_date: {
+      type: DataTypes.DATE,
+      allowNull: true
+      },
+       total_marks: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
     created_by: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -45,7 +86,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'exam',
     timestamps: false,
     indexes: [
       {

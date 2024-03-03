@@ -1,25 +1,34 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('holiday', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    school_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-      },
-     class_name: {
+    year: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
+     month: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-   
+      event_name: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+    start_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+
+    },
+     end_date: {
+      type: DataTypes.DATE,
+      allowNull: true,
+
+    },
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
@@ -45,7 +54,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'holiday',
     timestamps: false,
     indexes: [
       {

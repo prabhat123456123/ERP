@@ -1,24 +1,21 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('subject', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    school_id: {
+    class_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
+     subject_name: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-      },
+     
    
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
@@ -45,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'subject',
     timestamps: false,
     indexes: [
       {

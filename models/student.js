@@ -1,29 +1,88 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('student', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-    },
-    school_id: {
+      },
+      track_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      role: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+    
+  name: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+   email: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+    dob: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+     gender: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+ 
+     
+       phone: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+        class_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
+    
+         school_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+      },
+    
+        address: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
+      fathers_name: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-   
+         mothers_name: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      
+       parent_phone: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+       hobby: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+     
+    password: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+     photo: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
-    },
+      },
+   
     created_by: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -45,7 +104,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'student',
     timestamps: false,
     indexes: [
       {

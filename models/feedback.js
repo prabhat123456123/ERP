@@ -1,25 +1,33 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('feedback', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    school_id: {
+    track_id: {
+      type: DataTypes.STRING(3000),
+      allowNull: true
+      },
+     student_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+      faculty_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
+     title: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+     rate: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-      },
-   
+
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
@@ -45,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'feedback',
     timestamps: false,
     indexes: [
       {

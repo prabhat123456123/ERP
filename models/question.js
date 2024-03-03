@@ -1,22 +1,66 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('class', {
+  return sequelize.define('question', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    school_id: {
+    exam_id: {
       type: DataTypes.INTEGER,
       allowNull: true
       },
-     class_name: {
+     question_title: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      annual_fee: {
+      option_one: {
       type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       option_two: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      option_three: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       option_four: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      option_image_one: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       option_image_two: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      option_image_three: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       option_image_four: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+      },
+      right_option: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       right_marks: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+        wrong_marks: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+        question_level: {
+     type: DataTypes.ENUM("easy", "medium","hard"),
       allowNull: true
       },
    
@@ -45,7 +89,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'class',
+    tableName: 'question',
     timestamps: false,
     indexes: [
       {
