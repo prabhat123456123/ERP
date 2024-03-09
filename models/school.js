@@ -1,6 +1,5 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('school', {
+module.exports = (sequelize, DataTypes) => {
+  const School = sequelize.define('school', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -85,7 +84,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
 
     },
     updated_by: {
@@ -95,7 +94,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -112,4 +111,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  return School;
 };

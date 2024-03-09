@@ -1,14 +1,17 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('student_payment', {
+module.exports = (sequelize, DataTypes) => {
+  const Studentpayment = sequelize.define('student_payment', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
+    },
+     track_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
       },
-      school_id: {
-      type: DataTypes.INTEGER,
+      track_school_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
       },
       transaction_amount: {
@@ -39,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
     },
     updated_by: {
       type: DataTypes.STRING(100),
@@ -48,7 +51,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -65,4 +68,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  return Studentpayment;
 };

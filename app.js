@@ -25,6 +25,7 @@ const { admin } = require("./routes");
 // const { validator, validateToken, handleError } = require("./middleware");
 // const { handleError } = require("./middleware");
 
+// const {sequelize} = require("./models");
 const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
@@ -158,13 +159,15 @@ app.use((err, req, res, next) => {
   // res.status(statusCode).json({ error: message });
 });
 
-sequelize
-  .sync({ logging: false })
-  .then(() => {
-    console.log("Database connected");
-  })
-  .catch((err) => {
-    throw err;
-  });
 
+
+// sequelize
+//   .sync()
+//   .then(() => {
+//     console.log(":::::::::::::::::::::::::::::::::::::::::::");
+
+//   })
+//   .catch((err) => {
+//     throw err;
+//   });
 module.exports = app;

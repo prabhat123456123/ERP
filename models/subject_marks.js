@@ -1,18 +1,21 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('subject_marks', {
+module.exports = (sequelize, DataTypes) => {
+   const Subjectmarks = sequelize.define('subject_marks', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-      },
-      student_id: {
-      type: DataTypes.INTEGER,
+     },
+      track_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
       },
-    subject_id: {
-      type: DataTypes.INTEGER,
+      track_student_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+      },
+    track_subject_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
       },
      total_marks: {
@@ -39,7 +42,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
 
     },
     updated_by: {
@@ -49,7 +52,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -65,5 +68,6 @@ module.exports = function(sequelize, DataTypes) {
         ]
       },
     ]
-  });
+   });
+  return Subjectmarks;
 };

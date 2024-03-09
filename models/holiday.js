@@ -1,12 +1,15 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('holiday', {
+module.exports = (sequelize, DataTypes) => {
+  const Holiday = sequelize.define('holiday', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
+     track_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+      },
     year: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -40,7 +43,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
 
     },
     updated_by: {
@@ -50,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -67,4 +70,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  return Holiday;
 };

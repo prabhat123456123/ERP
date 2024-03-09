@@ -1,14 +1,17 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('student_leave', {
+module.exports = (sequelize, DataTypes) => {
+  const Studentleave = sequelize.define('student_leave', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
+    },
+     track_id: {
+      type: DataTypes.STRING(255),
+      allowNull: true
       },
-      student_id: {
-      type: DataTypes.INTEGER,
+     track_student_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
       },
       reason: {
@@ -51,7 +54,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
 
     },
     updated_by: {
@@ -61,7 +64,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+      defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -78,4 +81,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  return Studentleave;
 };

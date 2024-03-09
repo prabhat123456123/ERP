@@ -140,7 +140,6 @@ class AuthManagement {
       return userData;
     } catch (error) {
       console.error(error);
-      dashLogger.error(`Error : ${error}`);
     }
   }
   

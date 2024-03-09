@@ -1,6 +1,5 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('notice_board', {
+module.exports = (sequelize, DataTypes) => {
+  const Noticeboard = sequelize.define('notice_board', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -11,8 +10,8 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-    school_id: {
-      type: DataTypes.INTEGER,
+    track_school_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
       },
      title: {
@@ -39,7 +38,7 @@ module.exports = function(sequelize, DataTypes) {
     created_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
 
     },
     updated_by: {
@@ -49,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: Sequelize.Sequelize.fn('current_timestamp')
+     defaultValue: sequelize.fn('current_timestamp')
     }
   }, {
     sequelize,
@@ -66,4 +65,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
+  return Noticeboard;
 };
