@@ -209,7 +209,9 @@
 document.addEventListener("click", function(event) {
     const target = event.target;
     if (target.classList.contains("addBtn")) {
-        addFeedback(target.dataset.id);
+       const trackId = target.dataset.trackId;
+        const schoolId = target.dataset.schoolId;
+        addFeedback(trackId,schoolId);
     }else if(target.classList.contains("editBtn")) {
          editFeedback(target.dataset.id);
     } else if (target.classList.contains("deleteBtn")) {
@@ -364,7 +366,7 @@ function viewFeedback(feedbackId) {
     }
   }
 
-   function addFeedback(facultyId) {
+   function addFeedback(facultyId,schoolId) {
     try {
      
       $("#addFeedbackDiv").html("");
@@ -373,7 +375,7 @@ function viewFeedback(feedbackId) {
             let formDetails = ``;
             formDetails += `<form action="/feedback/add-feedback-by-id" id="feedbackForm" method="post">
                                   <input type="hidden"  value="${facultyId}" class="form-control" name="faculty_id">
-                                  <input type="hidden"  value="2" class="form-control" name="student_id">
+                                  <input type="hidden"  value="${schoolId}" class="form-control" name="student_id">
                                  
                             <div class="row">
                                

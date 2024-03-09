@@ -95,7 +95,7 @@ async createExam(files, fields, req, res) {
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
      
        const data = await sequelize.query(
-        `SELECT exam.track_id,exam.track_school_id,exam.exam_name,class.track_id as class_id,class.class_name FROM exam INNER JOIN class ON class.track_id = exam.track_class_id WHERE exam.track_school_id = '${id}' AND (exam.exam_name like "%${
+        `SELECT exam.track_id,exam.track_school_id,exam.exam_name,exam.track_class_id,class.class_name FROM exam INNER JOIN class ON class.track_id = exam.track_class_id WHERE exam.track_school_id = '${id}' AND (exam.exam_name like "%${
           req.body.search.value
         }%" OR class.class_name like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -113,7 +113,7 @@ async createExam(files, fields, req, res) {
       
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})' data-id='${data[i].track_id}' > View </button> <a href="/exam/examWiseQuestion/${data[i].track_id}" class='btn btn-success btn-sm' data-id='${data[i].track_id}' > Go To Question Section </a> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})' data-track-id='${data[i].track_id}' data-school-id='${data[i].track_school_id}' data-class-id='${data[i].track_class_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})' data-track-id='${data[i].track_id}' data-school-id='${data[i].track_school_id}' data-class-id='${data[i].track_class_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewExam(${data[i].track_id},${data[i].track_school_id},${data[i].track_class_id})'data-track-id='${data[i].track_id}' data-school-id='${data[i].track_school_id}' data-class-id='${data[i].track_class_id}' > View </button> <a href="/exam/examWiseQuestion/${data[i].track_id}" class='btn btn-success btn-sm' data-id='${data[i].track_id}' > Go To Question Section </a> `;
        
       }
 
@@ -345,7 +345,8 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
     }
   }
    async viewExamById(body) {
-    try {
+     try {
+      console.log("LLLLLLLLLLLLLLLLLLLL",body);
       const examId = body.examId;
       const classId = body.classId;
       const schoolId = body.schoolId;

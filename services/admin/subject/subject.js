@@ -39,13 +39,13 @@ class SubjectManagement {
    async createSubject( files,fields, req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-
+  const uniqueNum = uuidv4();
 
         const data = await sequelize.query(
-          "INSERT INTO subject(track_class_id,subject_name,created_by,created_at) VALUES (?,?,?,?)",
+          "INSERT INTO subject(track_id,track_class_id,subject_name,created_by,created_at) VALUES (?,?,?,?,?)",
           {
             replacements: [
-              
+              uniqueNum,
              fields.classesId[0],
                fields.subject_name[0],
              
@@ -103,16 +103,18 @@ class SubjectManagement {
     }
   }
   
-  async getSubject(body) {
+  async getSubject(req,res) {
     try {
 //  console.log(sequelize)
+const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+      
      
        const data = await sequelize.query(
-        `SELECT subject.track_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE subject_name like "%${
-          body.search.value
+        `SELECT subject.track_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE class.track_school_id = '${id}' AND subject_name like "%${
+          req.body.search.value
         }%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -141,12 +143,13 @@ class SubjectManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countSubject(body) {
+    async countSubject(req,res) {
     try {
-//  console.log(sequelize)
+const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+
      
        const data = await sequelize.query(
-        `SELECT * FROM subject`,
+        `SELECT subject.track_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE class.track_school_id = '${id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -161,12 +164,12 @@ class SubjectManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-     async getClass(body) {
+     async getClass(req,res) {
     try {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM class`,
+        `SELECT * FROM class WHERE track_school_id = '${req.user[0].track_id}'`,
         {
           type: QueryTypes.SELECT,
         }

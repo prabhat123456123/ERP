@@ -79,7 +79,7 @@
                                      <% if(data.length){ %>
                                        <% for(let i=0; i<data.length; i++){ %>
 
-                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+                                       <option value="<%= data[i].track_id  %>"><%= data[i].class_name  %></option>
 
                                         <% } %>
                                         <% } %>
@@ -168,7 +168,7 @@ $(document).on('change','#class_id', function () {
             console.log(data);
          let option;
         for(let i=0; i<data.length; i++){
-           option += `<option value="${data[i].id}">${data[i].name}</option>`
+           option += `<option value="${data[i].track_id}">${data[i].name}</option>`
         }
              $("#student_id").html("");
              

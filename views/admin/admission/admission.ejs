@@ -99,7 +99,7 @@
                            <div class="row">
                               <div class="col-md-12">
                                 <form action="" id="studentForm">
-                                  <input type="hidden" id="student_school_id" value="<%= user[0].role=='student'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
+                                  <input type="hidden" id="student_school_id" value="<%= user[0].role=='school'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Name</label>
@@ -447,7 +447,6 @@ document.addEventListener("click", function(event) {
        
 function viewAdmission(studentId) {
     try {
-alert("hhhhh")
      
       $("#viewStudentDiv").html("");
       $("#viewStudentModal").modal("toggle");
@@ -499,7 +498,7 @@ alert("hhhhh")
         console.log(data);
         let option;
         for(let i=0; i<data.classes.length; i++){
-           option += `<option value="${data.classes[i].id}"${data.data[0].class_id==data.classes[i].id?'selected':""}>${data.classes[i].class_name}</option>`
+           option += `<option value="${data.classes[i].track_id}"${data.data[0].track_class_id==data.classes[i].track_id?'selected':""}>${data.classes[i].class_name}</option>`
         }
             let formDetails = ``;
             formDetails += `<form action="/admission/update-admission-by-id" method="post" enctype="multipart/form-data">

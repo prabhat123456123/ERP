@@ -72,11 +72,12 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "INSERT INTO student(track_id,name,email,dob,gender,phone,track_class_id,track_school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO student(track_id,role,name,email,dob,gender,phone,track_class_id,track_school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
              
               uniqueNum,
+              "student",
               fields.student_name[0],
               fields.student_email[0],
               fields.student_dob[0],

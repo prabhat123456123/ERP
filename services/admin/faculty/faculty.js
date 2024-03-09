@@ -70,11 +70,12 @@ class FacultyManagement {
         const url = `${fileName}`;
 
          const data = await sequelize.query(
-          "INSERT INTO faculty(track_id,track_school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO faculty(track_id,role,track_school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
-            replacements: [
+            replacements: [ 
              
               uniqueNum,
+              "faculty",
               fields.school_id[0],
               fields.name[0],
               fields.mother_name[0],

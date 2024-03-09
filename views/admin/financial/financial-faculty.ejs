@@ -46,7 +46,7 @@
                                    <select name="student_class_id" id="student_class_id" class="form-control" required>
                                     <option value="">Please Select</option>
                                     <% for(let i = 0; i < data.length; i++){%> 
-                                    <option value="<%= data[i].id %>"><%= data[i].class_name %></option>
+                                    <option value="<%= data[i].track_id %>"><%= data[i].class_name %></option>
                                        <% } %>
                                    </select>
                                 </div>
@@ -156,7 +156,7 @@ function viewAdmission(studentId) {
         console.log(data);
         let option;
         for(let i=0; i<data.classes.length; i++){
-           option += `<option value="${data.classes[i].id}"${data.data[0].class_id==data.classes[i].id?'selected':""}>${data.classes[i].class_name}</option>`
+           option += `<option value="${data.classes[i].track_id}"${data.data[0].tracK_class_id==data.classes[i].track_id?'selected':""}>${data.classes[i].class_name}</option>`
         }
             let formDetails = ``;
             formDetails += `<form action="/admission/update-admission-by-id" method="post" enctype="multipart/form-data">

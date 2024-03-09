@@ -367,7 +367,7 @@ function viewComplaint(complaintId) {
             let formDetails = ``;
             formDetails += `<form action="/complaint/add-complaint-by-id" method="post" id="complaintForm">
                                   <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
-                                  <input type="hidden" value="<%= user[0].id %>" class="form-control" name="faculty_school_id">
+                                  <input type="hidden" value="<%= user[0].track_id %>" class="form-control" name="faculty_school_id">
                             <div class="row">
                                
                                  <div class="form-group col-lg-12">

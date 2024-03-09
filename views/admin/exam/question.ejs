@@ -388,7 +388,7 @@ function viewQuestion(questionId) {
             let formDetails = ``;
             formDetails += `<form action="/exam/update-question-by-id" method="post" enctype="multipart/form-data">
                              
-                                  <input type="hidden"  value="${data[0].exam_id}" class="form-control" name="examId">
+                                  <input type="hidden"  value="${data[0].track_exam_id}" class="form-control" name="examId">
                                   <input type="hidden"  value="${questionId}" class="form-control" name="questionId">
                            <div class="row">
                                 <div class="form-group col-lg-6">

@@ -62,7 +62,7 @@ class FeedbackManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].track_id},${data[i].track_school_id})' data-id='${data[i].fId}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].fId})' data-id='${data[i].fId}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteFeedback(${data[i].fId})' data-id='${data[i].fId}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFeedback(${data[i].fId})' data-id='${data[i].fId}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addFeedback(${data[i].track_id},${data[i].track_school_id})' data-track-id='${data[i].track_id}' data-school-id='${data[i].track_school_id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editFeedback(${data[i].fId})' data-id='${data[i].fId}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteFeedback(${data[i].fId})' data-id='${data[i].fId}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFeedback(${data[i].fId})' data-id='${data[i].fId}' > View </button> `;
        
       }
 
@@ -204,7 +204,7 @@ class FeedbackManagement {
             replacements: [
              
               uniqueNum,
-              req.body.student_id,
+              req.user[0].track_id,
               req.body.faculty_id,
               req.body.title,
               req.body.rate,

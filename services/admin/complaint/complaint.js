@@ -37,13 +37,10 @@ class ComplaintManagement {
  async getComplaint(req,res) {
     try {
       const id = req.user[0].role == "school" ? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `complaint.track_student_id = '${req.user[0].track_id}' AND `
-      }
+     
      
          const data = await sequelize.query(
-        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' AND ` + whereClause + ` (student.name like "%${
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' AND complaint.track_faculty_school_id = '${req.user[0].track_id}' AND (student.name like "%${
           req.body.search.value
         }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
          req.body.length
@@ -62,7 +59,7 @@ class ComplaintManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addComplaint(${data[i].id})' data-id='${data[i].cId}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].cId})' data-id='${data[i].cId}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteComplaint(${data[i].cId})' data-id='${data[i].cId}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewComplaint(${data[i].cId})' data-id='${data[i].cId}' > View </button> `;
+        ] = `<button class='btn btn-add btn-sm addBtn' onclick='addComplaint(${data[i].track_id})' data-id='${data[i].track_id}' >Add </button> <button class='btn btn-add btn-sm editBtn' onclick='editComplaint(${data[i].cId})' data-id='${data[i].cId}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteComplaint(${data[i].cId})' data-id='${data[i].cId}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewComplaint(${data[i].cId})' data-id='${data[i].cId}' > View </button> `;
        
       }
 
@@ -79,13 +76,9 @@ class ComplaintManagement {
     async countComplaint(req,res) {
     try {
  const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-     let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `AND complaint.track_student_id = '${req.user[0].track_id}' `
-      }
-     
+    
        const data = await sequelize.query(
-        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' ` + whereClause ,
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' AND complaint.track_faculty_school_id = '${req.user[0].track_id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -193,7 +186,7 @@ class ComplaintManagement {
      try {
       // console.log(req.user[0]);
        const currentTime = getDate("YYYY-MM-DD hh:mm");
-    
+      
         const uniqueNum = uuidv4();
          const data = await sequelize.query(
           "INSERT INTO complaint(track_id,track_student_id,description,track_faculty_school_id,created_by,created_at) VALUES (?,?,?,?,?,?)",
@@ -204,7 +197,7 @@ class ComplaintManagement {
               req.body.student_id,
            
               req.body.description,
-              req.body.faculty_school_id,
+             req.user[0].track_id,
             
               req.user[0].role=="school"? "SCHOOL" : "FACULTY",
                currentTime,

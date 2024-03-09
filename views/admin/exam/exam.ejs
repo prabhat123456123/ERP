@@ -93,7 +93,7 @@
                            <div class="row">
                               <div class="col-md-12">
                                <form action="http://thememinister.com/crm/index.html" id="examForm">
-                                  <input type="hidden" id="school_id" value="<%= user[0].id %>" class="form-control" name="school_id">
+                                  <input type="hidden" id="school_id" value="<%= user[0].role=='school'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="school_id">
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Exam</label>
@@ -104,7 +104,7 @@
                                    <select name="class_id" id="class_id" class="form-control">
                                     <option value="">Please Select</option>
                                     <% for(let i = 0; i < data.length; i++){%> 
-                                    <option value="<%= data[i].id %>"><%= data[i].class_name %></option>
+                                    <option value="<%= data[i].track_id %>"><%= data[i].class_name %></option>
                                        <% } %>
                                    </select>
                                 </div>
@@ -113,7 +113,7 @@
                                    <select name="subject_id" id="subject_id" class="form-control">
                                     <option value="">Please Select</option>
                                     <% for(let i = 0; i < subject.length; i++){%> 
-                                    <option value="<%= subject[i].id %>"><%= subject[i].subject_name %></option>
+                                    <option value="<%= subject[i].track_id %>"><%= subject[i].subject_name %></option>
                                        <% } %>
                                    </select>
                                 </div>
@@ -265,16 +265,26 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
-    document.addEventListener("click", function(event) {
+   document.addEventListener("click", function(event) {
     const target = event.target;
     if (target.classList.contains("editBtn")) {
-        editExam(target.dataset.id);
+        const trackId = target.dataset.trackId;
+        const schoolId = target.dataset.schoolId;
+        const classId = target.dataset.classId;
+        editExam(trackId, schoolId, classId);
     } else if (target.classList.contains("deleteBtn")) {
-        deleteExam(target.dataset.id);
+        const trackId = target.dataset.trackId;
+        const schoolId = target.dataset.schoolId;
+        const classId = target.dataset.classId;
+        deleteExam(trackId, schoolId, classId);
     } else if (target.classList.contains("viewBtn")) {
-        viewExam(target.dataset.id);
+        const trackId = target.dataset.trackId;
+        const schoolId = target.dataset.schoolId;
+        const classId = target.dataset.classId;
+        viewExam(trackId, schoolId, classId);
     }
 });
+
  $("#examForm").on("submit", async e => {
 							e.preventDefault();
 							try {
@@ -344,7 +354,7 @@
          success: function (data) {
               let option;
         for(let i=0; i<data.classes.length; i++){
-           option += `<option value="${data.classes[i].id}"${data.data[0].class_id==data.classes[i].id?'selected':""}>${data.classes[i].class_name}</option>`
+           option += `<option value="${data.classes[i].track_id}"${data.data[0].track_class_id==data.classes[i].track_id?'selected':""}>${data.classes[i].class_name}</option>`
         }
             let formDetails = ``;
             formDetails += `  <form action="/exam/update-exam-by-id" method="POST" >

@@ -110,7 +110,7 @@
                                        <% if(data.length){ %>
                                        <% for(let i=0; i<data.length; i++){ %>
 
-                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+                                       <option value="<%= data[i].track_id  %>"><%= data[i].class_name  %></option>
 
                                         <% } %>
                                         <% } %>
@@ -322,11 +322,11 @@ $('select[name="classesId"]').on('change', function () {
          success: function (data) {
          let option;
         for(let i=0; i<data.studentData.length; i++){
-           option += `<option value="${data.studentData[i].id}">${data.studentData[i].name}</option>`
+           option += `<option value="${data.studentData[i].track_id}">${data.studentData[i].name}</option>`
         }
   let optionSubject;
         for(let i=0; i<data.subjectData.length; i++){
-           optionSubject += `<option value="${data.subjectData[i].id}">${data.subjectData[i].subject_name}</option>`
+           optionSubject += `<option value="${data.subjectData[i].track_id}">${data.subjectData[i].subject_name}</option>`
         }           
           $("#subject1").html("");
              $("#studentId").html("");
@@ -351,11 +351,11 @@ $(document).on('change','#classes', function () {
          success: function (data) {
          let option;
         for(let i=0; i<data.studentData.length; i++){
-           option += `<option value="${data.studentData[i].id}">${data.studentData[i].name}</option>`
+           option += `<option value="${data.studentData[i].track_id}">${data.studentData[i].name}</option>`
         }
   let optionSubject;
         for(let i=0; i<data.subjectData.length; i++){
-           optionSubject += `<option value="${data.subjectData[i].id}">${data.subjectData[i].subject_name}</option>`
+           optionSubject += `<option value="${data.subjectData[i].track_id}">${data.subjectData[i].subject_name}</option>`
         }           
           $("#subject2").html("");
              $("#studentId1").html("");
@@ -384,7 +384,7 @@ $(document).on('change','#classes', function () {
                         <option value="">Choose..</option>
                           <% for(let i=0; i<data.length; i++){ %>
 
-                                       <option value="<%= data[i].id  %>"><%= data[i].class_name  %></option>
+                                       <option value="<%= data[i].track_id  %>"><%= data[i].class_name  %></option>
 
                                         <% } %>
                        
@@ -504,15 +504,15 @@ $(document).on('change','#classes', function () {
         console.log(data);
          let optionClass;
         for(let i=0; i<data.classData.length; i++){
-           optionClass += `<option value="${data.classData[i].id}"${data.data[0].cId==data.classData[i].id?'selected':""}>${data.classData[i].class_name}</option>`
+           optionClass += `<option value="${data.classData[i].track_id}"${data.data[0].cId==data.classData[i].track_id?'selected':""}>${data.classData[i].class_name}</option>`
         }
          let option;
         for(let i=0; i<data.studentData.length; i++){
-           option += `<option value="${data.studentData[i].id}"${data.data[0].student_id==data.studentData[i].id?'selected':""}>${data.studentData[i].name}</option>`
+           option += `<option value="${data.studentData[i].track_id}"${data.data[0].track_student_id==data.studentData[i].track_id?'selected':""}>${data.studentData[i].name}</option>`
         }
          let optionSubject;
         for(let i=0; i<data.subjectData.length; i++){
-           optionSubject += `<option value="${data.subjectData[i].id}"${data.data[0].subject_id==data.subjectData[i].id?'selected':""}>${data.subjectData[i].subject_name}</option>`
+           optionSubject += `<option value="${data.subjectData[i].track_id}"${data.data[0].track_subject_id==data.subjectData[i].track_id?'selected':""}>${data.subjectData[i].subject_name}</option>`
         }
             let formDetails = ``;
             formDetails += `<form action="/exam/update-subject-marks-by-id" method="post">
