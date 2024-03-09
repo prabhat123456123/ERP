@@ -39,7 +39,7 @@ class AdmissionManagement {
    async createStudent(files, fields, req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       const userExist = await sequelize.query(
         "SELECT * FROM student WHERE email =? OR phone=?",
         {
@@ -72,7 +72,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "INSERT INTO student(track_id,name,email,dob,gender,phone,class_id,school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO student(track_id,name,email,dob,gender,phone,track_class_id,track_school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -148,7 +148,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
          
            const genratedPassword = await hashPassword(record.password);
            const data = await sequelize.query(
-             "INSERT INTO student(track_id,name,email,dob,gender,phone,class_id,school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+             "INSERT INTO student(track_id,name,email,dob,gender,phone,track_class_id,track_school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
              {
                replacements: [
              
@@ -209,7 +209,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "UPDATE student SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,photo=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE student SET name=?,email=?,dob=?,gender=?,phone=?,track_class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,photo=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
              
@@ -241,7 +241,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
         
      
         const data = await sequelize.query(
-          "UPDATE `student` SET name=?,email=?,dob=?,gender=?,phone=?,class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE `student` SET name=?,email=?,dob=?,gender=?,phone=?,track_class_id=?,address=?,fathers_name=?,mothers_name=?,parent_phone=?,hobby=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               fields.student_name[0],
@@ -280,11 +280,11 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
    async getClass(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       
      
        const data = await sequelize.query(
-        `SELECT * FROM class WHERE school_id = ${id}`,
+        `SELECT * FROM class WHERE track_school_id = '${id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -306,14 +306,14 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
   async getAdmission(req,res) {
     try {
     
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `id = ${req.user[0].id} AND `
+        whereClause = `track_id = '${req.user[0].track_id}' AND `
       }
     
        const data = await sequelize.query(
-        `SELECT id,class_id,school_id,name,email,gender FROM student WHERE school_id = ${id} AND ` + whereClause + `(name like "%${
+        `SELECT track_id,track_class_id,track_school_id,name,email,gender FROM student WHERE track_school_id = '${id}' AND ` + whereClause + `(name like "%${
           req.body.search.value
         }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -325,14 +325,14 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["email"] = `${data[i].email}`;
         data[i]["gender"] = `${data[i].gender}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].id})' data-id='${data[i].id}'> Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteAdmission(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewAdmission(${data[i].id})' data-id='${data[i].id}'> View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].track_id})' data-id='${data[i].track_id}'> Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteAdmission(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewAdmission(${data[i].track_id})' data-id='${data[i].track_id}'> View </button> `;
        
       }
 
@@ -348,13 +348,13 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     async countStudent(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = ` AND id = ${req.user[0].id}`
+        whereClause = ` AND track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT * FROM student WHERE school_id = ${id}`+ whereClause,
+        `SELECT * FROM student WHERE track_school_id = '${id}'`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -376,11 +376,11 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
    async updateAdmission(body) {
     try {
 
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE id = ${id}`,
+        `UPDATE student SET name=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -394,7 +394,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       }
        if (body.name == "email") {
          const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE id = ${id}`,
+        `UPDATE student SET email=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -408,7 +408,7 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
       }
        if (body.name == "gender") {
          const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
+        `UPDATE student SET gender=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -439,10 +439,10 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
     async deleteAdmission(body) {
     try {
 
-      const studentId = parseInt(body.studentId);
+      const studentId = body.studentId;
    
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${studentId}`,
+        `DELETE FROM student WHERE track_id = '${studentId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -461,10 +461,10 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
   }
   async fetchStudentById(body) {
     try {
-      const studentId = parseInt(body.studentId);
+      const studentId = body.studentId;
      
      const data = await sequelize.query(
-        `SELECT * FROM student WHERE id = ${studentId}`,
+        `SELECT * FROM student WHERE track_id = '${studentId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -490,10 +490,10 @@ const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
   }
    async viewStudentById(body) {
     try {
-      const studentId = parseInt(body.studentId);
+      const studentId = body.studentId;
      
      const data = await sequelize.query(
-        `SELECT student.*,class.class_name,school.school_name FROM student INNER JOIN school ON school.id = student.school_id INNER JOIN class ON class.id = student.class_id WHERE student.id = ${studentId}`,
+        `SELECT student.*,class.class_name,school.school_name FROM student INNER JOIN school ON school.track_id = student.track_school_id INNER JOIN class ON class.track_id = student.track_class_id WHERE student.track_id = '${studentId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -563,8 +563,7 @@ data.forEach(item => {
   }
    async exportPdf(req,res) {
      try {
-      console.log("#$%%%%%%%%%%%%%%%%%%%%%%%%%%");
-      
+     
         const id = parseInt(req.user[0].id)
    
      const data = await sequelize.query(
@@ -616,9 +615,9 @@ data.forEach(item => {
    async updateStudentById(body) {
     try {
 
-      const id = parseInt(body.id);
+      const id = body.id;
       const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
+        `UPDATE student SET gender=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -646,7 +645,7 @@ data.forEach(item => {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = (${ids[index]})`,
+        `DELETE FROM student WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          

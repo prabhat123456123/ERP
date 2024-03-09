@@ -99,7 +99,7 @@
                            <div class="row">
                               <div class="col-md-12">
                                 <form action="" id="classesForm">
-                                  <input type="hidden" id="school_id" value="<%= user[0].id %>" class="form-control" name="school_id" >
+                                  <input type="hidden" id="school_id" value="<%= user[0].track_id %>" class="form-control" name="school_id" >
                             <div class="row">
                                 <div class="form-group col-lg-6">
                                     <label>Class Name</label>
@@ -430,7 +430,7 @@ $(document).ready(function(){
       });
       // Check checkbox checked or not
       if(deleteids_arr.length > 0){
-        
+        console.log(deleteids_arr);
       
             $.ajax({
                url: '/classes/delete-multiple-classes',
@@ -446,8 +446,8 @@ $(document).ready(function(){
       }
    });
 	$(document).on("click",".delBtn",function(){
-		
- const classesId = $("#classesId").val();
+      const classesId = $("#classesId").val();
+		alert(classesId)
   $.ajax({
         url: '/classes/delete-classes',
         type: "POST",

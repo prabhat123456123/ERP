@@ -37,15 +37,16 @@ const BASEURL = process.env.BASEURL;
 class ClassesManagement {
   constructor() {}
    async createClasses( files,fields,req, res) {
-    try {
+     try {
+      console.log(fields);
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-
+ const uniqueNum = uuidv4();
         const data = await sequelize.query(
-          "INSERT INTO class(school_id,class_name,annual_fee,created_by,created_at) VALUES (?,?,?,?,?)",
+          "INSERT INTO class(track_id,track_school_id,class_name,annual_fee,created_by,created_at) VALUES (?,?,?,?,?,?)",
           {
             replacements: [
              
-             
+               uniqueNum,
              fields.school_id[0],
               fields.class_name[0],
               fields.annual_fee[0],
@@ -70,16 +71,16 @@ class ClassesManagement {
  
    async updateClassesById(body) {
      try {
-    
+       const trackId = body.classesId; 
         const data = await sequelize.query(
-          "UPDATE class SET class_name=?, annual_fee=? WHERE id = ?",
+          "UPDATE class SET class_name=?, annual_fee=? WHERE track_id = ?",
           {
             replacements: [
              
               body.class_name,
               body.annual_fee,
              
-                parseInt(body.classesId),
+             trackId,
             ],
             type: QueryTypes.UPDATE,
           }
@@ -104,10 +105,10 @@ class ClassesManagement {
   async getClasses(req,res) {
     try {
 //  console.log(sequelize)
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
      
        const data = await sequelize.query(
-        `SELECT id,class_name,annual_fee FROM class WHERE school_id = ${id} AND class_name like "%${
+        `SELECT track_id,class_name,annual_fee FROM class WHERE track_school_id = '${id}' AND class_name like "%${
           req.body.search.value
         }%" LIMIT ${parseInt(
           req.body.length
@@ -119,14 +120,14 @@ class ClassesManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].class_name}`;
         data[i]["fee"] = `${data[i].annual_fee}`;
       
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editClasses(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteClasses(${data[i].id})' data-id='${data[i].id}' > Delete </button> <a href="/subject/subject/${data[i].id}" class='btn btn-success btn-sm' data-id='${data[i].id}' > View Subject</a> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editClasses(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteClasses(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <a href="/subject/subject/${data[i].track_id}" class='btn btn-success btn-sm' data-id='${data[i].track_id}' > View Subject</a> `;
        
       }
 
@@ -142,11 +143,11 @@ class ClassesManagement {
   }
     async countClasses(req,res) {
     try {
- const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       
     
        const data = await sequelize.query(
-        `SELECT * FROM class WHERE school_id = ${id}`,
+        `SELECT * FROM class WHERE track_school_id = '${id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -168,11 +169,11 @@ class ClassesManagement {
    async updateClasses(body) {
     try {
 
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE classes SET class_name=? WHERE id = ${id}`,
+        `UPDATE classes SET class_name=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -198,10 +199,10 @@ class ClassesManagement {
     async deleteClasses(body) {
     try {
 
-      const classesId = parseInt(body.classesId);
+      const classesId = body.classesId;
    
      const data = await sequelize.query(
-        `DELETE FROM class WHERE id = ${classesId}`,
+        `DELETE FROM class WHERE track_id = '${classesId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -220,10 +221,10 @@ class ClassesManagement {
   }
   async fetchClassesById(body) {
     try {
-      const classesId = parseInt(body.classesId);
+      const classesId = body.classesId;
      
      const data = await sequelize.query(
-        `SELECT * FROM Class WHERE id = ${classesId}`,
+        `SELECT * FROM Class WHERE track_id = '${classesId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -243,10 +244,10 @@ class ClassesManagement {
   }
    async viewClassesById(body) {
     try {
-      const classesId = parseInt(body.classesId);
+      const classesId = body.classesId;
      
      const data = await sequelize.query(
-        `SELECT * FROM classes WHERE id = ${classesId}`,
+        `SELECT * FROM classes WHERE track_id = '${classesId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -274,7 +275,7 @@ class ClassesManagement {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM class WHERE id = (${ids[index]})`,
+        `DELETE FROM class WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          

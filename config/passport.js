@@ -15,7 +15,6 @@ module.exports = function (passport) {
     "school",
     new LocalStrategy(async (username, password, done) => {
       const admin = await new AuthManagement().getSchool( username);
-console.log(admin);
       if (admin.length > 0) {
         bcrypt.compare(password, admin[0].password, (error, isMatch) => {
           if (error) console.error(error);
@@ -89,12 +88,14 @@ console.log(admin);
 
   passport.serializeUser((user, done) => {
     // console.log(user);
-    done(null, { uId: user.id, role: user.role });
+    done(null, { uId: user.track_id, role: user.role });
   });
 
   passport.deserializeUser(async (uid, done) => {
     try {
+    
       if (uid.role === "school") {
+
         const rows = await new AuthManagement().getSchoolId(uid.uId);
         if (rows) {
           done(null, rows);

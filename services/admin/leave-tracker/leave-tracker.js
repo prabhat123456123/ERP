@@ -16,7 +16,7 @@ const {
 } = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 // const humps = require("humps");
 
 const path = require("path");
@@ -43,7 +43,7 @@ class LeaveTrackerManagement {
       
       
       const data = await sequelize.query(
-        "INSERT INTO student_leave(student_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO student_leave(track_student_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
         {
           replacements: [
             
@@ -78,7 +78,7 @@ class LeaveTrackerManagement {
   console.log( req.body);
        
         const data = await sequelize.query(
-          "UPDATE `student_leave` SET reason=?, from_date=?, to_date=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE `student_leave` SET reason=?, from_date=?, to_date=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               req.body.reason,
@@ -110,13 +110,13 @@ class LeaveTrackerManagement {
   async getStudentLeave(req, res) {
     try {
 //  console.log(sequelize)
-    const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+    const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `student.id = ${req.user[0].id} AND `
+        whereClause = `student.track_id = '${req.user[0].track_id}' AND `
       }
        const data = await sequelize.query(
-        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} AND ` + whereClause + `(student.name like "%${
+        `SELECT student_leave.track_id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.track_id = student_leave.track_student_id WHERE student.track_school_id = '${id}' AND ` + whereClause + `(student.name like "%${
           req.body.search.value
         }%" OR student_leave.leave_status like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -128,7 +128,7 @@ class LeaveTrackerManagement {
     
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["reason"] = `${data[i].reason}`;
         data[i]["from_date"] = updateFormat(
@@ -143,7 +143,7 @@ class LeaveTrackerManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editLeaveTracker(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteLeaveTracker(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewLeaveTracker(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > View </button> `;
        
       }
 
@@ -160,13 +160,13 @@ class LeaveTrackerManagement {
     async countStudentLeave(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `AND student.id = ${req.user[0].id}`
+        whereClause = `AND student.track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT student_leave.id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id WHERE student.school_id = ${id} ` + whereClause,
+        `SELECT student_leave.track_id,student.name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.track_id = student_leave.track_student_id WHERE student.track_school_id = '${id}'` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -188,11 +188,11 @@ class LeaveTrackerManagement {
    async updateStudentLeave(body) {
     try {
 
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "reason") {
          const data = await sequelize.query(
-        `UPDATE student_leave SET reason=? WHERE id = ${id}`,
+        `UPDATE student_leave SET reason=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -206,7 +206,7 @@ class LeaveTrackerManagement {
       }
        if (body.name == "from_date") {
          const data = await sequelize.query(
-        `UPDATE student_leave SET from_date=? WHERE id = ${id}`,
+        `UPDATE student_leave SET from_date=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -220,7 +220,7 @@ class LeaveTrackerManagement {
       }
        if (body.name == "to_date") {
          const data = await sequelize.query(
-        `UPDATE student_leave SET to_date=? WHERE id = ${id}`,
+        `UPDATE student_leave SET to_date=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -234,7 +234,7 @@ class LeaveTrackerManagement {
       }
        if (body.name == "leave_status") {
          const data = await sequelize.query(
-        `UPDATE student_leave SET leave_status=? WHERE id = ${id}`,
+        `UPDATE student_leave SET leave_status=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -265,9 +265,9 @@ class LeaveTrackerManagement {
     async deleteStudentLeave(body) {
     try {
 
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
      const data = await sequelize.query(
-        `DELETE FROM student_leave WHERE id = ${leaveId}`,
+        `DELETE FROM student_leave WHERE track_id = '${leaveId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -286,10 +286,10 @@ class LeaveTrackerManagement {
   }
   async fetchStudentLeaveById(body) {
     try {
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
    
      const leaveData = await sequelize.query(
-        `SELECT * FROM student_leave WHERE id = ${leaveId}`,
+        `SELECT * FROM student_leave WHERE track_id = '${leaveId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -323,10 +323,10 @@ class LeaveTrackerManagement {
   }
    async viewStudentLeaveById(body) {
     try {
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
     
      const leaveData = await sequelize.query(
-        `SELECT student.name,student.gender,class.class_name,school.school_name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.id = student_leave.student_id INNER JOIN class ON class.id = student.class_id INNER JOIN school ON school.id = student.school_id WHERE student_leave.id = ${leaveId}`,
+        `SELECT student.name,student.gender,class.class_name,school.school_name,student_leave.reason,student_leave.from_date,student_leave.to_date,student_leave.leave_status FROM student_leave INNER JOIN student ON student.track_id = student_leave.track_student_id INNER JOIN class ON class.track_id = student.track_class_id INNER JOIN school ON school.track_id = student.track_school_id WHERE student_leave.track_id = '${leaveId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -373,7 +373,7 @@ class LeaveTrackerManagement {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM student_leave WHERE id = (${ids[index]})`,
+        `DELETE FROM student_leave WHERE track_id = (${ids[index]})`,
         {
           type: QueryTypes.DELETE,
          
@@ -400,7 +400,7 @@ class LeaveTrackerManagement {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
 console.log(req.body);
         const data = await sequelize.query(
-          "INSERT INTO faculty_leave(faculty_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
+          "INSERT INTO faculty_leave(track_faculty_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -434,7 +434,7 @@ console.log(req.body);
   
        
         const data = await sequelize.query(
-          "UPDATE `faculty_leave` SET reason=?,from_date=?,to_date=?, updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE `faculty_leave` SET reason=?,from_date=?,to_date=?, updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               req.body.reason,
@@ -466,14 +466,14 @@ console.log(req.body);
   async getFacultyLeave(req,res) {
     try {
 //  console.log(sequelize)
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `faculty.id = ${req.user[0].id} AND `
+        whereClause = `faculty.track_id = '${req.user[0].track_id}' AND `
       }
 
        const data = await sequelize.query(
-        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE school_id = ${id} AND ` + whereClause + `(faculty.name like "%${
+        `SELECT faculty_leave.track_id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.track_id = faculty_leave.track_faculty_id WHERE track_school_id ='${id}'AND ` + whereClause + `(faculty.name like "%${
           req.body.search.value
         }%" OR faculty_leave.leave_status like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -485,7 +485,7 @@ console.log(req.body);
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["reason"] = `${data[i].reason}`;
          data[i]["from_date"] = updateFormat(
@@ -500,7 +500,7 @@ console.log(req.body);
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editLeaveTracker(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteLeaveTracker(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewLeaveTracker(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewLeaveTracker(${data[i].track_id})' data-id='${data[i].track_id}' > View </button> `;
        
       }
 
@@ -517,13 +517,13 @@ console.log(req.body);
     async countFacultyLeave(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `AND faculty.id = ${req.user[0].id}`
+        whereClause = `AND faculty.track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT faculty_leave.id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id WHERE faculty.school_id = ${id} ` + whereClause,
+        `SELECT faculty_leave.track_id,faculty.name,faculty_leave.reason,faculty_leave.from_date,faculty_leave.to_date,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.track_id = faculty_leave.track_faculty_id WHERE faculty.track_school_id = '${id}' ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -545,11 +545,11 @@ console.log(req.body);
    async updateFacultyLeave(body) {
     try {
 
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "reason") {
          const data = await sequelize.query(
-        `UPDATE faculty_leave SET reason=? WHERE id = ${id}`,
+        `UPDATE faculty_leave SET reason=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -563,7 +563,7 @@ console.log(req.body);
       }
        if (body.name == "from_date") {
          const data = await sequelize.query(
-        `UPDATE faculty_leave SET from_date=? WHERE id = ${id}`,
+        `UPDATE faculty_leave SET from_date=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -577,7 +577,7 @@ console.log(req.body);
       }
        if (body.name == "to_date") {
          const data = await sequelize.query(
-        `UPDATE faculty_leave SET to_date=? WHERE id = ${id}`,
+        `UPDATE faculty_leave SET to_date=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -591,7 +591,7 @@ console.log(req.body);
       }
        if (body.name == "leave_status") {
          const data = await sequelize.query(
-        `UPDATE faculty_leave SET leave_status=? WHERE id = ${id}`,
+        `UPDATE faculty_leave SET leave_status=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -622,9 +622,9 @@ console.log(req.body);
     async deleteFacultyLeave(body) {
     try {
 
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
      const data = await sequelize.query(
-        `DELETE FROM faculty_leave WHERE id = ${leaveId}`,
+        `DELETE FROM faculty_leave WHERE track_id = '${leaveId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -643,10 +643,10 @@ console.log(req.body);
   }
   async fetchFacultyLeaveById(body) {
     try {
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
    
      const leaveData = await sequelize.query(
-        `SELECT * FROM faculty_leave WHERE id = ${leaveId}`,
+        `SELECT * FROM faculty_leave WHERE track_id = '${leaveId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -679,10 +679,10 @@ console.log(req.body);
   }
    async viewFacultyLeaveById(body) {
     try {
-      const leaveId = parseInt(body.leaveId);
+      const leaveId = body.leaveId;
     
      const leaveData = await sequelize.query(
-        `SELECT faculty.name,faculty.gender,school.school_name,faculty_leave.reason,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.id = faculty_leave.faculty_id INNER JOIN school ON school.id = faculty.school_id WHERE faculty_leave.id = ${leaveId}`,
+        `SELECT faculty.name,faculty.gender,school.school_name,faculty_leave.reason,faculty_leave.leave_status FROM faculty_leave INNER JOIN faculty ON faculty.track_id = faculty_leave.track_faculty_id INNER JOIN school ON school.track_id = faculty.track_school_id WHERE faculty_leave.track_id = '${leaveId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -726,7 +726,7 @@ console.log(req.body);
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM faculty_leave WHERE id = (${ids[index]})`,
+        `DELETE FROM faculty_leave WHERE track_id = (${ids[index]})`,
         {
           type: QueryTypes.DELETE,
          

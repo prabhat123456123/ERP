@@ -14,7 +14,7 @@ const { QueryTypes, Sequelize } = require("sequelize");
 // } = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 // const humps = require("humps");
 
 const path = require("path");

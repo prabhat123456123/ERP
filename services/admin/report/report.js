@@ -14,7 +14,7 @@ const { QueryTypes, Sequelize } = require("sequelize");
 // } = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
-// const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4 } = require("uuid");
 // const humps = require("humps");
 
 const path = require("path");
@@ -39,7 +39,7 @@ class ReportManagement {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT id,name,email,gender FROM student WHERE name like "%${
+        `SELECT track_id,name,email,gender FROM student WHERE name like "%${
           body.search.value
         }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
           body.length
@@ -51,14 +51,14 @@ class ReportManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["email"] = `${data[i].email}`;
         data[i]["gender"] = `${data[i].gender}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].track_id}' > Delete </button>`;
        
       }
 
@@ -99,11 +99,11 @@ class ReportManagement {
    async updateAdmission(body) {
     try {
  console.log(body)
-      let id = parseInt(body.pk)
+      let id = body.pk
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE id = ${id}`,
+        `UPDATE student SET name=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -117,7 +117,7 @@ class ReportManagement {
       }
        if (body.name == "email") {
          const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE id = ${id}`,
+        `UPDATE student SET email=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -131,7 +131,7 @@ class ReportManagement {
       }
        if (body.name == "gender") {
          const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE id = ${id}`,
+        `UPDATE student SET gender=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -161,11 +161,11 @@ class ReportManagement {
  async fetchStudentByClass(req) {
      try {
        
-       const classId = parseInt(req.body.classId);
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const classId = req.body.classId;
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
        
        const studentData = await sequelize.query(
-         `SELECT * FROM student WHERE class_id = ${classId} AND school_id = ${id}`,
+         `SELECT * FROM student WHERE track_class_id = '${classId}' AND track_school_id = '${id}'`,
          {
            type: QueryTypes.SELECT,
            
@@ -186,12 +186,12 @@ class ReportManagement {
   async fetchStudentReportByClass(req) {
      try {
        
-       const classId = parseInt(req.body.classes);
-       const studentId = parseInt(req.body.studentId);
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const classId = req.body.classes;
+       const studentId = req.body.studentId;
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
        
        const studentData = await sequelize.query(
-         `SELECT * FROM student WHERE class_id = ${classId} AND school_id = ${id}`,
+         `SELECT * FROM student WHERE track_class_id = '${classId}' AND track_school_id = '${id}'`,
          {
            type: QueryTypes.SELECT,
            
@@ -212,10 +212,10 @@ class ReportManagement {
    async getClass(req) {
      try {
        
-       const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
        
        const data = await sequelize.query(
-         `SELECT * FROM class WHERE school_id = ${id}`,
+         `SELECT * FROM class WHERE track_school_id = '${id}'`,
          {
            type: QueryTypes.SELECT,
            
@@ -236,9 +236,9 @@ class ReportManagement {
     async deleteAdmission(body) {
     try {
 
-      const id = parseInt(body.id);
+      const id = body.id;
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = ${id}`,
+        `DELETE FROM student WHERE track_id ='${id}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -262,7 +262,7 @@ class ReportManagement {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM student WHERE id = (${ids[index]})`,
+        `DELETE FROM student WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          

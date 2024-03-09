@@ -36,14 +36,14 @@ class ComplaintManagement {
 
  async getComplaint(req,res) {
     try {
-      const id = req.user[0].role == "school" ? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role == "school" ? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `complaint.student_id = ${req.user[0].id} AND `
+        whereClause = `complaint.track_student_id = '${req.user[0].track_id}' AND `
       }
      
          const data = await sequelize.query(
-        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} AND ` + whereClause + ` (student.name like "%${
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' AND ` + whereClause + ` (student.name like "%${
           req.body.search.value
         }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
          req.body.length
@@ -78,14 +78,14 @@ class ComplaintManagement {
   }
     async countComplaint(req,res) {
     try {
- const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
      let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `AND complaint.student_id = ${req.user[0].id} `
+        whereClause = `AND complaint.track_student_id = '${req.user[0].track_id}' `
       }
      
        const data = await sequelize.query(
-        `SELECT student.id,student.class_id,student.school_id,complaint.description,student.name,complaint.id as cId FROM complaint RIGHT JOIN student ON student.id =complaint.student_id  WHERE student.school_id = ${id} ` + whereClause ,
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,complaint.description,student.name,complaint.track_id as cId FROM complaint RIGHT JOIN student ON student.track_id =complaint.track_student_id  WHERE student.track_school_id = '${id}' ` + whereClause ,
         {
           type: QueryTypes.SELECT,
         }
@@ -127,7 +127,7 @@ class ComplaintManagement {
        
 
         const data = await sequelize.query(
-          "INSERT INTO complaint(track_id,student_id,class_id,school_id,description,faculty_id,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
+          "INSERT INTO complaint(track_id,track_student_id,track_class_id,track_school_id,description,faculty_id,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -163,7 +163,7 @@ class ComplaintManagement {
        const currentTime = getDate("YYYY-MM-DD hh:mm");
      
         const data = await sequelize.query(
-          "UPDATE `complaint` SET description=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE `complaint` SET description=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               req.body.complaint,
@@ -196,7 +196,7 @@ class ComplaintManagement {
     
         const uniqueNum = uuidv4();
          const data = await sequelize.query(
-          "INSERT INTO complaint(track_id,student_id,description,faculty_school_id,created_by,created_at) VALUES (?,?,?,?,?,?)",
+          "INSERT INTO complaint(track_id,track_student_id,description,track_faculty_school_id,created_by,created_at) VALUES (?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -255,10 +255,10 @@ class ComplaintManagement {
     async deleteComplaint(body) {
     try {
 
-      const complaintId = parseInt(body.complaintId);
+      const complaintId = body.complaintId;
     
      const data = await sequelize.query(
-        `DELETE FROM complaint WHERE id = ${complaintId}`,
+        `DELETE FROM complaint WHERE track_id = '${complaintId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -277,10 +277,10 @@ class ComplaintManagement {
   }
   async fetchComplaintById(body) {
     try {
-      const complaintId = parseInt(body.complaintId);
+      const complaintId = body.complaintId;
     
      const data = await sequelize.query(
-        `SELECT * FROM complaint WHERE id = ${complaintId}`,
+        `SELECT * FROM complaint WHERE track_id = '${complaintId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -306,26 +306,25 @@ class ComplaintManagement {
   }
    async viewComplaintById(req) {
     try {
-      const complaintId = parseInt(req.body.complaintId);
+      const complaintId = req.body.complaintId;
       let joinClause = "";
       let selectClause = "";
       if (req.user[0].role == "school") {
         selectClause = `school.school_name,school.role,`
-        joinClause = `INNER JOIN school ON school.id = complaint.faculty_school_id`
+        joinClause = `INNER JOIN school ON school.track_id = complaint.track_faculty_school_id`
       }
       if (req.user[0].role == "faculty") {
            selectClause = `faculty.name as fname,faculty.role,`
-        joinClause = `INNER JOIN faculty ON faculty.id = complaint.faculty_school_id`
+        joinClause = `INNER JOIN faculty ON faculty.track_id = complaint.track_faculty_school_id`
       }
       const data = await sequelize.query(
-        `SELECT complaint.description,class.class_name,` + selectClause + `student.name as sname FROM complaint INNER JOIN student ON student.id = complaint.student_id ` + joinClause + ` INNER JOIN class ON class.id = student.class_id WHERE complaint.id = ${complaintId}`,
+        `SELECT complaint.description,class.class_name,` + selectClause + `student.name as sname FROM complaint INNER JOIN student ON student.track_id = complaint.track_student_id ` + joinClause + ` INNER JOIN class ON class.track_id = student.track_class_id WHERE complaint.track_id = '${complaintId}'`,
         {
           type: QueryTypes.SELECT,
           
         }
         );
         
-        console.log(">?????????????????????????????????????/",data);
           return data;
 
     
@@ -346,7 +345,7 @@ class ComplaintManagement {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM complaint WHERE id = (${ids[index]})`,
+        `DELETE FROM complaint WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          

@@ -42,7 +42,7 @@ class SubjectManagement {
 
 
         const data = await sequelize.query(
-          "INSERT INTO subject(class_id,subject_name,created_by,created_at) VALUES (?,?,?,?)",
+          "INSERT INTO subject(track_class_id,subject_name,created_by,created_at) VALUES (?,?,?,?)",
           {
             replacements: [
               
@@ -73,7 +73,7 @@ class SubjectManagement {
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
         const data = await sequelize.query(
-          "UPDATE subject SET class_id=?, subject_name=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE subject SET track_class_id=?, subject_name=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
              
@@ -108,7 +108,7 @@ class SubjectManagement {
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT subject.id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.id = subject.class_id WHERE subject_name like "%${
+        `SELECT subject.track_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE subject_name like "%${
           body.search.value
         }%" LIMIT ${parseInt(
           body.length
@@ -120,14 +120,14 @@ class SubjectManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].class_name}`;
         data[i]["subject"] = `${data[i].subject_name}`;
       
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubject(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteSubject(${data[i].id})' data-id='${data[i].id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editSubject(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteSubject(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button>`;
        
       }
 
@@ -184,11 +184,11 @@ class SubjectManagement {
    async updateSubject(body) {
     try {
 
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE subject SET subject_name=? WHERE id = ${id}`,
+        `UPDATE subject SET subject_name=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -217,10 +217,10 @@ class SubjectManagement {
     async deleteSubject(body) {
     try {
 
-      const subjectId = parseInt(body.subjectId);
+      const subjectId = body.subjectId;
    
      const data = await sequelize.query(
-        `DELETE FROM subject WHERE id = ${subjectId}`,
+        `DELETE FROM subject WHERE track_id = '${subjectId}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -239,10 +239,10 @@ class SubjectManagement {
   }
   async fetchSubjectById(body) {
     try {
-      const subjectId = parseInt(body.subjectId);
+      const subjectId = body.subjectId;
      
      const data = await sequelize.query(
-        `SELECT * FROM subject WHERE id = ${subjectId}`,
+        `SELECT * FROM subject WHERE track_id = '${subjectId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -268,10 +268,10 @@ class SubjectManagement {
   }
    async viewSubjectById(body) {
     try {
-      const subjectId = parseInt(body.subjectId);
+      const subjectId = body.subjectId;
      
      const data = await sequelize.query(
-        `SELECT * FROM subject WHERE id = ${subjectId}`,
+        `SELECT * FROM subject WHERE track_id = '${subjectId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -298,7 +298,7 @@ class SubjectManagement {
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM subject WHERE id = (${ids[index]})`,
+        `DELETE FROM subject WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          

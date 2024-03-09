@@ -76,11 +76,12 @@ class AuthManagement {
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "INSERT INTO school(track_id,school_name,principal_name,principal_email,principal_phone,year_establish,address,number_of_class,password,logo,created_at,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO school(track_id,role,school_name,principal_name,principal_email,principal_phone,year_establish,address,number_of_class,password,logo,created_at,created_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
              
               uniqueNum,
+              "school",
               fields.school_name[0],
               fields.principal_name[0],
               fields.principal_email[0],
@@ -100,11 +101,11 @@ class AuthManagement {
         console.log(data);
         for (let i = lower; i <= higher; i++) {
           await sequelize.query(
-            "INSERT INTO class(school_id,class_name,created_by,created_at) VALUES (?,?,?,?)",
+            "INSERT INTO class(track_id,track_school_id,class_name,created_by,created_at) VALUES (?,?,?,?,?)",
             {
               replacements: [
              
-             
+             uniqueNum,
              
                 data[0],
                 `class${i}`,
@@ -145,17 +146,17 @@ class AuthManagement {
   
  async getDashboardDataBySchool(req,res) {
     try {
-     const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+     const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       let dateClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `student_attendance.student_id = ${req.user[0].id} AND `
+        whereClause = `student_attendance.track_student_id = '${req.user[0].track_id}' AND `
       }
          if (req.body.startDates != undefined && req.body.endDates != undefined) {
         dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
       }
        const data = await sequelize.query(
-        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.class_id,student.school_id FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE ` +whereClause+ `student.school_id = ${id} `+ dateClause +`AND (student.name like "%${
+        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.track_class_id,student.track_school_id FROM student_attendance INNER JOIN student ON student.track_id = student_attendance.track_student_id WHERE ` +whereClause+ `student.track_school_id = '${id}' `+ dateClause +`AND (student.name like "%${
           req.body.search.value
         }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -191,19 +192,17 @@ class AuthManagement {
 
    async countDashboardDataBySchool(req,res) {
     try {
-      console.log("?????????????????????????????????????????????????????????",req.body.startDates);
-      console.log(req.body.endDates);
-        const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       let dateClause = "";
       if (req.user[0].role == "student") {
-        whereClause = ` AND student_attendance.student_id = ${req.user[0].id}`
+        whereClause = ` AND student_attendance.track_student_id = '${req.user[0].track_id}'`
       }
        if (req.body.startDates != undefined && req.body.endDates != undefined) {
         dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
       }
        const data = await sequelize.query(
-        `SELECT * FROM student_attendance INNER JOIN student ON student.id = student_attendance.student_id WHERE student.school_id = ${id} `+ dateClause + whereClause,
+        `SELECT * FROM student_attendance INNER JOIN student ON student.track_id = student_attendance.track_student_id WHERE student.track_school_id = '${id}' `+ dateClause + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -255,7 +254,7 @@ class AuthManagement {
    async getSchoolId( ID) {
     try {
       const userData = await sequelize.query(
-        "SELECT * FROM `school` WHERE id = ?",
+        "SELECT * FROM `school` WHERE track_id = ?",
         {
           type: QueryTypes.SELECT,
           replacements: [ID],
@@ -271,7 +270,7 @@ class AuthManagement {
    async getStudentId( ID) {
     try {
       const userData = await sequelize.query(
-        "SELECT * FROM `student` WHERE id = ?",
+        "SELECT * FROM `student` WHERE track_id = ?",
         {
           type: QueryTypes.SELECT,
           replacements: [ID],
@@ -287,7 +286,7 @@ class AuthManagement {
    async getFacultyId( ID) {
     try {
       const userData = await sequelize.query(
-        "SELECT * FROM `faculty` WHERE id = ?",
+        "SELECT * FROM `faculty` WHERE track_id = ?",
         {
           type: QueryTypes.SELECT,
           replacements: [ID],

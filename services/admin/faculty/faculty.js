@@ -70,7 +70,7 @@ class FacultyManagement {
         const url = `${fileName}`;
 
          const data = await sequelize.query(
-          "INSERT INTO faculty(track_id,school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO faculty(track_id,track_school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
              
@@ -111,13 +111,13 @@ class FacultyManagement {
    async getFaculty(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `id = ${req.user[0].id} AND `
+        whereClause = `track_id = '${req.user[0].track_id}' AND `
       }
        const data = await sequelize.query(
-        `SELECT id,school_id,name,email,gender FROM faculty WHERE school_id = ${id} AND ` + whereClause + `(name like "%${
+        `SELECT track_id,track_school_id,name,email,gender FROM faculty WHERE track_school_id = '${id}' AND ` + whereClause + `(name like "%${
           req.body.search.value
         }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
           req.body.length
@@ -129,14 +129,14 @@ class FacultyManagement {
       
 
      for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].id}' class='delete_check'>`;
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
         data[i]["name"] = `${data[i].name}`;
         data[i]["email"] = `${data[i].email}`;
         data[i]["gender"] = `${data[i].gender}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].id})' data-id='${data[i].id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteFaculty(${data[i].id})' data-id='${data[i].id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFaculty(${data[i].id})' data-id='${data[i].id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editFaculty(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteFaculty(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFaculty(${data[i].track_id})' data-id='${data[i].track_id}' > View </button> `;
        
       }
 
@@ -153,13 +153,13 @@ class FacultyManagement {
     async countFaculty(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].id : req.user[0].school_id
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = ` AND id = ${req.user[0].id}`
+        whereClause = ` AND track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT * FROM faculty WHERE school_id = ${id}`+ whereClause,
+        `SELECT * FROM faculty WHERE track_school_id = '${id}'`+ whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -180,12 +180,11 @@ class FacultyManagement {
   }
    async updateFacultyData(body) {
     try {
- console.log(body)
-      let id = parseInt(body.pk)
+      let id = body.pk;
 
       if (body.name === "name") {
          const data = await sequelize.query(
-        `UPDATE faculty SET name=? WHERE id = ${id}`,
+        `UPDATE faculty SET name=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -199,7 +198,7 @@ class FacultyManagement {
       }
        if (body.name == "email") {
          const data = await sequelize.query(
-        `UPDATE faculty SET email=? WHERE id = ${id}`,
+        `UPDATE faculty SET email=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -213,7 +212,7 @@ class FacultyManagement {
       }
        if (body.name == "gender") {
          const data = await sequelize.query(
-        `UPDATE faculty SET gender=? WHERE id = ${id}`,
+        `UPDATE faculty SET gender=? WHERE track_id = '${id}'`,
         {
           type: QueryTypes.UPDATE,
            replacements: [
@@ -243,11 +242,10 @@ class FacultyManagement {
 
     async deleteFacultyData(body) {
     try {
-console.log("$$$$$$$$$$$$$$$$$");
-console.log(body.facultyId);
-      const id = parseInt(body.facultyId);
+
+      const id = body.facultyId;
      const data = await sequelize.query(
-        `DELETE FROM faculty WHERE id = ${id}`,
+        `DELETE FROM faculty WHERE track_id = '${id}'`,
         {
           type: QueryTypes.DELETE,
          
@@ -271,7 +269,7 @@ console.log(body.facultyId);
       for (let index = 0; index < ids.length; index++) {
      
      const data = await sequelize.query(
-        `DELETE FROM faculty WHERE id = (${ids[index]})`,
+        `DELETE FROM faculty WHERE track_id = ('${ids[index]}')`,
         {
           type: QueryTypes.DELETE,
          
@@ -291,10 +289,10 @@ console.log(body.facultyId);
   }
    async fetchFacultyById(body) {
     try {
-      const facultyId = parseInt(body.facultyId);
+      const facultyId = body.facultyId;
       
      const data = await sequelize.query(
-        `SELECT * FROM faculty WHERE id = ${facultyId}`,
+        `SELECT * FROM faculty WHERE track_id = '${facultyId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -320,9 +318,9 @@ console.log(body.facultyId);
   }
    async viewFacultyById(body) {
     try {
-      const facultyId = parseInt(body.facultyId);
+      const facultyId = body.facultyId;
      const data = await sequelize.query(
-        `SELECT faculty.*,school.school_name FROM faculty INNER JOIN school ON school.id = faculty.school_id WHERE faculty.id = ${facultyId}`,
+        `SELECT faculty.*,school.school_name FROM faculty INNER JOIN school ON school.track_id = faculty.track_school_id WHERE faculty.track_id = '${facultyId}'`,
         {
           type: QueryTypes.SELECT,
          
@@ -364,7 +362,7 @@ console.log(body.facultyId);
         const url = `${fileName}`;
 
         const data = await sequelize.query(
-          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,photo=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,photo=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
              
@@ -394,7 +392,7 @@ console.log(body.facultyId);
       } else {
         
        const data = await sequelize.query(
-          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE faculty SET name=?,email=?,dob=?,gender=?,phone=?,address=?,fathers_name=?,mothers_name=?,experience=?,qualification=?,specialize=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
              
