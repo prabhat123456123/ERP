@@ -38,7 +38,7 @@
                         </div>
                         <div class="panel-body">
                             <%- include('../../partials/message') %>
-                            <% if(user[0].role==="school"){ %>
+                            <% if(user[0].role==="school" || user[0].role==="faculty"){ %>
 					 <div class="row"> 
  <div class="col-md-6 text-left">
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
@@ -48,7 +48,7 @@
             </div>
            
             <div class="col-md-6 text-right">
- 
+ <button class='btn btn-add btn-sm addBtn' data-toggle="modal" data-target="#addComplnt-lg">Add </button> 
                               
                              
             </div>
@@ -84,7 +84,63 @@
         <%- include('../../partials/footer') %>
       </div>
 	 <!-- Modal1 -->
-            
+              <div class="modal fade" id="addComplnt-lg" tabindex="-1" role="dialog">
+                  <%- include('../../partials/loader') %>
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Add New Complaint</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                               <form action="/complaint/add-complaint-by-id" method="post" id="complaintForm">
+                                  <input type="hidden" id="student_school_id" value="<%= user[0].role=='school'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
+                            <div class="row">
+                              
+                                  <div class="form-group col-lg-6">
+                                    <label>Class</label>
+                                   <select name="class_id" id="class_id" class="form-control" required>
+                                    <option value="">Please Select</option>
+                                    <% for(let i = 0; i < data.length; i++){%> 
+                                    <option value="<%= data[i].track_id %>"><%= data[i].class_name %></option>
+                                       <% } %>
+                                   </select>
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Select Student</label>
+                                   <select name="student_id" id="student_id" class="form-control" required>
+                                    <option value="">Please Select</option>
+                                  
+                                   </select>
+                                </div>
+                                  <div class="form-group col-lg-12">
+                                    <label> Address</label>
+                                  
+                                    <textarea placeholder="Complaint" rows="5" class="form-control" name="description"></textarea>
+                                </div>
+                              
+                              
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveStudent" data-action="submit">
+															Submit
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
                  <div class="modal fade" id="editComplaintModal" tabindex="-1" role="dialog">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
@@ -107,28 +163,7 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
-                 <div class="modal fade" id="addComplaintModal" tabindex="-1" role="dialog">
-                  <div class="modal-dialog modal-lg"  role="document">
-                     <div class="modal-content">
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-plus m-r-5"></i> add Complaint Details</h3>
-                        </div>
-                        <div class="modal-body">
-                         
-                              <div id="addComplaintDiv">
-                               
-                             
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
+               
                   <div class="modal fade" id="viewComplaintModal" tabindex="-1" role="dialog">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
@@ -203,11 +238,34 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
+
+   $(document).on('change','#class_id', function () {
+   var id = $(this).val(); 
+  $.ajax({
+         url: `/report/fetch-student-by-class`,
+         type: "post",
+         data:{classId:id},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].track_id}">${data[i].name}</option>`
+        }
+             $("#student_id").html("");
+             
+             $("#student_id").html(`<option value="">Please Select.</option>`);
+            $("#student_id").append(option);
+          
+          
+          
+        },
+      });
+})
 document.addEventListener("click", function(event) {
     const target = event.target;
-    if (target.classList.contains("addBtn")) {
-        addComplaint(target.dataset.id);
-    }else if(target.classList.contains("editBtn")) {
+    if(target.classList.contains("editBtn")) {
          editComplaint(target.dataset.id);
     } else if (target.classList.contains("deleteBtn")) {
         deleteComplaint(target.dataset.id);
@@ -357,40 +415,7 @@ function viewComplaint(complaintId) {
     }
   }
 
-   function addComplaint(studentId) {
-    try {
-     
-      $("#addComplaintDiv").html("");
-      $("#addComplaintModal").modal("toggle");
-     
-       
-            let formDetails = ``;
-            formDetails += `<form action="/complaint/add-complaint-by-id" method="post" id="complaintForm">
-                                  <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
-                                  <input type="hidden" value="<%= user[0].track_id %>" class="form-control" name="faculty_school_id">
-                            <div class="row">
-                               
-                                 <div class="form-group col-lg-12">
-                                    <label> Address</label>
-                                  
-                                    <textarea placeholder="Complaint" rows="5" class="form-control" name="description"></textarea>
-                                </div>
-                              
-                              
-                            </div>
-                            <div align="center">
-                               <input type="submit" class="btn btn-success"
-															value="Add">
-															
-														
-                            </div>
-                        </form>`;
-            $("#addComplaintDiv").html(formDetails);
-        
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  
   
    function deleteComplaint(complaintId) {
     try {

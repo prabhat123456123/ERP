@@ -38,7 +38,7 @@
                         </div>
                         <div class="panel-body">
                             <%- include('../../partials/message') %>
-                            <% if(user[0].role==="school"){ %>
+                            <% if(user[0].role==="school" || user[0].role==="faculty"){ %>
 					 <div class="row"> 
  <div class="col-md-6 text-left">
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
@@ -267,7 +267,16 @@
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 
-
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if(target.classList.contains("editBtn")) {
+         editQuestion(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteQuestion(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewQuestion(target.dataset.id);
+    }
+});
      
         $("#questionForm").on("submit", async e => {
          

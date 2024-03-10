@@ -9,7 +9,8 @@ const {
 
 const viewComplaint = async (req, res, next) => {
   try {
-     return res.render("admin/complaint/complaint",{nonce: res.locals.nonce});
+     const data = await new ComplaintManagement().getClass(req,res);
+     return res.render("admin/complaint/complaint",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }

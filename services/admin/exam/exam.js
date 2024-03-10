@@ -410,7 +410,8 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
   
    async createQuestion(files, fields, req, res) {
      try {
-       console.log(fields);
+      
+        const uniqueNum = uuidv4();
       
       const currentTime = getDate("YYYY-MM-DD hh:mm");
 
@@ -449,9 +450,10 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
       
 
         const data = await sequelize.query(
-          "INSERT INTO question(track_exam_id,question_title,option_one,option_two,option_three,option_four,option_image_one,option_image_two,option_image_three,option_image_four,right_option,right_marks,wrong_marks,created_by,created_at)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT INTO question( track_id,track_exam_id,question_title,option_one,option_two,option_three,option_four,option_image_one,option_image_two,option_image_three,option_image_four,right_option,right_marks,wrong_marks,created_by,created_at)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
+              uniqueNum,
               fields.exam_id[0],
               fields.question_title[0],
               fields.option_one[0],
@@ -524,7 +526,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
 
 
         const data = await sequelize.query(
-          "UPDATE question SET question_title=?,option_one=?,option_two=?,option_three=?,option_four=?,option_image_one=?,option_image_two=?,option_image_three=?,option_image_four=?,right_option=?,right_marks=?,wrong_marks=?,updated_by=?,updated_at=? WHERE id = ?",
+          "UPDATE question SET question_title=?,option_one=?,option_two=?,option_three=?,option_four=?,option_image_one=?,option_image_two=?,option_image_three=?,option_image_four=?,right_option=?,right_marks=?,wrong_marks=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
              
