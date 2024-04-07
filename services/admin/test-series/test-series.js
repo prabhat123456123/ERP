@@ -105,11 +105,11 @@ class TestManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async viewExplaination(body) {
+    async viewExplaination(req,res) {
     try {
 
        const data = await sequelize.query(
-        `SELECT * FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id where track_exam_id = '${body.examId}'`,
+        `SELECT * FROM answer INNER JOIN question ON question.track_id = answer.track_question_id INNER JOIN exam ON exam.track_id = question.track_exam_id where exam.track_id = '${req.body.examId}' AND answer.track_student_id = '${req.user[0].track_id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -413,7 +413,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm completedBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
        
       }
 
@@ -452,7 +452,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm completedBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
        
       }
 
@@ -786,26 +786,51 @@ class TestManagement {
   }
    async saveNextQuestion(req,res) {
      try {
+       const correctAnswer = await sequelize.query(
+  `SELECT right_option,right_marks,wrong_marks FROM question WHERE track_id = ?`,
+  {
+    type: QueryTypes.SELECT,
+    replacements: [req.body.questionId],
+  }
+);
+
+         const givenOption = req.body.givenOption;
+         const rightOption = correctAnswer[0].right_option;
+
+        
+         let marks = 0; // initialize marks to zero
+
+         // Check if the given option matches the right option
+         if (givenOption === rightOption) {
+         
+           marks = +correctAnswer[0].right_marks; // increment marks for correct answer
+         } else {
+           marks = -correctAnswer[0].wrong_marks; // increment marks for correct answer
+         }
+       
           const uniqueNum = uuidv4();
        const answer = await sequelize.query(
-         `SELECT * FROM answer INNER JOIN question ON question.track_id = answer.track_question_id where question.track_exam_id=? AND answer.track_question_id=?`,
+         `SELECT * FROM answer INNER JOIN question ON question.track_id = answer.track_question_id where question.track_exam_id=? AND answer.track_question_id=? AND answer.track_student_id=?`,
          {
            type: QueryTypes.SELECT,
            replacements: [
              req.body.examId,
-             req.body.questionId
+             req.body.questionId,
+             req.user[0].track_id,
             ],
           }
-          );
+       );
+       
        if (answer.length) {
         
             await sequelize.query(
-          "UPDATE answer SET given_options=?,question_status=? WHERE track_question_id = ?",
+          "UPDATE answer SET given_options=?,question_status=?,marks=? WHERE track_question_id = ?",
           {
             replacements: [
              
               req.body.givenOption,
-           "saved",
+              "saved",
+                marks,
                 req.body.questionId
             ],
             type: QueryTypes.UPDATE,
@@ -818,14 +843,15 @@ class TestManagement {
           const currentTime = getDate("YYYY-MM-DD hh:mm");
       
             await sequelize.query(
-          "INSERT INTO answer(track_id,track_student_id,track_question_id,given_options,question_status,created_by,created_at) VALUES (?,?,?,?,?,?,?)",
+          "INSERT INTO answer(track_id,track_student_id,track_question_id,given_options,question_status,marks,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
           {
             replacements: [
               uniqueNum,
              req.user[0].track_id,
              req.body.questionId,
               req.body.givenOption,
-             "saved",
+              "saved",
+             marks,
               "STUDENT",
                currentTime,
             ],

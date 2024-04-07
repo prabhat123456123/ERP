@@ -232,8 +232,8 @@ document.addEventListener("click", function(event) {
     const target = event.target;
     if (target.classList.contains("newPracticeBtn")) {
         startExam(target.dataset.id);
-    } else if (target.classList.contains("deleteBtn")) {
-        deleteAdmission(target.dataset.id);
+    } else if (target.classList.contains("viewExplainationBtn")) {
+        viewExplaination(target.dataset.id);
     }
 });
    
@@ -288,16 +288,44 @@ function startExam(examId) {
          cache: false,
          success: function (data) {
     console.log(data);
-            let formDetails = ``;
-            formDetails += `<table class="table table-bordered table-striped"> 
-               
-               <tr><td>Exam Name</td><td>${data[0].exam_name}</td></tr>
-               <tr><td>Number of Question</td><td>${data.length}</td></tr>
-               <tr><td>Right marks</td><td>${data[0].right_marks}</td></tr>
-               <tr><td>Wrong marks</td><td>${data[0].wrong_marks}</td></tr>
-               </table>
-               </br>
-               <input type="checkbox" id="terms"> Please Select and Proccede to Next.`;
+     let formDetails = ``;
+    data.forEach((item,i)=>{
+ formDetails += `<div class="cardsss">
+      <div class="cardsss-body">
+        
+        <h5 class="cardss-title">Question ${i+1}</h5>
+        <p class="cardss-text">${item.question_title}</p>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="question1" id="option1" value="option1">
+          <label class="form-check-label" for="option1">
+           ${item.option_one}
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="question1" id="option2" value="option2">
+          <label class="form-check-label" for="option2">
+           ${item.option_two}
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="question1" id="option3" value="option3">
+          <label class="form-check-label" for="option3">
+           ${item.option_three}
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="question1" id="option3" value="option3">
+          <label class="form-check-label" for="option3">
+           ${item.option_four}
+          </label>
+        </div>
+      </div>
+        <h5>  Marks:${item.marks}   </h5>  <h5>  Right Answer:${item.right_option}   </h5>  <h5>   Given Answer:${item.given_options}   </h5>
+    </div>
+`;
+    });
+           
+           
             $("#viewExplainationDiv").html(formDetails);
           
         },

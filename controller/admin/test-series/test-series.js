@@ -152,7 +152,7 @@ const getQuestionExamWise = async (req, res, next) => {
 
 const viewExplaination = async (req, res, next) => {
   try {
-    const data = await new TestManagement().viewExplaination(req.body);
+    const data = await new TestManagement().viewExplaination(req,res);
     
     return res.send(data);
   } catch (error) {
