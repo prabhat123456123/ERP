@@ -170,19 +170,27 @@ const getFullLengthQuestion = async (req, res, next) => {
   }
 };
 
-const getPrevQuestion = async (req, res, next) => {
+const getQuestionByIndex = async (req, res, next) => {
   try {
-    const data = await new TestManagement().getPrevQuestion(req.body);
+    const data = await new TestManagement().getQuestionByIndex(req,res);
     
     return res.send(data);
   } catch (error) {
     next(error);
   }
 };
-
-const getNextQuestion = async (req, res, next) => {
+const saveNextQuestion = async (req, res, next) => {
   try {
-    const data = await new TestManagement().getNextQuestion(req.body);
+    const data = await new TestManagement().saveNextQuestion(req,res);
+    
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+const getAnsweredNotAnswered = async (req, res, next) => {
+  try {
+    const data = await new TestManagement().getAnsweredNotAnswered(req,res);
     
     return res.send(data);
   } catch (error) {
@@ -218,7 +226,7 @@ const getQuizQuestion = async (req, res, next) => {
 
 const submitExam = async (req, res, next) => {
   try {
-    const data = await new TestManagement().submitExam(req.body);
+    const data = await new TestManagement().submitExam(req,res);
     
     return res.send(data);
   } catch (error) {
@@ -232,6 +240,6 @@ const submitExam = async (req, res, next) => {
 
 
 module.exports = {
- onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPracticeQuestion,getPrevQuestion,getNextQuestion,getQuizQuestion,submitExam
+ onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,getPracticeQuestion,getQuestionByIndex,getQuizQuestion,submitExam,saveNextQuestion,getAnsweredNotAnswered
  
 };

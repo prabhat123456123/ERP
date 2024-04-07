@@ -292,8 +292,6 @@ $(document).ready(function(){
           
             let formDetails = ``;
             formDetails += `
-                  
-                    
                    <div class="col-md-12">
                     Are You Sure. ?
                    </div>
@@ -318,30 +316,7 @@ $(document).ready(function(){
       
    });
 
-   // Delete record
-   $(document).on('click','#delete_record',function(){
-      var deleteids_arr = [];
-      // Read all checked checkboxes
-      $("input:checkbox[class=delete_check]:checked").each(function () {
-         deleteids_arr.push($(this).attr('data-id'));
-      });
-      // Check checkbox checked or not
-      if(deleteids_arr.length > 0){
-        
-      
-            $.ajax({
-               url: '/admission/delete-multiple',
-               type: 'post',
-               data: {deleteids_arr: deleteids_arr},
-               success: function(response){
-                   $("#deleteMultipleStudentModal").modal("hide");
-				toastr.error('Record Deleted Successfuly !!')
-                  $('#sample_data').DataTable().ajax.reload();
-               }
-            });
-         
-      }
-   });
+  
 	$(document).on("click",".startWithCheck",function(){
 		 if($('#terms').is(':checked')){
             const examId = $("#examId").val();
@@ -383,87 +358,15 @@ $(document).ready(function(){
    alert("Please Select Checkbox to Procede.")
 
  }
-	
- 
+
 });
 	
 $(document).on("click",".nextQuiz",function(){
 		
-            const examId = $("#examId").val();
-          $("#viewQuestionDiv").html("");
-      // $("#viewQuestionModal").modal("toggle");
-      $.ajax({
-         url: `/test-series/get-next-quiz-question`,
-         type: "post",
-         data:{examId:examId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-        console.log(data);
-       
-            let formDetails = ``;
-            formDetails += `<form method="post" enctype="multipart/form-data">
-                             
-                                  <input type="hidden"  value="${examId}" class="form-control" name="student_id">
-                            <div class="row">
-                              
-                              
-                              
-                            </div>
-                             <div class="row">
-                            <div align="left">
-                               <input type="submit" class="btn btn-success"
-															value="Prev"> </div>
-                              <div align="right">
-                               <input type="submit" class="btn btn-success"
-															value="Next"></div>
-                            </div>
-                        </form>`;
-            $("#viewQuestionDiv").html(formDetails);
-          
-        },
-      });
- 
 });
 
 $(document).on("click",".prevQuiz",function(){
 		
-            const examId = $("#examId").val();
-          
-          $("#viewQuestionDiv").html("");
-      // $("#viewQuestionModal").modal("toggle");
-      $.ajax({
-         url: `/test-series/get-prev-quiz-question`,
-         type: "post",
-         data:{examId:examId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-        console.log(data);
-       
-            let formDetails = ``;
-            formDetails += `<form method="post" enctype="multipart/form-data">
-                             
-                                  <input type="hidden"  value="${examId}" class="form-control" name="student_id">
-                            <div class="row">
-                              
-                              
-                              
-                            </div>
-                             <div class="row">
-                            <div align="left">
-                               <input type="submit" class="btn btn-success"
-															value="Prev"> </div>
-                              <div align="right">
-                               <input type="submit" class="btn btn-success"
-															value="Next"></div>
-                            </div>
-                        </form>`;
-            $("#viewQuestionDiv").html(formDetails);
-          
-        },
-      });
- 
 });
 
 var dataTable = $('#newTest').DataTable({

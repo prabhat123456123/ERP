@@ -103,7 +103,29 @@
         <%- include('../../partials/footer') %>
       </div>
 	 <!-- Modal1 -->
-              
+               <div class="modal fade" id="answeredModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                          
+                           <h3><i class="fa fa-plus m-r-5"></i> Exam Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="answeredDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           
+                           <button type="button" class="btn btn-success pull-center final-submit">Final Submit</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
               
                   <div class="modal fade" id="viewPracticeModal" tabindex="-1" role="dialog">
                   <div class="modal-dialog modal-lg"  role="document">
@@ -152,6 +174,7 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
+              
                 <div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
@@ -160,11 +183,32 @@
                            <h3><i class="fa fa-plus m-r-5"></i>Question Palate</h3>
                         </div>
                         <div class="modal-body">
-                         
-                              <div id="viewQuestionDiv">
-                               
-                             
-                           </div>
+                           <div class="quiz-container">
+                              <input type="hidden" id="examIds">
+                              <input type="hidden" id="questionIds">
+                              <input type="hidden" id="givenOption">
+                              <div class="question-palette">
+                              <!-- Question palette will be dynamically populated -->
+                              </div>
+                              <div class="question-container">
+                              <div class="question">
+                              <!-- Question will be loaded here using AJAX -->
+                              <h4 id="question-text"></h4>
+                                 <ul id="options-list"></ul>
+                                 <div class="form-check" id="options-list">
+
+                                 </div>
+                              </div>
+                              <div class="navigation-buttons">
+                              <button class="btn btn-info prev-button">Prev</button>
+                              <button class="btn btn-primary save-next-button">Save & Next</button>
+                              <button class="btn btn-success submit-button" style="display: none;">Submit</button>
+                              </div>
+                              </div>
+                              </div>
+
+                     
+
                         </div>
                         <div class="modal-footer">
                          
@@ -184,9 +228,17 @@
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("newPracticeBtn")) {
+        startExam(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteAdmission(target.dataset.id);
+    }
+});
+   
 
-     
-    
+   
        
 function startExam(examId) {
     try {
@@ -255,7 +307,41 @@ function startExam(examId) {
     }
   }
 
+$(document).on("click",".submit-button",function(){
+    try {
+       $("#viewQuestionModal").modal("hide");
+      $("#answeredDiv").html("");
+      $("#answeredModal").modal("toggle");
+       const examId =	$('#examIds').val(); 
+      $.ajax({
+         url: `/test-series/get-answered-not-answered`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+// $('#examidforanswer').val(examId);
+ const savedData = data.filter(item => item.question_status === 'saved');
+const notSavedData = data.filter(item => item.question_status === 'notsaved');
+            let formDetails = ``;
+            formDetails += `<table class="table table-bordered table-striped"> 
+               <tr><td>Total number of Question</td><td>${data.length}</td></tr>
+               <tr><td>Answered Question</td><td>${savedData.length}</td></tr>
+               <tr><td>Not Answered Question</td><td>${notSavedData.length?notSavedData.length:0}</td></tr>
+              
+               </table>
+               </br>
+              `;
+            $("#answeredDiv").html(formDetails);
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  })
 
+  
                
     
 $(document).ready(function(){
@@ -278,54 +364,6 @@ $(document).ready(function(){
 				'hideMethod': 'fadeOut',
 			}
 
-    
-    // Check all 
-   $('#checkall').click(function(){
-      if($(this).is(':checked')){
-         $('.delete_check').prop('checked', true);
-      }else{
-         $('.delete_check').prop('checked', false);
-      }
-   });
-     // Check all 
-   $('#multDel').click(function(){
-  if($('#checkall').is(':checked')){
- 
-       
-      $("#deleteMultipleStudentDiv").html("");
-      $("#deleteMultipleStudentModal").modal("toggle");
-   
-          
-            let formDetails = ``;
-            formDetails += `
-                  
-                    
-                   <div class="col-md-12">
-                    Are You Sure. ?
-                   </div>
-
-                   <div class="text-center mt-3">
-                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
-                     <button
-                       type="submit"
-                       class="btn btn-primary waves-effect waves-light"
-                       id="delete_record"
-                    
-                     >
-                       Yes
-                     </button>
-                   </div>
-                 `;
-            $("#deleteMultipleStudentDiv").html(formDetails);
-            }else{
-   alert("Please Select All")
-
- }
-      
-   });
-
- 
-  
 	$(document).on("click",".startWithCheck",function(){
 
 		 if($('#terms').is(':checked')){
@@ -333,260 +371,111 @@ $(document).ready(function(){
           $("#viewPracticeModal").modal("hide");
           $("#viewQuestionDiv").html("");
       $("#viewQuestionModal").modal("toggle");
-      $.ajax({
-         url: `/test-series/get-practice-question`,
-         type: "post",
-         data:{examId:examId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-       
-            let formDetails = ``;
-            formDetails += `<form method="post" id="quiz-form" enctype="multipart/form-data">
-                             
-                                  <input type="hidden"  value="${examId}" class="form-control" name="exam_id">
-                                   <div class="col-md-12">
-                            <div class="row">
-                             
-                              <div class="mt-5">
-        <h1 class="mb-4">Quiz Title</h1>
-      
-            <div class="cardf">
-                <div class="cardf-body">
-                    <h5 class="cardf-title" id="question_title">${data.currentQuestion[0].question_title}</h5>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="question1" id="option1" value="${data.currentQuestion[0].option_one}">
-                        <label class="form-check-label" for="option1" id="option1Lebel">
-                            ${data.currentQuestion[0].option_one}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="question1" id="option2" value="${data.currentQuestion[0].option_two}">
-                        <label class="form-check-label" for="option2" id="option2Lebel">
-                           ${data.currentQuestion[0].option_two}
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="question1" id="option3" value="${data.currentQuestion[0].option_three}">
-                        <label class="form-check-label" for "option3" id="option3Lebel">
-                          ${data.currentQuestion[0].option_three}
-                        </label>
-                    </div>
-                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="question1" id="option4" value="${data.currentQuestion[0].option_four}">
-                        <label class="form-check-label" for "option4" id="option4Lebel">
-                          ${data.currentQuestion[0].option_four}
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="cardf mt-3">
-                <div class="cardf-body">
-                  <div align="center">
-                     </br>
-                     </br>
-                    <button type="button" class="btn btn-warning" id="prev-btn" style="float: left;" value="${data.previousQuestionId}">Previous</button>
-                    <button type="button" class="btn btn-primary" id="next-btn" style="float: right;" value="${data.nextQuestionId}">Save & Next</button>
-                    <button type="submit" class="btn btn-success" id="submit-btn" style="display: none;">Submit</button>
-                </div>
-                </div>
-            </div>
-       
-    </div>
-                              
-                            </div>
-                               </div>
-                            
-                        </form>`;
-            $("#viewQuestionDiv").html(formDetails);
-
-         const numQuestions = data.totalQuestion; // Set the total number of questions
-        let currentQuestion = 1;
-         const prevButton = document.getElementById('prev-btn');
-       const  nextButton = document.getElementById('next-btn');
-        const submitButton = document.getElementById('submit-btn');
-        const  quizForm =  document.getElementById('quiz-form')
-
-      //   // Function to update the button visibility based on the current question
-        function updateButtonVisibility() {
-         
-         if (currentQuestion === 1) {
-           
-                prevButton.style.display = 'none';
-            } else {
-                prevButton.style.display = 'block';
-            }
-
-            if (currentQuestion === numQuestions) {
-                nextButton.style.display = 'block';
-                 submitButton.style.display = 'block';
-               
-            } else {
-                nextButton.style.display = 'block';
-                submitButton.style.display = 'none';
-            }
-        }
-
-        // Event listeners for "Previous" and "Next" buttons
-       if(prevButton){
-        prevButton.addEventListener('click', () => {
-const questionId = $('#prev-btn').attr('value');
-
-            if (currentQuestion > 1) {
-                 currentQuestion--;
-            updateButtonVisibility();
-                  $.ajax({
-         url: `/test-series/get-prev-question`,
-         type: "post",
-         data:{examId:examId,questionId:questionId},
-         dataType: "json",
-         cache: false,
-         success: function (prevData) {
-        console.log(prevData);
-       
-             $("#question_title").html("");
-             $("#option1").val("");
-             $("#option2").val("");
-             $("#option3").val("");
-             $("#option4").val("");
-             $("#option1Lebel").html("");
-             $("#option2Lebel").html("");
-             $("#option3Lebel").html("");
-             $("#option4Lebel").html("");
-            $("#question_title").html(prevData.currentQuestion[0].question_title);
-            $("#option1").val(prevData.currentQuestion[0].option_one);
-            $("#option2").val(prevData.currentQuestion[0].option_two);
-            $("#option3").val(prevData.currentQuestion[0].option_three);
-            $("#option4").val(prevData.currentQuestion[0].option_four);
-            $("#option1Lebel").html(prevData.currentQuestion[0].option_one);
-            $("#option2Lebel").html(prevData.currentQuestion[0].option_two);
-            $("#option3Lebel").html(prevData.currentQuestion[0].option_three);
-            $("#option4Lebel").html(prevData.currentQuestion[0].option_four);
-            $('#prev-btn').val(prevData.previousQuestionId);
-            $('#next-btn').val(prevData.nextQuestionId);
-          
-
-
-             const option1 = document.getElementById("option1").value;
-            const option2 = document.getElementById("option2").value;
-            const option3 = document.getElementById("option3").value;
-            const option4 = document.getElementById("option4").value;
-
-
-           if(option1==prevData.currentQuestion[0].given_options){
-                document.getElementById("option1").attr('checked',true)
-            }
-               if(option2==prevData.currentQuestion[0].given_options){
-                document.getElementById("option2").attr('checked',true)
-            }
-               if(option3==prevData.currentQuestion[0].given_options){
-                document.getElementById("option3").attr('checked',true)
-            }
-               if(option4==prevData.currentQuestion[0].given_options){
-                document.getElementById("option4").attr('checked',true)
-            }
-        },
-      });
-            }
-        });
-      }
-         if(nextButton){
-        nextButton.addEventListener('click', () => {
-           const questionId = $('#next-btn').attr('value');
-           
-           const givenOption = $("[name='question1']:checked").val();
-           if(givenOption !== undefined){
+     var currentQuestionIndex = 0;
+ 
+     	// Load the first question initially
+ 	loadQuestion(currentQuestionIndex);
+	 function loadQuestion(index) {
+ 	$.ajax({
+     	url: '/test-series/get-question-by-index', // Server endpoint to get questions
+     	type: 'POST',
+     	data: { index: index,examId:examId },  
+     	success: function(response) {
+          $('#givenOption').val( response.questionData.given_options); 
+         	// var questionData = JSON.parse(response); // Assuming the response contains JSON data
+ if(response.data.length === currentQuestionIndex+1){
    
-            if (currentQuestion < numQuestions) {
-                currentQuestion++;
-            updateButtonVisibility();
-                  $.ajax({
-         url: `/test-series/get-next-question`,
-         type: "post",
-         data:{examId:examId,questionId:questionId,givenOption:givenOption},
-         dataType: "json",
-         cache: false,
-         success: function (nextData) {
-              
-             const option1 = document.getElementById("option1").value;
-            const option2 = document.getElementById("option2").value;
-            const option3 = document.getElementById("option3").value;
-            const option4 = document.getElementById("option4").value;
+   $('.submit-button').show();
+ }else{
+   
+   $('.submit-button').hide();
 
-alert(nextData.currentQuestion[0].given_options);
-           if(option1==nextData.currentQuestion[0].given_options){
-                document.getElementById("option1").attr('checked',true)
-            }
-               if(option2==nextData.currentQuestion[0].given_options){
-                document.getElementById("option2").attr('checked',true)
-            }
-               if(option3==nextData.currentQuestion[0].given_options){
-                document.getElementById("option3").attr('checked',true)
-            }
-               if(option4==nextData.currentQuestion[0].given_options){
-                document.getElementById("option4").attr('checked',true)
-            }
-     
-             $("#question_title").html("");
-             $("#option1").val("");
-             $("#option2").val("");
-             $("#option3").val("");
-             $("#option4").val("");
-             $("#option1Lebel").html("");
-             $("#option2Lebel").html("");
-             $("#option3Lebel").html("");
-             $("#option4Lebel").html("");
-            $("#question_title").html(nextData.currentQuestion[0].question_title);
-            $("#option1").val(nextData.currentQuestion[0].option_one);
-            $("#option2").val(nextData.currentQuestion[0].option_two);
-            $("#option3").val(nextData.currentQuestion[0].option_three);
-            $("#option4").val(nextData.currentQuestion[0].option_four);
-            $("#option1Lebel").html(nextData.currentQuestion[0].option_one);
-            $("#option2Lebel").html(nextData.currentQuestion[0].option_two);
-            $("#option3Lebel").html(nextData.currentQuestion[0].option_three);
-            $("#option4Lebel").html(nextData.currentQuestion[0].option_four);
-             $('#prev-btn').val(nextData.previousQuestionId);
-            $('#next-btn').val(nextData.nextQuestionId);
-           
-        
-        },
-      });
-              
-            }
-         }else{
-            alert("Please select atleast one")
-         }
-         });
+ }
+        	$('#question-text').text(response.questionData.question); 
+        	$('#examIds').val(response.questionData.track_exam_id); 
+        	$('#questionIds').val(response.questionData.track_id); 
+         
+        	var optionsList = $('#options-list');
+         	optionsList.empty(); // Clear previous options
+ 
+        	// Display options
+         response.questionData.options.forEach(function(option, i) {
+    let isChecked = response.questionData.given_options === `option${i+1}`;
+    console.log(response.questionData)
+    optionsList.append(
+        `<input type="radio" class="form-check-input radioBtnClass" name="option" id="option${i+1}" ${isChecked ? 'checked' : ''} value="option${i+1}">
+        <label class="form-check-label" for="option${i+1}Lebel">${option}</label><br>`
+    );
+  
+});
+
+
+            	var palateList = $('.question-palette');
+         	palateList.empty(); // Clear previous options
+            // Populate question palette with question numbers
+ 	for (var i = 0; i < response.data.length; i++) {
+     	$('.question-palette').append('<button class="btn btn-danger question-number">' + (i + 1) + '</button>');
+ 	}
+  
+     	},
+     	error: function(xhr, status, error) {
+         	console.error(xhr.responseText);
+     	}
+ 	});
+ }
+  
+ $(document).on('click','input[name=option]:checked',function(){
+      $('#givenOption').val($('input[name=option]:checked').val());         
+
+   })
+ 
+	// Function to save answer and load next question
+ 	function saveAndNext() {
+     	// Save answer logic here if needed
+     const examId =	$('#examIds').val(); 
+        	 const questionId =	$('#questionIds').val();
+        	 const givenOption =	$('#givenOption').val();
+      $.ajax({
+     	url: '/test-series/save-next-question', // Server endpoint to get questions
+     	type: 'POST',
+     	data: {examId:examId,questionId:questionId,givenOption:givenOption },  
+     	success: function(response) {
+
+           currentQuestionIndex++;
+            loadQuestion(currentQuestionIndex);
       }
+      })
+ 	}
+ 
+	// Function to go to the previous question
+ 	function goToPrevious() {
+     	if (currentQuestionIndex > 0) {
+         	currentQuestionIndex--;
+         	loadQuestion(currentQuestionIndex);
+     	}
+ 	}
+ 
+	// Event handler for Prev button click
+ 	$('.prev-button').click(function() {
+     	goToPrevious();
+ 	});
+ 
+	// Event handler for Save & Next button click
+ 	$('.save-next-button').click(function() {
+     	saveAndNext();
+ 	});
+ 
+	
+	
+ 
+	// Event handler for clicking question number
+ 	$(document).on('click','.question-number',function() {
 
-        // Event listener for form submission
-        if(quizForm){
-        quizForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-              $.ajax({
-         url: `/test-series/submit-exam`,
-         type: "post",
-         data:{examId:examId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-        console.log(data);
-           //redirect to solution page
-          
-        },
-      });
-        });
-      }
-
-      //   Initial button visibility setup
-
-        updateButtonVisibility();
-          
-        },
-      });
-       
-
-
+     	var index = $(this).index();
+     	currentQuestionIndex = index;
+     	loadQuestion(index);
+ 	});
+ 
   }else{
    alert("Please Select Checkbox to Procede.")
 
@@ -670,12 +559,40 @@ var dataTable = $('#newTest').DataTable({
 		
 	});
 
-	
+ 	
+
 	
 });	
 // window.addEventListener("DOMContentLoaded",(event)=>{
 
-  
+  $(document).on("click",".final-submit",function(){
+    try {
+      
+       const examId = $('#examIds').val(); 
+      $.ajax({
+         url: `/test-series/submit-exam`,
+         type: "post",
+         data:{examId:examId},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+              Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: "Test Submitted Successfully !!",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                   $("#answeredModal").modal("hide");
+            $('#completedTest').DataTable().ajax.reload();
+            $('#newTest').DataTable().ajax.reload();
+          
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  })
     
 setTimeout(function () {
     $("#error").hide();

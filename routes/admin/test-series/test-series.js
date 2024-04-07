@@ -4,7 +4,7 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
 
  
 const {
-  onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,submitExam,getPrevQuestion,getNextQuestion,getPracticeQuestion,getQuizQuestion
+  onlineTest,FullLengthTest,QuizTest,PracticeTest,getNewFulllengthTest,getCompletedFulllengthTest,getCompletedPracticeTest,getNewPracticeTest,getNewQuizTest,getCompletedQuizTest,viewExplaination,getQuestionExamWise,getFullLengthQuestion,submitExam,getQuestionByIndex,getPracticeQuestion,getQuizQuestion,saveNextQuestion,getAnsweredNotAnswered
 } = require("../../../controller/admin");
 
 router.get("/online-test", onlineTest);
@@ -21,8 +21,10 @@ router.post("/get-completed-quiz-test", getCompletedQuizTest);
 router.post("/get-question-exam-wise", getQuestionExamWise);
 router.post("/view-explaination", viewExplaination);
 router.post("/get-full-length-question", getFullLengthQuestion);
-router.post("/get-prev-question", getPrevQuestion);
-router.post("/get-next-question", getNextQuestion);
+
+router.post("/get-question-by-index", getQuestionByIndex);
+router.post("/save-next-question", saveNextQuestion);
+router.post("/get-answered-not-answered", getAnsweredNotAnswered);
 router.post("/get-practice-question", getPracticeQuestion);
 
 router.post("/get-quiz-question", getQuizQuestion);
