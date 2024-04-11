@@ -4,7 +4,7 @@ const logger = require("morgan");
 const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
-
+const cronJobs = require('./helper/job');
 const session = require("express-session");
 
 const passport = require("passport");
@@ -29,6 +29,8 @@ const { admin } = require("./routes");
 const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
+
+// Define your middleware function
 
 app.use(express.json());
 app
@@ -59,6 +61,7 @@ app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString('base64');
   next();
 });
+
 
 // Helmet middleware for Content Security Policy (CSP)
 app.use(
@@ -121,7 +124,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
+cronJobs();
 
 
 // app.use((req, res, next) => {

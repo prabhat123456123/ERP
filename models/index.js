@@ -9,6 +9,7 @@ db.Class = require("./class")(sequelize, DataTypes, Model);
 db.Complaint = require("./complaint")(sequelize, DataTypes, Model);
 db.Downloadcenter = require("./download_center")(sequelize, DataTypes, Model);
 db.Exam = require("./exam")(sequelize, DataTypes, Model);
+db.Examstatus = require("./exam_status")(sequelize, DataTypes, Model);
 db.Facultyattendance = require("./faculty_attendance")(sequelize, DataTypes, Model);
 db.Facultyfinancial = require("./faculty_financial")(sequelize, DataTypes, Model);
 db.Facultyleave = require("./faculty_leave")(sequelize, DataTypes, Model);

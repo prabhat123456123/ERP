@@ -1,62 +1,65 @@
 module.exports = (sequelize, DataTypes) => {
-   const Answer = sequelize.define('answer', {
+  const Examstatus = sequelize.define('exam_status', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
-     },
+      },
       track_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-      },
-    track_student_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-      },
-      track_question_id: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-      },
-     given_options: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-     
-    question_status: {
-      type: DataTypes.ENUM("saved", "notsaved"),
-			 defaultValue: "notsaved"
-     },
-     marks: {
+    track_exam_id: {
       type: DataTypes.STRING(255),
       allowNull: true
       },
-     Status: {
-      type: DataTypes.ENUM("active", "inactive"),
-			 defaultValue: "active"
-    },
-    created_by: {
-      type: DataTypes.STRING(100),
+     track_student_id: {
+      type: DataTypes.STRING(255),
       allowNull: true
-    },
-    created_at: {
+      },
+      correct_marks: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+      },
+      incorrect_marks: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+      },
+      obtained_marks: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+      },
+
+   
+    exam_status: {
+      type: DataTypes.ENUM("new", "completed"),
+			 allowNull: true
+      },
+    
+      created_at: {
+          type: DataTypes.DATE,
+          allowNull: true,
+          defaultValue: sequelize.fn('current_timestamp')
+          
+        },
+        created_by: {
+          type: DataTypes.STRING(100),
+          allowNull: true
+      },
+     updated_at: {
       type: DataTypes.DATE,
       allowNull: true,
       defaultValue: sequelize.fn('current_timestamp')
-
     },
     updated_by: {
       type: DataTypes.STRING(100),
       allowNull: true
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: true,
-      defaultValue: sequelize.fn('current_timestamp')
     }
+  
   }, {
     sequelize,
-    tableName: 'answer',
+    tableName: 'exam_status',
     timestamps: false,
     indexes: [
       {
@@ -68,6 +71,6 @@ module.exports = (sequelize, DataTypes) => {
         ]
       },
     ]
-   });
-  return Answer;
+  });
+  return Examstatus;
 };

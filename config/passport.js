@@ -95,8 +95,8 @@ module.exports = function (passport) {
     try {
     
       if (uid.role === "school") {
-
         const rows = await new AuthManagement().getSchoolId(uid.uId);
+        
         if (rows) {
           done(null, rows);
         } else {

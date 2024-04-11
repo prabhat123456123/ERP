@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Studentpayment = sequelize.define('student_payment', {
+  const Schoolpayment = sequelize.define('school_payment', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: true
       },
-      transaction_amount: {
+      frequency: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       transaction_amount: {
       type: DataTypes.STRING(100),
       allowNull: true
       },
@@ -33,6 +37,11 @@ module.exports = (sequelize, DataTypes) => {
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
+      },
+   
+     membership: {
+      type: DataTypes.ENUM("EXPIRED", "LIVE"),
+			 defaultValue:null
       },
    
     created_by: {
@@ -55,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    tableName: 'student_payment',
+    tableName: 'school_payment',
     timestamps: false,
     indexes: [
       {
@@ -68,5 +77,5 @@ module.exports = (sequelize, DataTypes) => {
       },
     ]
   });
-  return Studentpayment;
+  return Schoolpayment;
 };

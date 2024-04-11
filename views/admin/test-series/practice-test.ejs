@@ -103,7 +103,7 @@
         <%- include('../../partials/footer') %>
       </div>
 	 <!-- Modal1 -->
-               <div class="modal fade" id="answeredModal" tabindex="-1" role="dialog">
+               <div class="modal fade" id="answeredModal" tabindex="-1" data-backdrop="static" role="dialog">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -127,7 +127,7 @@
                   <!-- /.modal-dialog -->
                </div>
               
-                  <div class="modal fade" id="viewPracticeModal" tabindex="-1" role="dialog">
+                  <div class="modal fade" id="viewPracticeModal" tabindex="-1" role="dialog" data-backdrop="static">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -152,7 +152,7 @@
                   <!-- /.modal-dialog -->
                </div>
 
-                <div class="modal fade" id="viewExplainationModal" tabindex="-1" role="dialog">
+                <div class="modal fade" id="viewExplainationModal" tabindex="-1" role="dialog" data-backdrop="static">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -175,7 +175,7 @@
                   <!-- /.modal-dialog -->
                </div>
               
-                <div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog">
+                <div class="modal fade" id="viewQuestionModal" tabindex="-1" role="dialog" data-backdrop="static">
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -287,41 +287,50 @@ function startExam(examId) {
          dataType: "json",
          cache: false,
          success: function (data) {
-    console.log(data);
+    
      let formDetails = ``;
     data.forEach((item,i)=>{
- formDetails += `<div class="cardsss">
-      <div class="cardsss-body">
-        
-        <h5 class="cardss-title">Question ${i+1}</h5>
-        <p class="cardss-text">${item.question_title}</p>
+ formDetails += `
+ <div class="cardsss">
+      <div class="cardsss-body"
+        <h5 class="cardss-title"><b>Question ${i+1}</b></h5>
+        <p class="cardss-text"><b>${item.question_title}</b></p>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="question1" id="option1" value="option1">
+          <input class="form-check-input" type="radio" name="question${i + 1}" id="option1_${i}" ${item.given_options === 'option1' ? 'checked' : ''} value="option1">
           <label class="form-check-label" for="option1">
            ${item.option_one}
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="question1" id="option2" value="option2">
+          <input class="form-check-input" type="radio" name="question${i + 1}" id="option2_${i}" ${item.given_options === 'option2' ? 'checked' : ''} value="option2">
           <label class="form-check-label" for="option2">
            ${item.option_two}
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="question1" id="option3" value="option3">
+          <input class="form-check-input" type="radio" name="question${i + 1}" id="option3_${i}" value="option3"${item.given_options === 'option3' ? 'checked' : ''} >
           <label class="form-check-label" for="option3">
            ${item.option_three}
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="radio" name="question1" id="option3" value="option3">
+          <input class="form-check-input" type="radio" name="question${i + 1}" id="option4_${i}" value="option4" ${item.given_options === 'option4' ? 'checked' : ''}>
           <label class="form-check-label" for="option3">
            ${item.option_four}
           </label>
         </div>
       </div>
-        <h5>  Marks:${item.marks}   </h5>  <h5>  Right Answer:${item.right_option}   </h5>  <h5>   Given Answer:${item.given_options}   </h5>
+     
+      <div class="row">
+         <div class="col-sm-12">
+    <div class="col-sm-4 bg-primary text-white">Marks : ${item.marks}</div>
+    <div class="col-sm-4 bg-primary text-white">Right Answer : ${item.right_option}</div>
+    <div class="col-sm-4 bg-primary text-white">Given Answer : ${item.given_options}</div>
+  </div>
+  
+      
     </div>
+    </div></br>
 `;
     });
            

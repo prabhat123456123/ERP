@@ -36,10 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
       },
-    exam_status: {
-       type: DataTypes.ENUM("new", "resumed","completed"),
-			 defaultValue: "new"
-      },
+    
     exam_mode: {
       type: DataTypes.ENUM("practice", "online","quiz"),
 			 allowNull: true

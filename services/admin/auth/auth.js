@@ -42,7 +42,7 @@ class AuthManagement {
         const lower = parseInt(classes.split("-")[0]);
         const higher = parseInt(classes.split("-")[1]);
         const currentTime = getDate("YYYY-MM-DD hh:mm");
-        console.log(lower,higher);
+      
 
       const userExist = await sequelize.query(
         "SELECT * FROM school WHERE principal_email =? OR principal_phone=?",
@@ -139,6 +139,80 @@ class AuthManagement {
       );
 
       return userData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+   async getPaymentStatus( req,res) {
+    try {
+     
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+    
+        const payment = await sequelize.query(
+        "SELECT * FROM `school` LEFT JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.transaction_status = ? AND membership = ? AND school_payment.track_school_id = ?",
+        {
+          type: QueryTypes.SELECT,
+          replacements: ["success","LIVE",id],
+        }
+      );
+
+      return payment;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getPaymentDetails( req,res) {
+    try {
+     
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+    
+        const payment = await sequelize.query(
+        "SELECT * FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY id DESC LIMIT 1",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [id],
+        }
+      );
+
+      return payment;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async savePaymentDetails( req,res) {
+    try {
+     const currentTime = getDate("YYYY-MM-DD hh:mm");
+       const uniqueNum = uuidv4();
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+    
+      await sequelize.query(
+          "INSERT INTO school_payment(track_id,track_school_id,frequency,transaction_amount,transaction_date,transaction_status,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
+          {
+            replacements: [
+              uniqueNum,
+               id,
+              req.body.frequency,
+              req.body.transaction_amount,
+              currentTime,
+              req.body.status,
+              "INSTITUTE",
+              currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
+        );
+    
+        const payment = await sequelize.query(
+        "SELECT * FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY id DESC LIMIT 1",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [id],
+        }
+      );
+
+      return payment;
     } catch (error) {
       console.error(error);
     }

@@ -37,23 +37,22 @@ class TestManagement {
    async getCompletedQuizTest(req,res) {
      try {
        
-       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-       let whereClause = "";
-       if (req.user[0].role == "student") {
-         whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
+      }
+//  console.log(sequelize)
+     const data = await sequelize.query(
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "quiz" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
+        {
+          type: QueryTypes.SELECT,
         }
-            console.log("/////////////////////////////////",whereClause)
-        
-        const data = await sequelize.query(
-          `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
-            req.body.search.value
-          }%") LIMIT ${parseInt(
-            req.body.length
-            )} OFFSET ${parseInt(req.body.start)}`,
-            {
-              type: QueryTypes.SELECT,
-            }
-            );
+      );
       
 
       for (let i = 0; i < data.length; i++) {
@@ -71,7 +70,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm viewBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' >View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' >View Explaination </button> `;
        
       }
 
@@ -129,10 +128,10 @@ class TestManagement {
       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "quiz" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -150,13 +149,14 @@ class TestManagement {
 
    async getNewQuizTest(req,res) {
      try {
-       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
       }
- const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+//  console.log(sequelize)
+     const data = await sequelize.query(
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "quiz" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
           req.body.search.value
         }%") LIMIT ${parseInt(
           req.body.length
@@ -201,19 +201,14 @@ class TestManagement {
       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "quiz" AND exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "quiz" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
- console.log(data)
-      
-
-     
-
 
       return data;
     } catch (error) {
@@ -229,59 +224,14 @@ class TestManagement {
     try {
 //  console.log(sequelize)
    
-       const checkData = await sequelize.query(
-        `SELECT * FROM exam_status WHERE exam_status.track_student_id='${req.user[0].track_id}'`,
-        {
-          type: QueryTypes.SELECT,
-        }
-      );
-      if (checkData.length) {
-           const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
-      }
-        const data = await sequelize.query(
-          `SELECT exam.track_id,exam_status.exam_status,exam_status.track_exam_id,exam_name,start_date,end_date,total_marks FROM exam LEFT JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${req.body.search.value
-          }%") LIMIT ${parseInt(
-            req.body.length
-          )} OFFSET ${parseInt(req.body.start)}`,
-          {
-            type: QueryTypes.SELECT,
-          }
-        );
-      
-
-        for (let i = 0; i < data.length; i++) {
-          data[i]["name"] = `${data[i].exam_name}`;
-          data[i]["startDate"] = updateFormat(
-            moment(data[i].start_date),
-            "YYYY-MM-DD"
-          );
-          data[i]["endDate"] = updateFormat(
-            moment(data[i].end_date),
-            "YYYY-MM-DD"
-          );
-          data[i]["mode"] = `<h5 style="color:green">Practice</h5>`;
-          data[i]["totalMarks"] = `${data[i].total_marks}`;
-
-          data[i][
-            "action"
-          ] = `<button class='btn btn-success btn-sm newPracticeBtn' onclick='startExam(${data[i].track_id})' data-id='${data[i].track_id}' >Start Exam </button> `;
-       
-        }
-
-
-        return data;
-      } else {
          const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
       }
 //  console.log(sequelize)
      const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
           req.body.search.value
         }%") LIMIT ${parseInt(
           req.body.length
@@ -312,7 +262,7 @@ class TestManagement {
 
 
       return data;
-      }
+      
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -324,45 +274,22 @@ class TestManagement {
     async countNewPracticeTest(req,res) {
     try {
 
-       const checkData = await sequelize.query(
-        `SELECT * FROM exam_status WHERE exam_status.track_student_id='${req.user[0].track_id}'`,
-        {
-          type: QueryTypes.SELECT,
-        }
-      );
-      if (checkData.length) {
-         const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
-      }
-        const data = await sequelize.query(
-          `SELECT exam.track_id,exam_status.exam_status,exam_status.track_exam_id,exam_name,start_date,end_date,total_marks FROM exam LEFT JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause,
-          {
-            type: QueryTypes.SELECT,
-          }
-        );
-      
-        return data;
-      } else {
+     
+  
           const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
       
-
-     
-
-
       return data;
-      }
+      
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -374,60 +301,15 @@ class TestManagement {
 
    async getCompletedPracticeTest(req,res) {
     try {
-//  console.log(sequelize)
-      const checkData = await sequelize.query(
-        `SELECT * FROM exam_status WHERE exam_status.track_student_id='${req.user[0].track_id}'`,
-        {
-          type: QueryTypes.SELECT,
-        }
-      );
-      if (checkData.length) {
-           const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
-      }
-        const data = await sequelize.query(
-          `SELECT exam.track_id,exam_status.exam_status,exam_status.track_exam_id,exam_name,start_date,end_date,total_marks FROM exam LEFT JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${req.body.search.value
-          }%") LIMIT ${parseInt(
-            req.body.length
-          )} OFFSET ${parseInt(req.body.start)}`,
-          {
-            type: QueryTypes.SELECT,
-          }
-        );
-      
-
-         for (let i = 0; i < data.length; i++) {
-       data[i]["name"] = `${data[i].exam_name}`;
-         data[i]["startDate"] = updateFormat(
-                  moment(data[i].start_date),
-                  "YYYY-MM-DD"
-                );
-        data[i]["endDate"] =  updateFormat(
-                  moment(data[i].end_date),
-                  "YYYY-MM-DD"
-                );
-        data[i]["mode"] = `<h5 style="color:green">Practice</h5>`;
-        data[i]["totalMarks"] = `${data[i].total_marks}`;
-
-        data[i][
-          "action"
-        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
-       
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
       }
 
-
-        return data;
-      } else {
-         const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
-      }
-//  console.log(sequelize)
      const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
           req.body.search.value
         }%") LIMIT ${parseInt(
           req.body.length
@@ -437,28 +319,27 @@ class TestManagement {
         }
       );
       
-   for (let i = 0; i < data.length; i++) {
-       data[i]["name"] = `${data[i].exam_name}`;
-         data[i]["startDate"] = updateFormat(
-                  moment(data[i].start_date),
-                  "YYYY-MM-DD"
-                );
-        data[i]["endDate"] =  updateFormat(
-                  moment(data[i].end_date),
-                  "YYYY-MM-DD"
-                );
-        data[i]["mode"] = `<h5 style="color:green">Practice</h5>`;
-        data[i]["totalMarks"] = `${data[i].total_marks}`;
+  for (let i = 0; i < data.length; i++) {
+          data[i]["name"] = `${data[i].exam_name}`;
+          data[i]["startDate"] = updateFormat(
+            moment(data[i].start_date),
+            "YYYY-MM-DD"
+          );
+          data[i]["endDate"] = updateFormat(
+            moment(data[i].end_date),
+            "YYYY-MM-DD"
+          );
+          data[i]["mode"] = `<h5 style="color:green">Practice</h5>`;
+          data[i]["totalMarks"] = `${data[i].total_marks}`;
 
-        data[i][
-          "action"
-        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
+          data[i][
+            "action"
+          ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' >View Explaination </button> `;
        
-      }
+        }
 
 
       return data;
-      }
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -471,41 +352,19 @@ class TestManagement {
     try {
 //  console.log(sequelize)
       
-       const checkData = await sequelize.query(
-        `SELECT * FROM exam_status WHERE exam_status.track_student_id='${req.user[0].track_id}'`,
-        {
-          type: QueryTypes.SELECT,
-        }
-      );
-      if (checkData.length) {
-         const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
-      }
-        const data = await sequelize.query(
-          `SELECT exam.track_id,exam_status.exam_status,exam_status.track_exam_id,exam_name,start_date,end_date,total_marks FROM exam LEFT JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause,
-          {
-            type: QueryTypes.SELECT,
-          }
-        );
-      
-        return data;
-      } else {
-          const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "practice" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "practice" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
       
       return data;
-      }
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");
@@ -517,14 +376,14 @@ class TestManagement {
 
    async getCompletedFulllengthTest(req,res) {
      try {
-       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+     const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
       }
-//  console.log(sequelize)
+
      const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "online" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
           req.body.search.value
         }%") LIMIT ${parseInt(
           req.body.length
@@ -550,7 +409,7 @@ class TestManagement {
 
         data[i][
           "action"
-        ] = `<button class='btn btn-success btn-sm completedFullBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
+        ] = `<button class='btn btn-success btn-sm viewExplainationBtn' onclick='viewExplaination(${data[i].track_id})' data-id='${data[i].track_id}' > View Explaination </button> `;
        
       }
 
@@ -567,13 +426,13 @@ class TestManagement {
     async countCompletedFulllengthTest(req,res) {
     try {
 //  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+     const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "completed" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "online" AND exam_status.exam_status = 'completed' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -599,10 +458,11 @@ class TestManagement {
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}' AND `
       }
-       const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
+
+     const data = await sequelize.query(
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "online" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause + `(exam_name like "%${
           req.body.search.value
         }%") LIMIT ${parseInt(
           req.body.length
@@ -644,23 +504,18 @@ class TestManagement {
   }
     async countNewFulllengthTest(req,res) {
     try {
-//  console.log(sequelize)
-      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' `
+        whereClause = `exam.track_class_id = '${req.user[0].track_class_id}' AND exam_status.track_student_id='${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,exam_name,start_date,end_date,total_marks FROM exam WHERE exam_mode = "online" AND exam_status = "new" AND exam.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT exam.track_id,exam_name,start_date,end_date,total_marks FROM exam INNER JOIN exam_status ON exam_status.track_exam_id = exam.track_id WHERE exam_mode = "online" AND exam_status.exam_status = 'new' AND exam.track_school_id = '${id}' AND ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
-      
-
-     
-
-
       return data;
     } catch (error) {
       if (error.statusCode) {
@@ -693,7 +548,7 @@ class TestManagement {
    async getQuestionByIndex(req,res) {
      try {
         const data = await sequelize.query(
-        `SELECT question.track_id,exam.exam_status,answer.given_options,answer.question_status,question.track_exam_id,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id where question.track_exam_id=?`,
+        `SELECT question.track_id,answer.given_options,answer.question_status,question.track_exam_id,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id where question.track_exam_id=?`,
         {
           type: QueryTypes.SELECT,
            replacements: [
@@ -877,7 +732,7 @@ class TestManagement {
    async getPracticeQuestion(body) {
     try {
     const data = await sequelize.query(
-        `SELECT question.track_id,exam.exam_status,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id  where question.track_exam_id = '${body.examId}'`,
+        `SELECT question.track_id,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id  where question.track_exam_id = '${body.examId}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -885,7 +740,7 @@ class TestManagement {
       let currentQuestion;
       if (data.length && data[0].exam_status == "new") {
           currentQuestion = await sequelize.query(
-        `SELECT question.track_id,exam.exam_status,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id where answer.question_status="notsaved" AND question.track_exam_id = '${body.examId}' LIMIT 1`,
+        `SELECT question.track_id,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id where answer.question_status="notsaved" AND question.track_exam_id = '${body.examId}' LIMIT 1`,
         {
           type: QueryTypes.SELECT,
         }
@@ -894,7 +749,7 @@ class TestManagement {
 
        if (data.length && data[0].exam_status == "resumed") {
        currentQuestion = await sequelize.query(
-        `SELECT question.track_id,exam.exam_status,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id ORDER BY question.id DESC where answer.question_status="saved" AND question.track_exam_id = '${body.examId}' LIMIT 1`,
+        `SELECT question.track_id,question.track_exam_id,answer.given_options,answer.question_status,question.right_marks,question.wrong_marks,question.option_image_one,question.option_image_two,question.option_image_three,question.option_image_four,question.right_option,question.question_title,question.option_one,question.option_two,question.option_three,question.option_four FROM question INNER JOIN exam ON exam.track_id = question.track_exam_id LEFT JOIN answer ON answer.track_question_id = question.track_id ORDER BY question.id DESC where answer.question_status="saved" AND question.track_exam_id = '${body.examId}' LIMIT 1`,
         {
           type: QueryTypes.SELECT,
         }

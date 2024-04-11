@@ -40,7 +40,14 @@ async createExam(files, fields, req, res) {
   try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
   
-      const slug  = titletoslug(fields.exam_name[0])
+    const slug = titletoslug(fields.exam_name[0])
+     const findAllstudentByClass = await sequelize.query(
+        "SELECT * FROM student WHERE track_class_id=?",
+        {
+          replacements: [fields.class_id[0]],
+          type: QueryTypes.SELECT,
+        }
+      );
       const userExist = await sequelize.query(
         "SELECT * FROM exam WHERE slug=?",
         {
@@ -78,7 +85,24 @@ async createExam(files, fields, req, res) {
             type: QueryTypes.INSERT,
           }
         );
-      
+
+        for (let i = 0; i < findAllstudentByClass.length; i++) {
+          await sequelize.query(
+            "INSERT INTO exam_status(track_id,track_exam_id,track_student_id,exam_status,created_by,created_at) VALUES (?,?,?,?,?,?)",
+            {
+              replacements: [
+             
+                uuidv4(),
+                uniqueNum,
+            findAllstudentByClass[i].track_id,
+               "new",
+                "SCHOOL",
+                currentTime,
+              ],
+              type: QueryTypes.INSERT,
+            }
+          );
+        }
         return true;
       }
     } catch (error) {
