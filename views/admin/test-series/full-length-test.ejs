@@ -275,74 +275,123 @@ function startExam(examId) {
     }
   }
 
-  function viewExplaination(examId) {
-    try {
-     
-      $("#viewExplainationDiv").html("");
-      $("#viewExplainationModal").modal("toggle");
-      $.ajax({
-         url: `/test-series/view-explaination`,
-         type: "post",
-         data:{examId:examId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-    
-     let formDetails = ``;
-    data.forEach((item,i)=>{
- formDetails += `
- <div class="cardsss">
-      <div class="cardsss-body"
-        <h5 class="cardss-title"><b>Question ${i+1}</b></h5>
-        <p class="cardss-text"><b>${item.question_title}</b></p>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="question${i + 1}" id="option1_${i}" ${item.given_options === 'option1' ? 'checked' : ''} value="option1">
-          <label class="form-check-label" for="option1">
-           ${item.option_one}
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="question${i + 1}" id="option2_${i}" ${item.given_options === 'option2' ? 'checked' : ''} value="option2">
-          <label class="form-check-label" for="option2">
-           ${item.option_two}
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="question${i + 1}" id="option3_${i}" value="option3"${item.given_options === 'option3' ? 'checked' : ''} >
-          <label class="form-check-label" for="option3">
-           ${item.option_three}
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="question${i + 1}" id="option4_${i}" value="option4" ${item.given_options === 'option4' ? 'checked' : ''}>
-          <label class="form-check-label" for="option3">
-           ${item.option_four}
-          </label>
-        </div>
-      </div>
-     
-      <div class="row">
-         <div class="col-sm-12">
-    <div class="col-sm-4 bg-primary text-white">Marks : ${item.marks}</div>
-    <div class="col-sm-4 bg-primary text-white">Right Answer : ${item.right_option}</div>
-    <div class="col-sm-4 bg-primary text-white">Given Answer : ${item.given_options}</div>
-  </div>
-  
+   function viewExplaination(examId) {
+      try {
       
-    </div>
-    </div></br>
-`;
-    });
-           
-           
-            $("#viewExplainationDiv").html(formDetails);
-          
-        },
+         $("#viewExplainationDiv").html("");
+         $("#viewExplainationModal").modal("toggle");
+         $.ajax({
+            url: `/test-series/view-explaination`,
+            type: "post",
+            data:{examId:examId},
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+      
+      let formDetails = ``;
+      data.forEach((item,i)=>{
+        
+   if(item.option_one !== null && item.option_two !== null && item.option_three !== null && item.option_four !== null){
+    formDetails += `
+   <div class="cardsss">
+         <div class="cardsss-body"
+         <h5 class="cardss-title"><b>Question ${i+1}</b></h5>
+         <p class="cardss-text"><b>${item.question_title}</b></p>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option1_${i}" ${item.given_options === 'option1' ? 'checked' : ''} value="option1">
+            <label class="form-check-label" for="option1">
+            ${item.option_one}
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option2_${i}" ${item.given_options === 'option2' ? 'checked' : ''} value="option2">
+            <label class="form-check-label" for="option2">
+            ${item.option_two}
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option3_${i}" value="option3"${item.given_options === 'option3' ? 'checked' : ''} >
+            <label class="form-check-label" for="option3">
+            ${item.option_three}
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option4_${i}" value="option4" ${item.given_options === 'option4' ? 'checked' : ''}>
+            <label class="form-check-label" for="option3">
+            ${item.option_four}
+            </label>
+         </div>
+         </div>
+      
+         <div class="row">
+            <div class="col-sm-12">
+      <div class="col-sm-4 bg-primary text-white">Marks : ${item.marks}</div>
+      <div class="col-sm-4 bg-primary text-white">Right Answer : ${item.right_option}</div>
+      <div class="col-sm-4 bg-primary text-white">Given Answer : ${item.given_options}</div>
+   </div>
+   
+         
+      </div>
+      </div></br>
+   `;
+   }
+     if(item.option_image_one !== null && item.option_image_two !== null && item.option_image_three !== null && item.option_image_four !== null){
+    formDetails += `
+   <div class="cardsss">
+         <div class="cardsss-body"
+         <h5 class="cardss-title"><b>Question ${i+1}</b></h5>
+         <p class="cardss-text"><b>${item.question_title}</b></p>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option1_${i}" ${item.given_options === 'option1' ? 'checked' : ''} value="option1">
+            <label class="form-check-label" for="option1">
+           <img src='/uploads/exam/${item.track_exam_id}/${item.option_image_one}' style="width:100px">
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option2_${i}" ${item.given_options === 'option2' ? 'checked' : ''} value="option2">
+            <label class="form-check-label" for="option2">
+          <img src='/uploads/exam/${item.track_exam_id}/${item.option_image_two}' style="width:100px">
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option3_${i}" value="option3"${item.given_options === 'option3' ? 'checked' : ''} >
+            <label class="form-check-label" for="option3">
+           <img src='/uploads/exam/${item.track_exam_id}/${item.option_image_three}' style="width:100px">
+            </label>
+         </div>
+         <div class="form-check">
+            <input class="form-check-input" type="radio" name="question${i + 1}" id="option4_${i}" value="option4" ${item.given_options === 'option4' ? 'checked' : ''}>
+            <label class="form-check-label" for="option3">
+         <img src='/uploads/exam/${item.track_exam_id}/${item.option_image_four}' style="width:100px">
+            </label>
+         </div>
+         </div>
+      
+         <div class="row">
+            <div class="col-sm-12">
+      <div class="col-sm-4 bg-primary text-white">Marks : ${item.marks}</div>
+      <div class="col-sm-4 bg-primary text-white">Right Answer : ${item.right_option}</div>
+      <div class="col-sm-4 bg-primary text-white">Given Answer : ${item.given_options}</div>
+   </div>
+   
+         
+      </div>
+      </div></br>
+   `;
+   }
+  
+   
       });
-    } catch (err) {
-      console.error(err);
-    }
-  }
+            
+            
+               $("#viewExplainationDiv").html(formDetails);
+            
+         },
+         });
+      } catch (err) {
+         console.error(err);
+      }
+   }
 
 $(document).on("click",".submit-button",function(){
     try {

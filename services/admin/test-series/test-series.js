@@ -561,16 +561,16 @@ class TestManagement {
        const index = req.body.index;
        let opt = [];
           if (data[index].option_image_one) {
-         opt.push(data[index].option_image_one)
+         opt.push(`<img src='/uploads/exam/${data[index].track_exam_id}/${data[index].option_image_one}' style="width:100px">`)
        }
        if (data[index].option_image_two) {
-         opt.push(data[index].option_image_two)
+         opt.push(`<img src='/uploads/exam/${data[index].track_exam_id}/${data[index].option_image_two}' style="width:100px">`)
        }
        if (data[index].option_image_three) {
-         opt.push(data[index].option_image_three)
+         opt.push(`<img src='/uploads/exam/${data[index].track_exam_id}/${data[index].option_image_three}' style="width:100px">`)
        }
        if (data[index].option_image_four) {
-         opt.push(data[index].option_image_four)
+         opt.push(`<img src='/uploads/exam/${data[index].track_exam_id}/${data[index].option_image_four}' style="width:100px">`)
        }
        if (data[index].option_one) {
          opt.push(data[index].option_one)
