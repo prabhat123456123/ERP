@@ -1,11 +1,8 @@
 const sequelize = require("../../../config/database");
 const { QueryTypes, Sequelize } = require("sequelize");
-// const {
-//   ErrorHandler,
-//   statusCodes,
-//   casbinEnforcer,
-//   actionLogger,
-// } = require("../../../helper");
+const {
+ calculateNextDateTime
+} = require("../../../helper/calculate-time");
 const {
   copyFiles,
   getDate,
@@ -161,14 +158,13 @@ class AuthManagement {
       console.error(error);
     }
   }
-
-  async getPaymentDetails( req,res) {
+  async countStudentOfSchool( req,res) {
     try {
      
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
     
         const payment = await sequelize.query(
-        "SELECT * FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY id DESC LIMIT 1",
+        "SELECT * FROM `student` WHERE track_school_id = ?",
         {
           type: QueryTypes.SELECT,
           replacements: [id],
@@ -181,22 +177,51 @@ class AuthManagement {
     }
   }
 
-  async savePaymentDetails( req,res) {
+  async getPaymentDetails( req,res) {
     try {
-     const currentTime = getDate("YYYY-MM-DD hh:mm");
+     
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+    
+    const payment = await sequelize.query(
+        "SELECT school.school_name,school_payment.transaction_date,school_payment.transaction_status,school.principal_phone,school_payment.track_id,school_payment.frequency,school_payment.transaction_amount,school.principal_email FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY school_payment.id DESC LIMIT 1",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [id],
+        }
+      );
+
+      return payment;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async savePaymentDetails( req,res,paymentDoc) {
+    try {
+    
+ const currentTime = getDate("YYYY-MM-DD hh:mm");
+
+const nextDateTime = calculateNextDateTime(currentTime, req.body.frequency);
+console.log('Next date and time:', nextDateTime);
+
        const uniqueNum = uuidv4();
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
     
       await sequelize.query(
-          "INSERT INTO school_payment(track_id,track_school_id,frequency,transaction_amount,transaction_date,transaction_status,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
+          "INSERT INTO school_payment(track_id,track_school_id,frequency,transaction_amount,transaction_date,transaction_status,membership,razorpay_payment_id,razorpay_order_id,razorpay_signature,valid_upto,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
           {
             replacements: [
               uniqueNum,
                id,
               req.body.frequency,
-              req.body.transaction_amount,
+              req.body.amount,
               currentTime,
-              req.body.status,
+              paymentDoc.status === 'captured' ? 'success' : 'failed',
+              'live',
+              req.body.razorpay_payment_id,
+              req.body.razorpay_order_id,
+                 req.body.razorpay_signature,
+             nextDateTime,
               "INSTITUTE",
               currentTime,
             ],
@@ -205,7 +230,7 @@ class AuthManagement {
         );
     
         const payment = await sequelize.query(
-        "SELECT * FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY id DESC LIMIT 1",
+        "SELECT school.school_name,school_payment.transaction_date,school_payment.transaction_status,school.principal_phone,school_payment.track_id,school_payment.frequency,school_payment.transaction_amount,school.principal_email FROM `school` INNER JOIN school_payment ON school_payment.track_school_id = school.track_id WHERE school_payment.track_school_id = ? ORDER BY school_payment.id DESC LIMIT 1",
         {
           type: QueryTypes.SELECT,
           replacements: [id],

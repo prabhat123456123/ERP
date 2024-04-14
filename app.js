@@ -45,7 +45,7 @@ app
   )
   .use(bodyParser.json({ limit: "100mb" }))
   .use(cors())
-  .use(helmet());
+  // .use(helmet());
 // app.use(helmet({
 // contentSecurityPolicy: {
 // directives: {
@@ -56,23 +56,25 @@ app
 // },
 // }));
 
+
+
 // Middleware to generate nonce for each request
-app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(16).toString('base64');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.locals.nonce = crypto.randomBytes(16).toString('base64');
+//   next();
+// });
 
 
 // Helmet middleware for Content Security Policy (CSP)
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
-      // Add other directives as needed
-    },
-  })
-);
+// app.use(
+//   helmet.contentSecurityPolicy({
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.nonce}'`],
+//       // Add other directives as needed
+//     },
+//   })
+// );
 
 // app.use(`${process.env.URL_PREFIX?process.env.URL_PREFIX:''}/`, require('./routes'));
 // const csrfProtection = csrf();

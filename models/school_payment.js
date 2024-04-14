@@ -43,7 +43,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("EXPIRED", "LIVE"),
 			 defaultValue:null
       },
-   
+    razorpay_payment_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+     razorpay_order_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+      razorpay_signature: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+       valid_upto: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: sequelize.fn('current_timestamp')
+    },
     created_by: {
       type: DataTypes.STRING(100),
       allowNull: true

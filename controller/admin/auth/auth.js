@@ -1,5 +1,6 @@
 // const sequelize = require("../../../config/db");
 const passport = require("passport");
+const Razorpay = require('razorpay');
 
 const { AuthManagement } = require("../../../services/admin");
 // const moment = require("moment");
@@ -7,6 +8,10 @@ const {
   serviceSingleDocUploadUtil,
   formidableUpload,
 } = require("../../../utils");
+
+var instance = new Razorpay({ key_id: 'rzp_test_WBioRsxhNBW8Bu', key_secret: 'ZUrUSwkwcOBPUcJClF2DMSTi' })
+
+
 
 const login = async (req, res, next) => {
   try {
@@ -19,11 +24,12 @@ const payment = async (req, res, next) => {
   try {
     
     const data = await new AuthManagement().getPaymentStatus(req, res);
+    const countStudent = await new AuthManagement().countStudentOfSchool(req, res);
     if (data.length) {
       
       return res.redirect("/admission/admission");
     } else {
-       return res.render("admin/payment",{nonce: res.locals.nonce});
+       return res.render("admin/payment",{nonce: res.locals.nonce,countStudent:countStudent});
     }
   } catch (error) {
     next(error);
@@ -32,8 +38,8 @@ const payment = async (req, res, next) => {
 
 const paymentSuccess = async (req, res, next) => {
   try {
-  //  const data = await new AuthManagement().getPaymentDetails(req,res);
-    return res.render("admin/payment-success",{nonce: res.locals.nonce});
+   const data = await new AuthManagement().getPaymentDetails(req,res);
+    return res.render("admin/payment-success",{data:data});
   } catch (error) {
     next(error);
   }
@@ -41,9 +47,31 @@ const paymentSuccess = async (req, res, next) => {
 
 const submitPayment = async (req, res, next) => {
   try {
-const data = await new AuthManagement().savePaymentDetails(req,res);
+   
+    instance.payments.fetch(req.body.razorpay_payment_id).then(async (paymentDoc) => {
+      const data = await new AuthManagement().savePaymentDetails(req,res,paymentDoc);
+      return res.send(data);
+    })
 
-  return res.render("admin/payment-success",{nonce: res.locals.nonce,data:data});
+  } catch (error) {
+    next(error);
+  }
+};
+const createOrder = async (req, res, next) => {
+  try {
+
+    let option = {
+      amount: 50000,
+      currency: "INR",
+    }
+    
+    instance.orders.create(option, (err, order) => {
+      console.log(order);
+      return res.send(order);
+  
+})
+
+ 
   } catch (error) {
     next(error);
   }
@@ -140,6 +168,6 @@ const logout = async (req, res) => {
 
 
 module.exports = {
-  login,register,createSchool,postLogin,logout,dashboard,getDashboardDataBySchool,paymentSuccess,payment,submitPayment
+  login,register,createSchool,postLogin,logout,dashboard,getDashboardDataBySchool,paymentSuccess,payment,submitPayment,createOrder
  
 };

@@ -8,7 +8,7 @@ module.exports = () => {
         try {
             
          const data = await sequelize.query(
-          "UPDATE school_payment SET membership = 'EXPIRED' WHERE transaction_date < NOW();",
+          "UPDATE school_payment SET membership = 'EXPIRED' WHERE valid_upto < NOW();",
           {
 
             type: QueryTypes.UPDATE,

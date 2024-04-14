@@ -40,10 +40,10 @@
                     </div>
                     <div class="panel-body">
                       <table class="table table-bordered table-striped">
-                        <tr><td>transaction ID</td> <td><%=  %></td></tr>
-                        <tr><td>Amount</td> <td><%=  %></td></tr>
-                        <tr><td>Frequency</td> <td><%=  %></td></tr>
-                        <tr><td>Payment Status</td> <td><%=  %></td></tr>
+                        <tr><td>transaction ID</td> <td><%= data[0].track_id %></td></tr>
+                        <tr><td>Amount</td> <td><%= data[0].transaction_amount %></td></tr>
+                        <tr><td>Frequency</td> <td><%= data[0].frequency %></td></tr>
+                        <tr><td>Payment Status</td> <td><%= data[0].transaction_status %></td></tr>
                       </table>
                         </div>
                         <% if(data[0].transaction_status==='failed'){ %>
