@@ -93,15 +93,15 @@ const dashboard = async (req, res, next) => {
 };
 const getDashboardDataBySchool = async (req, res, next) => {
   try {
-    const adm = await new AuthManagement().getDashboardDataBySchool(req,res);
-     const count = await new AuthManagement().countDashboardDataBySchool(req,res);
-    const data = JSON.stringify({
-      draw: parseInt(req.body.draw),
-      recordsFiltered: count.length,
-      recordsTotal: count.length,
-      data: adm.length ? adm : [],
-    });
-    return data;
+    const data = await new AuthManagement().getDashboardDataBySchool(req,res);
+    //  const count = await new AuthManagement().countDashboardDataBySchool(req,res);
+    // const data = JSON.stringify({
+    //   draw: parseInt(req.body.draw),
+    //   recordsFiltered: count.length,
+    //   recordsTotal: count.length,
+    //   data: adm.length ? adm : [],
+    // });
+    return res.send(data);
   } catch (error) {
     next(error);
   }

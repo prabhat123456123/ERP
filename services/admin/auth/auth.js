@@ -246,40 +246,111 @@ console.log('Next date and time:', nextDateTime);
  async getDashboardDataBySchool(req,res) {
     try {
      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
-      let whereClause = "";
-      let dateClause = "";
-      if (req.user[0].role == "student") {
-        whereClause = `student_attendance.track_student_id = '${req.user[0].track_id}' AND `
-      }
-         if (req.body.startDates != undefined && req.body.endDates != undefined) {
-        dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
-      }
-       const data = await sequelize.query(
-        `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.track_class_id,student.track_school_id FROM student_attendance INNER JOIN student ON student.track_id = student_attendance.track_student_id WHERE ` +whereClause+ `student.track_school_id = '${id}' `+ dateClause +`AND (student.name like "%${
-          req.body.search.value
-        }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
-          req.body.length
-        )} OFFSET ${parseInt(req.body.start)}`,
+      // let whereClause = "";
+      // let dateClause = "";
+      // if (req.user[0].role == "student") {
+      //   whereClause = `student_attendance.track_student_id = '${req.user[0].track_id}' AND `
+      // }
+      //    if (req.body.startDates != undefined && req.body.endDates != undefined) {
+      //   dateClause = `AND DATE(student_attendance.created_at) BETWEEN '${req.body.startDates}' AND '${req.body.endDates}' `
+      // }
+      //  const data = await sequelize.query(
+      //   `SELECT student_attendance.created_at,student_attendance.attendance_status,student_attendance.check_in,student_attendance.check_out,student.name,student.email,student.track_class_id,student.track_school_id FROM student_attendance INNER JOIN student ON student.track_id = student_attendance.track_student_id WHERE ` +whereClause+ `student.track_school_id = '${id}' `+ dateClause +`AND (student.name like "%${
+      //     req.body.search.value
+      //   }%" OR student.email like "%${req.body.search.value}%") LIMIT ${parseInt(
+      //     req.body.length
+      //   )} OFFSET ${parseInt(req.body.start)}`,
+      //   {
+      //     type: QueryTypes.SELECT,
+      //   }
+      // );
+      
+
+      // for (let i = 0; i < data.length; i++) {
+       
+      //   data[i]["created_at"] = `${data[i].created_at}`;
+      
+      //   data[i]["attendance_status"] = `${data[i].attendance_status}`;
+      //   data[i]["check_in"] = `${data[i].check_in}`;
+      //   data[i]["check_out"] = `${data[i].check_out}`;
+
+      // }
+ const numberOfstudent = await sequelize.query(
+        "SELECT * FROM `student` WHERE track_school_id = ?",
         {
           type: QueryTypes.SELECT,
+          replacements: [id],
         }
       );
+       const numberOfteacher = await sequelize.query(
+        "SELECT * FROM `faculty` WHERE track_school_id = ?",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [id],
+        }
+      );
+      const CountTopStudent = await sequelize.query(
+        "SELECT student.*, MAX(exam_status.obtained_marks) AS max_obtained_marks FROM student LEFT JOIN exam_status ON exam_status.track_student_id = student.track_id WHERE exam_status.exam_status = 'completed' GROUP BY exam_status.track_student_id ORDER BY max_obtained_marks DESC LIMIT 5",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [id],
+        }
+      );
+      console.log("?>>>>>>>>>>>>>>>>>>>>>>>>",CountTopStudent);
+  const CountPercentStudent = await sequelize.query(
+    "SELECT \
+        (SELECT COUNT(*) FROM `student_attendance` \
+            INNER JOIN student ON student.track_id = student_attendance.track_student_id \
+            WHERE student_attendance.attendance_status = 'P' AND student.track_school_id = ? AND DATE(student_attendance.created_at) = CURRENT_DATE()) AS present_student_count, \
+        (SELECT COUNT(*) FROM `student` \
+            WHERE student.track_school_id = ?) AS total_student_count;",
+    {
+        type: QueryTypes.SELECT,
+        replacements: [id, id],
+    }
+      );
       
-
-      for (let i = 0; i < data.length; i++) {
-       
-        data[i]["created_at"] = `${data[i].created_at}`;
-      
-        data[i]["attendance_status"] = `${data[i].attendance_status}`;
-        data[i]["check_in"] = `${data[i].check_in}`;
-        data[i]["check_out"] = `${data[i].check_out}`;
-
-      
-       
+      let studentAttendancePercentage;
+      if (CountPercentStudent.length > 0) {
+         // Calculate attendance percentage for students
+        const presentStudentCount = CountPercentStudent[0].present_student_count;
+        const totalStudentCount = CountPercentStudent[0].total_student_count;
+         studentAttendancePercentage = (presentStudentCount / totalStudentCount) * 100;
+        
+              console.log("Student Attendance Percentage:", studentAttendancePercentage.toFixed(2) + "%");
+      } else {
+        studentAttendancePercentage = 0 + "%";
       }
 
-     
-      return data;
+      
+        const CountPercentFaculty = await sequelize.query(
+    "SELECT \
+        (SELECT COUNT(*) FROM `faculty_attendance` \
+            INNER JOIN faculty ON faculty.track_id = faculty_attendance.track_faculty_id \
+            WHERE faculty_attendance.attendance_status = 'P' AND faculty.track_school_id = ? AND DATE(faculty_attendance.created_at) = CURRENT_DATE()) AS present_faculty_count, \
+        (SELECT COUNT(*) FROM `faculty` \
+            WHERE faculty.track_school_id = ?) AS total_faculty_count;",
+    {
+        type: QueryTypes.SELECT,
+        replacements: [id, id],
+    }
+      );
+      let facultyAttendancePercentage;
+      if (CountPercentFaculty.length > 0) {
+  
+        // Calculate attendance percentage for students
+        const presentFacultyCount = CountPercentFaculty[0].present_faculty_count;
+        const totalFacultycount = CountPercentFaculty[0].total_faculty_count;
+        facultyAttendancePercentage = (presentFacultyCount / totalFacultycount) * 100;
+        
+        console.log("Student Attendance Percentage:", facultyAttendancePercentage.toFixed(2) + "%");
+      } else {
+        facultyAttendancePercentage = 0 + "%";
+}
+
+     let numOfStd = numberOfstudent.length>0 ? numberOfstudent.length:0;
+     let numOFFac = numberOfteacher.length>0 ? numberOfteacher.length:0;
+      return {numOfStd,numOFFac,facultyAttendancePercentage,studentAttendancePercentage,CountTopStudent};
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");

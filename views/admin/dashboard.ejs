@@ -19,149 +19,43 @@
                   <h1>SCHOOL ERP Admin Dashboard</h1>
                   <small>Very detailed & featured admin.</small>
                   </div>
-                  <div class="form-group col-lg-3" > </div> 
-                  <div class="form-group col-lg-4" >
-                                      <label>Select Date Range</label><br>
-                                  <div id="reportrange"  class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
-                                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
-                                    <span></span> <b class="caret"></b>
-                                 </div>
-                                 <label></label>
-                                      
-                                <button class="btn btn-success" id="filter_records">Filter</button>
-                                 </div>
+               
+                 
                                  </div>
                </div>
                
             </section>
             <!-- Main content -->
             <section class="content">
-                            
-                               
-               <div class="row">
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox1">
-                        <div class="statistic-box">
-                           <i class="fa fa-user-plus fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5>Total Number of Teacher</h5>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox2">
-                        <div class="statistic-box">
-                           <i class="fa fa-user-secret fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">4</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5>Total Number of Student</h5>
-                        </div>
-                     </div>
-                  </div>
-                 
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox4">
-                        <div class="statistic-box">
-                           <i class="fa fa-files-o fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5> Number of Teacher Present</h5>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox4">
-                        <div class="statistic-box">
-                           <i class="fa fa-files-o fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5> Number of Teacher Absent</h5>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox4">
-                        <div class="statistic-box">
-                           <i class="fa fa-files-o fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5> Number of Student Present</h5>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox4">
-                        <div class="statistic-box">
-                           <i class="fa fa-files-o fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5> Number of Student Absent</h5>
-                        </div>
-                     </div>
-                  </div>
-                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox3">
-                        <div class="statistic-box">
-                           <i class="fa fa-money fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <i class="ti ti-money"></i><span class="count-number">965</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5> Teacher Attendance in (%)</h5>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                     <div id="cardbox4">
-                        <div class="statistic-box">
-                           <i class="fa fa-files-o fa-3x"></i>
-                           <div class="counter-number pull-right">
-                              <span class="count-number">11</span> 
-                              <span class="slight"><i class="fa fa-play fa-rotate-270"> </i>
-                              </span>
-                           </div>
-                           <h5>Student Attendance in (%)</h5>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-                <div class="row">
-                   <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="row">
+                   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                      <div class="panel panel-bd lobidisable">
                         <div class="panel-heading">
                            <div class="panel-title">
-                              <h4>Attendance in (%)</h4>
+                              <h4>Count in Pie chart</h4>
                            </div>
                         </div>
                         <div class="panel-body">
-                           <canvas id="barChart" height="150"></canvas>
+                           <canvas id="pieChart" style="display: block; height: 282px; width: 565px;"></canvas>
+                        </div>
+                     </div>
+                  </div>
+                   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                     <div class="panel panel-bd lobidisable">
+                        <div class="panel-heading">
+                           <div class="panel-title">
+                              <h4>Attendance % </h4>
+                           </div>
+                        </div>
+                        <div class="panel-body">
+                           <canvas id="barChart" style="display: block; height: 282px; width: 565px;"></canvas>
                         </div>
                      </div>
                   </div>
                   <!-- Barchart -->
                 
                   <!-- bar chart -->
-                  <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                      <div class="panel panel-bd lobidisable">
                         <div class="panel-heading">
                            <div class="panel-title">
@@ -169,164 +63,13 @@
                            </div>
                         </div>
                         <div class="panel-body">
-                           <canvas id="singelBarChart" height="323"></canvas>
+                           <canvas id="singelBarChart" style="display: block; height: 282px; width: 565px;"></canvas>
                         </div>
                      </div>
                   </div>
-               </div>
-               <div class="row">
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                     <div class="panel panel-bd lobidisable">
-                        <div class="panel-heading">
-                           <div class="panel-title">
-                              <h4>Upcoming Events</h4>
-                           </div>
-                        </div>
-                        <div class="panel-body">
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date">
-                                 <span class="day">28</span>
-                                 <span class="month">Apr</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">Email</span>
-                              <a href="#" title="headings">Marketing policy</a> <br>
-                              <p>Green Road - Dhaka,Bangladesh</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date">
-                                 <span class="day">2</span>
-                                 <span class="month">Apr</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">skype</span>
-                              <a href="#" title="headings">Accounting policy</a> <br>
-                              <p>Kolkata, India</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date2">
-                                 <span class="day">17</span>
-                                 <span class="month">Mrc</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">phone</span>
-                              <a href="#" title="headings">Marketing policy</a> <br>
-                              <p>Madrid  - spain</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date2">
-                                 <span class="day">3</span>
-                                 <span class="month">jan</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">Mobile</span>
-                              <a href="#" title="headings">Finance policy</a> <br>
-                              <p>south Australia  - Australia</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                     <div class="panel panel-bd lobidisable">
-                        <div class="panel-heading">
-                           <div class="panel-title">
-                              <h4>Upcoming Holidays</h4>
-                           </div>
-                        </div>
-                        <div class="panel-body">
-
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date">
-                                 <span class="day">28</span>
-                                 <span class="month">Apr</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">Email</span>
-                              <a href="#" title="headings">Marketing policy</a> <br>
-                              <p>Green Road - Dhaka,Bangladesh</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date">
-                                 <span class="day">2</span>
-                                 <span class="month">Apr</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">skype</span>
-                              <a href="#" title="headings">Accounting policy</a> <br>
-                              <p>Kolkata, India</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date2">
-                                 <span class="day">17</span>
-                                 <span class="month">Mrc</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">phone</span>
-                              <a href="#" title="headings">Marketing policy</a> <br>
-                              <p>Madrid  - spain</p>
-                           </div>
-                           <div class="work-touchpoint">
-                              <div class="work-touchpoint-date2">
-                                 <span class="day">3</span>
-                                 <span class="month">jan</span>
-                              </div>
-                           </div>
-                           <div class="detailswork">
-                              <span class="label-custom label label-default pull-right">Mobile</span>
-                              <a href="#" title="headings">Finance policy</a> <br>
-                              <p>south Australia  - Australia</p>
-                           </div>
-                          
-                        </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="row">
-                  <div class="col-sm-6 col-md-6">
-                     <div class="panel panel-bd lobidisable">
-                        <div class="panel-heading">
-                           <div class="panel-title">
-                              <h4>Pie chart</h4>
-                           </div>
-                        </div>
-                        <div class="panel-body">
-                           <canvas id="pieChart" height="155"></canvas>
-                        </div>
-                     </div>
-                  </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                     <div class="panel panel-bd lobidisable">
-                        <div class="panel-heading">
-                           <div class="panel-title">
-                              <h4>New Student in Current Financial year</h4>
-                           </div>
-                        </div>
-                        <div class="panel-body">
-                           <div class="Workslist">
-                              <div class="worklistdate">
-                                 <table id="sample_data" class="table table-bordered table-striped">
-                                    <thead>
-                                       <tr>
-                                          <th>Notice</th>
-                                          <th>Published By</th>
-                                          <th>Date Added</th>
-                                          <th> Added</th>
-                                       </tr>
-                                    </thead>
-                                  
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+             
+                 
+                    
                </div>
               
              
@@ -340,119 +83,230 @@
       <!-- Start Core Plugins
          =====================================================================-->
    <%- include('../partials/footer-script') %>
-   <script  nonce="<%= nonce %>" >
+   <script >
    
-let startDates;
-let endDates;
-$(function() {
+// let startDates;
+// let endDates;
+// $(function() {
 
-    var start = moment().subtract(29, 'days');
-    var end = moment();
+//     var start = moment().subtract(29, 'days');
+//     var end = moment();
 
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-        startDates = start.format('YYYY-MM-DD');
-         endDates = end.format('YYYY-MM-DD');
-    }
+//     function cb(start, end) {
+//         $('#reportrange span').html(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+//         startDates = start.format('YYYY-MM-DD');
+//          endDates = end.format('YYYY-MM-DD');
+//     }
 
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
+//     $('#reportrange').daterangepicker({
+//         startDate: start,
+//         endDate: end,
+//         ranges: {
+//            'Today': [moment(), moment()],
+//            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+//            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+//            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+//            'This Month': [moment().startOf('month'), moment().endOf('month')],
+//            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+//         }
+//     }, cb);
 
-    cb(start, end);
+//     cb(start, end);
     
-});
-var dataTable;
-var sale_chart;
+// });
+// var dataTable;
+// var sale_chart;
 
-  dataTable = $("#sample_data").DataTable({
-			"processing": true,
-			"serverSide": true,
-			  "order": [],
-			ajax: {
-				url: `/get-dashboard-data-by-school`,
-				type: "POST",
+//   dataTable = $("#sample_data").DataTable({
+// 			"processing": true,
+// 			"serverSide": true,
+// 			  "order": [],
+// 			ajax: {
+// 				url: `/get-dashboard-data-by-school`,
+// 				type: "POST",
 			
-			},
-			columns: [{ data: "created_at" }, { data: "attendance_status" }, {data:"check_in"},{data:"check_out"}],
-		});
+// 			},
+// 			columns: [{ data: "created_at" }, { data: "attendance_status" }, {data:"check_in"},{data:"check_out"}],
+// 		});
       
-$(document).on('click', '#filter_records', function () {
-   if ($.fn.DataTable.isDataTable('#sample_data')) {
-                    $('#sample_data').DataTable().destroy();
-                }
+// $(document).on('click', '#filter_records', function () {
+//    if ($.fn.DataTable.isDataTable('#sample_data')) {
+//                     $('#sample_data').DataTable().destroy();
+//                 }
 
-    // Initialize DataTable
-    dataTable = $('#sample_data').DataTable({
-        "processing": true,
-        "serverSide": true,
+//     // Initialize DataTable
+//     dataTable = $('#sample_data').DataTable({
+//         "processing": true,
+//         "serverSide": true,
        
-        "order": [],
-        "ajax": {
-            url: "/get-dashboard-data-by-school",
-            type: "POST",
-            data: {
-                startDates: startDates,
-                endDates: endDates
-            },
-        },
-        columns: [{
-                data: "created_at"
-            },
-            {
-                data: "attendance_status"
-            },
-            {
-                data: "check_in"
-            },
-            {
-                data: "check_out"
-            },
-        ],
-        "drawCallback": function (settings) {
-            var sales_date = [];
-            var sale = [];
+//         "order": [],
+//         "ajax": {
+//             url: "/get-dashboard-data-by-school",
+//             type: "POST",
+//             data: {
+//                 startDates: startDates,
+//                 endDates: endDates
+//             },
+//         },
+//         columns: [{
+//                 data: "created_at"
+//             },
+//             {
+//                 data: "attendance_status"
+//             },
+//             {
+//                 data: "check_in"
+//             },
+//             {
+//                 data: "check_out"
+//             },
+//         ],
+//         "drawCallback": function (settings) {
+//             var sales_date = [];
+//             var sale = [];
 
-            // Populate data arrays for the chart
-            for (var count = 0; count < settings.aoData.length; count++) {
-                sales_date.push(settings.aoData[count]._aData[2]);
-                sale.push(parseFloat(settings.aoData[count]._aData[1]));
-            }
+//             // Populate data arrays for the chart
+//             for (var count = 0; count < settings.aoData.length; count++) {
+//                 sales_date.push(settings.aoData[count]._aData[2]);
+//                 sale.push(parseFloat(settings.aoData[count]._aData[1]));
+//             }
 
-            // Update chart data
-            var chart_data = {
-                labels: sales_date,
-                datasets: [{
-                    label: 'Sales',
-                    backgroundColor: 'rgb(255, 205, 86)',
-                    color: '#fff',
-                    data: sale
-                }]
-            };
+//             // Update chart data
+//             var chart_data = {
+//                 labels: sales_date,
+//                 datasets: [{
+//                     label: 'Sales',
+//                     backgroundColor: 'rgb(255, 205, 86)',
+//                     color: '#fff',
+//                     data: sale
+//                 }]
+//             };
 
-            // Destroy existing chart instance if it exists
-            if (sale_chart) {
-                sale_chart.destroy();
-            }
+//             // Destroy existing chart instance if it exists
+//             if (sale_chart) {
+//                 sale_chart.destroy();
+//             }
 
-            // Create new chart instance
-            var group_chart3 = $('#bar_chart');
-            sale_chart = new Chart(group_chart3, {
-                type: 'bar',
-                data: chart_data
-            });
+//             // Create new chart instance
+//             var group_chart3 = $('#bar_chart');
+//             sale_chart = new Chart(group_chart3, {
+//                 type: 'bar',
+//                 data: chart_data
+//             });
+//         }
+//     });
+// });
+$(document).ready(function(){
+  $.ajax({
+        url: '/get-dashboard-data-by-school',
+        type: "POST",
+        data: {a:"p"},
+        success: function (data) {
+    console.log(data);
+    $('#numOfteacher').val(`${data.numOFFac}`);
+    $('#numOfStudent').val(`${data.numOfStd}`);
+     //pie chart
+             var ctx = document.getElementById("pieChart");
+             var myChart = new Chart(ctx, {
+                 type: 'pie',
+                 data: {
+                     datasets: [{
+                             data: [data.numOfStd,data.numOFFac],
+                             backgroundColor: [
+                                 "green",
+                                 "pink",
+                               
+                             ],
+                             hoverBackgroundColor: [
+                                 "green",
+                                 "pink",
+                                
+                             ]
+         
+                         }],
+                     labels: [
+                        "Number of Student",
+                        "Number of Teacher",
+
+                     ]
+                 },
+                 options: {
+                     responsive: true
+                 }
+             });
+
+               //bar chart
+         var ctxBar = document.getElementById("barChart");
+         var myChart = new Chart(ctxBar, {
+         type: 'bar',
+         data: {
+         labels: ["Attendance Percentage (%)"],
+         datasets: [
+         {
+         label: "Student",
+         data: [data.studentAttendancePercentage],
+         borderColor: "rgba(0, 150, 136, 0.8)",
+         width: "1",
+         borderWidth: "0",
+         backgroundColor: "rgba(0, 150, 136, 0.8)"
+         },
+         {
+         label: "Faculty",
+         data: [data.facultyAttendancePercentage],
+         borderColor: "rgba(51, 51, 51, 0.55)",
+         width: "1",
+         borderWidth: "0",
+         backgroundColor: "rgba(51, 51, 51, 0.55)"
+         }
+         ]
+         },
+         options: {
+         scales: {
+         yAxes: [{
+             ticks: {
+                 beginAtZero: true
+             }
+         }]
+         }
+         }
+         });
+         let labelData=[];
+         let datas=[];
+         for (let i = 0; i < data.CountTopStudent.length; i++) {
+           labelData.push(data.CountTopStudent[i].name);
+           datas.push(data.CountTopStudent[i].max_obtained_marks)
+            
+         }
+ // single bar chart
+         var ctxTopStud = document.getElementById("singelBarChart");
+         var myChart = new Chart(ctxTopStud, {
+         type: 'bar',
+         data: {
+         labels: labelData,
+         datasets: [
+         {
+         label: "Obtained Marks",
+         data:datas,
+         borderColor: "rgba(0, 150, 136, 0.8)",
+         width: "1",
+         borderWidth: "0",
+         backgroundColor: "rgba(0, 150, 136, 0.8)"
+         }
+         ]
+         },
+         options: {
+         scales: {
+         yAxes: [{
+             ticks: {
+                 beginAtZero: true
+             }
+         }]
+         }
+         }
+         });
         }
     });
-});
+})
 // $(document).ready(function(){
 
      
@@ -555,34 +409,94 @@ $(document).on('click', '#filter_records', function () {
 
 
 // });
-  //pie chart
-             var ctx = document.getElementById("pieChart");
-             var myChart = new Chart(ctx, {
-                 type: 'pie',
-                 data: {
-                     datasets: [{
-                             data: [45, 25],
-                             backgroundColor: [
-                                 "green",
-                                 "pink",
-                               
-                             ],
-                             hoverBackgroundColor: [
-                                 "green",
-                                 "pink",
-                                
-                             ]
-         
-                         }],
-                     labels: [
-                        "Number of Student",
-                        "Number of Teacher",
+  
+$(document).on('click', '#filter_records_by_student', function () {
+    // Fetch filter values or parameters
+    var startDates = $('#start_date_input').val();
+    var endDates = $('#end_date_input').val();
 
-                     ]
-                 },
-                 options: {
-                     responsive: true
-                 }
-             });
+    // Destroy existing DataTable
+    if (dataTable) {
+        dataTable.destroy();
+    }
+
+    // Fetch data and redraw DataTable
+    dataTable = $('#sample_data').DataTable({
+        "processing": true,
+        "serverSide": true,
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: 'th:not(:last-child)'
+                }
+            }
+        ],
+        "order": [],
+        "ajax": {
+            url: "/attendance/get-report-by-student",
+            type: "POST",
+            data: { startDates: startDates, endDates: endDates },
+        },
+        columns: [
+            { data: "created_at" },
+            { data: "attendance_status" },
+            { data: "check_in" },
+            { data: "check_out" },
+        ],
+        "initComplete": function () {
+            // After DataTable initialization, draw the chart
+            drawChart();
+        }
+    });
+});
+
+// Function to draw chart
+function drawChart() {
+    var labels = [];
+    var data = [];
+
+    // Extract data from DataTable
+    $('#sample_data').DataTable().rows().every(function () {
+        var rowData = this.data();
+        labels.push(rowData.created_at);
+        // Assuming attendance_status contains the data for the chart
+        data.push(rowData.attendance_status);
+    });
+
+    // Destroy existing chart if any
+    if (myChart) {
+        myChart.destroy();
+    }
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Attendance Status',
+                data: data,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
 
    </script>
