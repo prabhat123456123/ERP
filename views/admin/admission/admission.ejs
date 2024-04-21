@@ -37,6 +37,7 @@
                            </div>
                         </div>
                         <div class="panel-body">
+                            
                             <%- include('../../partials/message') %>
                             <% if(user[0].role==="school"){ %>
 					 <div class="row"> 
@@ -180,7 +181,98 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
+                <div class="modal fade" id="bulkStudentModal" tabindex="-1" role="dialog">
+                   <%- include('../../partials/loader') %>
+                 <div id="loaderBulk" class="lds-dual-ring hidden overlay"></div>
+
+                  <div class="modal-dialog modal-lg"  role="document">
+                     
+                     <div class="modal-content">
+                       
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Bulk Create</h3>
+                        </div>
+                       
+                        <div class="modal-body">
+                              <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="bulkUploadForm">
+                                  <input type="hidden" id="student_school_id" value="<%=  user[0].role=='student'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
+                            <div class="row">
+
+                                <div class="form-group col-lg-6">
+                                    <label>Upload File</label>
+                                    <input type="file" id="file" class="form-control" name="file" required>
+                                </div>
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="111" data-action="submit">
+															Upload
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog">
+                   <%- include('../../partials/loader') %>
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Student</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteStudentDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                  <div class="modal fade" id="deleteMultipleStudentModal" tabindex="-1" role="dialog">
+                      <%- include('../../partials/loader') %>
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-minus m-r-5"></i> Remove Students</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="deleteMultipleStudentDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+                 <%- include('../../partials/loader') %>
                  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog">
+                 
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -224,95 +316,10 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
-                <div class="modal fade" id="bulkStudentModal" tabindex="-1" role="dialog">
-                 <div id="loaderBulk" class="lds-dual-ring hidden overlay"></div>
-
-                  <div class="modal-dialog modal-lg"  role="document">
-                     
-                     <div class="modal-content">
-                       
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-plus m-r-5"></i> Bulk Create</h3>
-                        </div>
-                       
-                        <div class="modal-body">
-                              <div class="row">
-                              <div class="col-md-12">
-                                <form action="" id="bulkUploadForm">
-                                  <input type="hidden" id="student_school_id" value="<%=  user[0].role=='student'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
-                            <div class="row">
-
-                                <div class="form-group col-lg-6">
-                                    <label>Upload File</label>
-                                    <input type="file" id="file" class="form-control" name="file" required>
-                                </div>
-                            </div>
-                            <div align="center">
-                               <button class="	btn btn-success waves-effect waves-light "
-															data-callback="onSubmit" id="111" data-action="submit">
-															Upload
-														</button>
-                            </div>
-                        </form>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
-                <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-minus m-r-5"></i> Remove Student</h3>
-                        </div>
-                        <div class="modal-body">
-                         
-                              <div id="deleteStudentDiv">
-                               
-                             
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
-                  <div class="modal fade" id="deleteMultipleStudentModal" tabindex="-1" role="dialog">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-minus m-r-5"></i> Remove Students</h3>
-                        </div>
-                        <div class="modal-body">
-                         
-                              <div id="deleteMultipleStudentDiv">
-                               
-                             
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
+               
       <!-- /.wrapper -->
       <!-- Start Core Plugins
-         
+        
          =====================================================================-->
    <%- include('../../partials/footer-script') %>
 
@@ -456,6 +463,9 @@ function viewAdmission(studentId) {
          data:{studentId:studentId},
          dataType: "json",
          cache: false,
+         beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
          success: function (data) {
     console.log(data);
             let formDetails = ``;
@@ -477,6 +487,9 @@ function viewAdmission(studentId) {
             $("#viewStudentDiv").html(formDetails);
           
         },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
       });
     } catch (err) {
       console.error(err);
@@ -494,6 +507,9 @@ function viewAdmission(studentId) {
          data:{studentId:studentId},
          dataType: "json",
          cache: false,
+         beforeSend: function() {
+            $('#loader').removeClass('hidden')
+            },
          success: function (data) {
         console.log(data);
         let option;
@@ -575,6 +591,9 @@ function viewAdmission(studentId) {
             $("#editStudentDiv").html(formDetails);
           
         },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
       });
     } catch (err) {
       console.error(err);
@@ -697,11 +716,17 @@ $(document).ready(function(){
                url: '/admission/delete-multiple',
                type: 'post',
                data: {deleteids_arr: deleteids_arr},
+               beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
                success: function(response){
                    $("#deleteMultipleStudentModal").modal("hide");
 				toastr.error('Record Deleted Successfuly !!')
                   $('#sample_data').DataTable().ajax.reload();
-               }
+               },
+                 complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
             });
          
       }
@@ -716,12 +741,18 @@ $(document).ready(function(){
           studentId:studentId,
         
         },
+        beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
         success: function () {
       $("#deleteStudentModal").modal("hide");
      $('#sample_data').DataTable().ajax.reload();
 	toastr.error('Record Deleted Successfuly !!')
 
-        }
+        },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
     });
 	
  

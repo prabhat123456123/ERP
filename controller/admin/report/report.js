@@ -37,7 +37,7 @@ const fetchStudentByClass = async (req, res, next) => {
 };
 const fetchStudentReportByClass = async (req, res, next) => {
   try {
-    const data = await new ReportManagement().fetchStudentReportByClass(req);
+    const data = await new ReportManagement().fetchStudentReportByClass(req,res);
    
     //  console.log(data)
     return res.send(data);

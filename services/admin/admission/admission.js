@@ -1,11 +1,8 @@
 const sequelize = require("../../../config/database");
 const { QueryTypes, Sequelize } = require("sequelize");
-// const {
-//   ErrorHandler,
-//   statusCodes,
-//   casbinEnforcer,
-//   actionLogger,
-// } = require("../../../helper");
+const {
+ sendEmail
+} = require("../../../helper/mail");
 const ExcelJS = require('exceljs');
 const pdf = require('html-pdf');
 const puppeteer = require('puppeteer');
@@ -100,7 +97,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
             type: QueryTypes.INSERT,
           }
         );
-      
+        await sendEmail("prabhatpandey181291@gmail.com", "test", "lol");
         return true;
       }
     } catch (error) {

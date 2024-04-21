@@ -183,15 +183,15 @@ class ReportManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  async fetchStudentReportByClass(req) {
+  async fetchStudentReportByClass(req,res) {
      try {
        
-       const classId = req.body.classes;
+       const classId = req.body.classId;
        const studentId = req.body.studentId;
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
        
        const studentData = await sequelize.query(
-         `SELECT * FROM student WHERE track_class_id = '${classId}' AND track_school_id = '${id}'`,
+         `SELECT * FROM student INNER JOIN  exam_status ON  exam_status.track_student_id = student.track_id  INNER JOIN  exam ON  exam.track_id = exam_status.track_exam_id WHERE student.track_class_id = '${classId}' AND student.track_school_id = '${id}' AND exam_status.track_student_id = '${studentId}' AND DATE_FORMAT(exam_status.created_at, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m') AND  exam_status.exam_status='completed'`,
          {
            type: QueryTypes.SELECT,
            
@@ -199,7 +199,7 @@ class ReportManagement {
           );
         
           return studentData;
-
+console.log("LLLLLLLLLL",studentData);
     
     } catch (error) {
       if (error.statusCode) {

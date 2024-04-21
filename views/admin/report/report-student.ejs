@@ -42,7 +42,7 @@
 			
             <!-- Main content -->
             <section class="content">
-          
+            <%- include('../../partials/loader') %>
 			
 		<div class="panel panel-bd lobidrag">
                         <div class="panel-heading">
@@ -113,59 +113,7 @@
          <!-- /.content-wrapper -->
         <%- include('../../partials/footer') %>
       </div>
-	   <div class="modal fade" id="addtask" tabindex="-1" role="dialog">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-plus m-r-5"></i> add new task</h3>
-                        </div>
-                        <div class="modal-body">
-                           <div class="row">
-                              <div class="col-md-12">
-                                 <form class="form-horizontal">
-                                    <fieldset>
-                                       <!-- Text input-->
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Task Name</label>
-                                          <input type="text" placeholder="Task Name" class="form-control">
-                                       </div>
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Due date</label>
-                                          <input type="number" placeholder="Due title" class="form-control">
-                                       </div>
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Description</label>
-                                          <input type="text" placeholder="Description" class="form-control">
-                                       </div>
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Assign to</label>
-                                          <input type="text" placeholder="Assign to" class="form-control">
-                                       </div>
-                                       <!-- Text input-->
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">status</label>
-                                          <input type="text" placeholder="status" class="form-control">
-                                       </div>
-                                       <div class="col-md-12 form-group user-form-group">
-                                          <div class="pull-right">
-                                             <button type="button" class="btn btn-danger btn-sm">Cancel</button>
-                                             <button type="submit" class="btn btn-add btn-sm">Update</button>
-                                          </div>
-                                       </div>
-                                    </fieldset>
-                                 </form>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
+	  
       <!-- /.wrapper -->
       <!-- Start Core Plugins
          =====================================================================-->
@@ -180,6 +128,9 @@ $(document).on('change','#classes', function () {
          data:{classId:id},
          dataType: "json",
          cache: false,
+          beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
          success: function (data) {
             console.log(data);
          let option;
@@ -194,9 +145,13 @@ $(document).on('change','#classes', function () {
           
           
         },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
       });
 })
 $(document).on('click','#find', function () {
+   $("#dataReport").html("");
    var classId = $('#classes').val(); 
    var studentId = $('#studentId').val(); 
   $.ajax({
@@ -205,20 +160,35 @@ $(document).on('click','#find', function () {
          data:{classId:classId,studentId:studentId},
          dataType: "json",
          cache: false,
+           beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
          success: function (data) {
             console.log(data);
-         let option;
-        for(let i=0; i<data.length; i++){
-           option += `<option value="${data[i].track_id}">${data[i].name}</option>`
-        }
-             $("#dataReport").html("");
-             
-            
-            $("#dataReport").append(option);
-          
-          
+       let formDetails = ``;
+       if(data.length>0){
+ for(let i=0; i<data.length; i++){
+
+    formDetails += `<table class="table table-bordered table-striped"> 
+       <tr><td>Exam Name</td><td>${data[i].exam_name}</td></tr>
+       <tr><td>Exam Mode</td><td>${data[i].exam_mode}</td></tr>
+       <tr><td>Exam Type</td><td>${data[i].exam_type}</td></tr>
+        <tr><td>Exam Lebel</td><td>${data[i].exam_level}</td></tr>
+       <tr><td>Total Marks</td><td>${data[i].total_marks}</td></tr>
+       <tr><td>Correct Marks</td><td>${data[i].correct_marks}</td></tr>
+       <tr><td>incorrect Marks</td><td>${data[i].incorrect_marks}</td></tr>
+       <tr><td>Obtained Marks</td><td>${data[i].obtained_marks}</td></tr>
+       </table> </br></br></br>`;
+ }
+             $("#dataReport").html(formDetails);
+       }else{
+          $("#dataReport").html(`This Candidate has not Appeared in any exam`);
+       }
           
         },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
       });
 })
 $(document).ready(function(){

@@ -1,84 +1,121 @@
-const nodemailer = require("nodemailer");
+// const nodemailer = require("nodemailer");
 
-const { EMAIL, PASS } = require("../../utils/Constant");
+// const { EMAIL, PASS } = require("../../utils/Constant");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.hostinger.in",
-  port: 587,
-  secure: false,
-  auth: {
-    user: EMAIL,
-    pass: PASS,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.hostinger.in",
+//   port: 587,
+//   secure: false,
+//   auth: {
+//     user: EMAIL,
+//     pass: PASS,
+//   },
+// });
 
-transporter.verify((error) => {
-  if (error) console.error(error);
-  else console.log(`Success`);
-});
+// transporter.verify((error) => {
+//   if (error) console.error(error);
+//   else console.log(`Success`);
+// });
 
-module.exports = {
-  sendMail: async (recipient, subject, body) => {
-    try {
-      let options = {
-        from: `FITSAPP ${EMAIL}`, // sender address
-        to: recipient, // list of receivers
-        priority: "high",
-        subject: subject,
-        html: body,
-      };
+// module.exports = {
+//   sendMail: async (recipient, subject, body) => {
+//     try {
+//       let options = {
+//         from: `FITSAPP ${EMAIL}`, // sender address
+//         to: recipient, // list of receivers
+//         priority: "high",
+//         subject: subject,
+//         html: body,
+//       };
 
-      if (recipient !== "" && subject !== "" && body !== "") {
-        transporter.sendMail(options, (error, info) => {
-          if (error) console.error(error);
+//       if (recipient !== "" && subject !== "" && body !== "") {
+//         transporter.sendMail(options, (error, info) => {
+//           if (error) console.error(error);
 
-          console.log(info.messageId);
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  sendReport: async (recipient) => {
-    try {
-      let transporter = nodemailer.createTransport({
-        host: "smtp.hostinger.in",
+//           console.log(info.messageId);
+//         });
+//       }
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   },
+//   sendReport: async (recipient) => {
+//     try {
+//       let transporter = nodemailer.createTransport({
+//         host: "smtp.hostinger.in",
+//         port: 587,
+//         secure: false,
+//         auth: {
+//           user: email,
+//           pass: pass,
+//         },
+//       });
+
+//       transporter.verify((error) => {
+//         if (error) console.error(error);
+//         else console.log(`Success`);
+//       });
+
+//       let options = {
+//         from: `"DST" ${email}`, // sender address
+//         to: recipient, // list of receivers
+//         priority: "high",
+//         subject: "Reports",
+//         html: `<h4>Please find in the reports in the below attachments</h4>`,
+//         attachments: [
+//           {
+//             // filename and content type is derived from path
+//             path: "../public/pdf/Report.pdf",
+//           },
+//         ],
+//       };
+
+//       transporter.sendMail(options, (error, info) => {
+//         if (error) console.error(error);
+
+//         console.log(info.messageId);
+//       });
+
+//       // console.log("Message sent: %s", info.messageId);
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   },
+// };
+
+const nodemailer = require('nodemailer');
+
+// Create a function to send an email
+const sendEmail = async (to, subject, text)=>{
+    // Create a transporter using SMTP transport
+    let transporter = nodemailer.createTransport({
+     
+      host: "smtp.ethereal.email",
         port: 587,
-        secure: false,
+       
         auth: {
-          user: email,
-          pass: pass,
-        },
-      });
+          user: 'serena.emmerich@ethereal.email',
+        pass: 'B9yX28zGgaZuTSRV1K'
+        }
+    });
 
-      transporter.verify((error) => {
-        if (error) console.error(error);
-        else console.log(`Success`);
-      });
+    // Define email options
+    let mailOptions = {
+        from: 'prabhatpandey181291@gmail.com',
+        to: to,
+        subject: subject,
+        text: text
+    };
 
-      let options = {
-        from: `"DST" ${email}`, // sender address
-        to: recipient, // list of receivers
-        priority: "high",
-        subject: "Reports",
-        html: `<h4>Please find in the reports in the below attachments</h4>`,
-        attachments: [
-          {
-            // filename and content type is derived from path
-            path: "../public/pdf/Report.pdf",
-          },
-        ],
-      };
-
-      transporter.sendMail(options, (error, info) => {
-        if (error) console.error(error);
-
-        console.log(info.messageId);
-      });
-
-      // console.log("Message sent: %s", info.messageId);
+    // Send email
+    try {
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+        return true; // Email sent successfully
     } catch (error) {
-      console.error(error);
+        console.error('Error sending email:', error);
+        return false; // Failed to send email
     }
-  },
-};
+}
+
+module.exports={sendEmail}
