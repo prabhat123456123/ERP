@@ -37,27 +37,9 @@
                            </div>
                         </div>
                         <div class="panel-body">
+                            
                             <%- include('../../partials/message') %>
                            
-					 <div class="row"> 
- <div class="form-group col-lg-3"></div>
-								  <div class="form-group col-lg-6">
-                                    <label>Class</label>
-                                   <select name="student_class_id" id="student_class_id" class="form-control" required>
-                                    <option value="">Please Select</option>
-                                    <% for(let i = 0; i < data.length; i++){%> 
-                                    <option value="<%= data[i].track_id %>" class="getclass_<%= data[i].track_id %>"><%= data[i].class_name %></option>
-                                       <% } %>
-                                   </select> 
-                                </div>
-                                 <div class="form-group col-lg-3"></div>
-       
-           
-			<br>
-        </div>
-
-      
-		<br>
 
 					<div class="table-responsive">
 						
@@ -65,15 +47,13 @@
 						
 							<thead>
 								<tr>
-									
+								
 									<th> Name</th>
-									<th> Father Name</th>
-									<th> Email</th>
-									
+									<th> Class</th>
+									<th>Total Fee</th>
 									<th class="noExport">Action</th>
 								</tr>
 							</thead>
-                   
 						</table>
 					</div>
 				</div>
@@ -87,20 +67,108 @@
          <!-- /.content-wrapper -->
         <%- include('../../partials/footer') %>
       </div>
-
+	 <!-- Modal1 -->
+               <div class="modal fade" id="addStudentPayment-lg" tabindex="-1" role="dialog">
+                  <%- include('../../partials/loader') %>
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Payment</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                                <form action="" id="studentForm">
+                                  <input type="hidden" id="student_school_id" value="<%= user[0].role=='school'?user[0].track_id:user[0].track_school_id %>" class="form-control" name="student_school_id" >
+                            <div class="row">
+                                  <div class="row">
+                               <div class="form-group col-lg-6">
+                                    <label>Annual Fee</label>
+                                    <input type="text" id="annual_fee" class="form-control" name="annual_fee" required>
+                                </div>
+                                
+                                  <div class="form-group col-lg-6">
+                                   <label>Please Select Frequency.</label>
+                                 <select class="form-control frequency" name="frequency" id="frequency" required>
+                                    <option value="">Please Select Frequency</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="quarterly">Quartly</option>
+                                    <option value="halfyearly">Half Yearly</option>
+                                    <option value="yearly">Yearly</option>
+                                   </select>
+                                </div>
+                                  
+                                <div class="form-group col-lg-6">
+                                    <label>Enter Amount</label>
+                                    <input type="text" id="amount" class="form-control" name="amount" required>
+                                </div>
+                               
+                            </div>
+                              
+                              
+                            </div>
+                            <div align="center">
+                               <button class="	btn btn-success waves-effect waves-light "
+															data-callback="onSubmit" id="saveStudent" data-action="submit">
+															pay
+														</button>
+                            </div>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+             
+               
                  
+                 <%- include('../../partials/loader') %>
+                
+                  <div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog">
+                  <div class="modal-dialog modal-lg"  role="document">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> View Student Details</h3>
+                        </div>
+                        <div class="modal-body">
+                         
+                              <div id="viewStudentDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
+               
       <!-- /.wrapper -->
       <!-- Start Core Plugins
-         
+        
          =====================================================================-->
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
 
-
-  
-       
-function viewAdmission(studentId) {
+document.addEventListener("click", function(event) {
+    const target = event.target;
+  if (target.classList.contains("viewBtn")) {
+        viewStudentPayment(target.dataset.id);
+    }
+});
+function viewStudentPayment(studentPaymentId) {
     try {
      
       $("#viewStudentDiv").html("");
@@ -108,136 +176,41 @@ function viewAdmission(studentId) {
       $.ajax({
          url: `/admission/view-student-byid`,
          type: "post",
-         data:{studentId:studentId},
+         data:{studentPaymentId:studentPaymentId},
          dataType: "json",
          cache: false,
+         beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
          success: function (data) {
-    console.log(data);
-            let formDetails = ``;
-            formDetails += `<table class="table table-bordered table-striped"> 
+    let formDetails = ``;
+       if(data.length>0){
+ for(let i=0; i<data.length; i++){
+
+    formDetails += `<table class="table table-bordered table-striped"> 
+       <tr><td>Transaction Date</td><td>${data[i].exam_name}</td></tr>
+       <tr><td>Transaction Amount</td><td>${data[i].exam_mode}</td></tr>
+       <tr><td>Fee Status</td><td>${data[i].exam_type}</td></tr>
+       
+       </table> </br></br></br>`;
+ }
+             $("#viewStudentDiv").html(formDetails);
+       }else{
+          $("#viewStudentDiv").html(`This Candidate has not any Transaction History`);
+       }
+          
+          
+        },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
                
-               <tr><td>Photo</td><td><img src="/uploads/student/${data[0].email}/${data[0].photo}" width="100px"></td></tr>
-               <tr><td>Name</td><td>${data[0].name}</td></tr>
-               <tr><td>Email</td><td>${data[0].email}</td></tr>
-               <tr><td>Gender</td><td>${data[0].gender}</td></tr>
-                <tr><td>Father Name</td><td>${data[0].fathers_name}</td></tr>
-               <tr><td>Mother Name</td><td>${data[0].mothers_name}</td></tr>
-               <tr><td>Parent Phone</td><td>${data[0].parent_phone}</td></tr>
-               <tr><td>Class</td><td>${data[0].class_name}</td></tr>
-               <tr><td>School</td><td>${data[0].school_name}</td></tr>
-               <tr><td>address</td><td>${data[0].address}</td></tr>
-               <tr><td>DOB</td><td>${data[0].dob}</td></tr>
-              
-               </table>`;
-            $("#viewStudentDiv").html(formDetails);
-          
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-
-                  function editAdmission(studentId) {
-    try {
-     
-      $("#editStudentDiv").html("");
-      $("#editStudentModal").modal("toggle");
-      $.ajax({
-         url: `/admission/fetch-student-byid`,
-         type: "post",
-         data:{studentId:studentId},
-         dataType: "json",
-         cache: false,
-         success: function (data) {
-        console.log(data);
-        let option;
-        for(let i=0; i<data.classes.length; i++){
-           option += `<option value="${data.classes[i].track_id}"${data.data[0].track_class_id==data.classes[i].track_id?'selected':""}>${data.classes[i].class_name}</option>`
-        }
-            let formDetails = ``;
-            formDetails += `<form action="/admission/update-admission-by-id" method="post" enctype="multipart/form-data">
-                             
-                                  <input type="hidden"  value="${studentId}" class="form-control" name="student_id">
-                            <div class="row">
-                                <div class="form-group col-lg-6">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" value="${data.data[0].name}" name="student_name">
-                                </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Father's Name</label>
-                                    <input type="text" class="form-control" value="${data.data[0].fathers_name}" name="student_father_name">
-                                </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Mother's Name</label>
-                                    <input type="text" class="form-control" value="${data.data[0].mothers_name}" name="student_mother_name">
-                                </div>
-                                 <div class="form-group col-lg-6">
-                                    <label>Parent  Phone Number</label>
-                                    <input type="text"  class="form-control" value="${data.data[0].parent_phone}" name="student_parent_phone">
-                                </div>
-                               
-                                  <div class="form-group col-lg-6">
-                                    <label>Class</label>
-                                   <select name="student_class_id" class="form-control">
-                                    <option value="">Please Select</option>
-                                   ${option}
-                                   </select>
-                                </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Gender</label>
-                                   <select name="student_gender"  class="form-control">
-                                    <option value="">Please Select</option>
-                                    <option value="Male" ${data.data[0].gender=="Male"?'selected':""}>Male</option>
-                                    <option value="Female" ${data.data[0].gender=="Female"?'selected':""}>Female</option>
-                                   </select>
-                                </div>
-                                  <div class="form-group col-lg-6">
-                                    <label>Hobbies</label>
-                                    <input type="text" value="${data.data[0].hobby}" class="form-control" name="student_hobbies">
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>DOB</label>
-                                    <input type="date" value="${data.data[0].dob}" class="form-control" name="student_dob">
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Email ID</label>
-                                    <input type="email" value="${data.data[0].email}"  class="form-control" name="student_email" >
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <label>Phone Number</label>
-                                    <input type="text" value="${data.data[0].phone}" class="form-control" name="student_phone">
-                                </div>
-                                 <div class="form-group col-lg-6">
-                                    <label> Address</label>
-                                  
-                                    <textarea placeholder="Address" rows="5" class="form-control" name="student_address">${data.data[0].address}</textarea>
-                                </div>
-                              
-                                <div class="form-group col-lg-6">
-                                
-                                    <label>Upload Photo</label>
-                                     <img src="/uploads/student/${data.data[0].email}/${data.data[0].photo}" width="100px">
-                                    <input type="file" class="form-control" name="student_photo">
-                                </div>
-                            </div>
-                            <div align="center">
-                               <input type="submit" class="btn btn-success"
-															value="Update">
-															
-														
-                            </div>
-                        </form>`;
-            $("#editStudentDiv").html(formDetails);
-          
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  
 
     
 $(document).ready(function(){
@@ -260,9 +233,6 @@ $(document).ready(function(){
 				'hideMethod': 'fadeOut',
 			}
 
-	  $("select#student_class_id").change(function(){
-        var classId = $(this).children("option:selected").val();
-	alert(classId)
 var dataTable = $('#sample_data').DataTable({
 		"processing": true,
 		"serverSide": true,
@@ -276,7 +246,7 @@ var dataTable = $('#sample_data').DataTable({
          }
       },
        {
-         extend: 'pdf',
+         extend: 'pdfHtml5',
         
          exportOptions: {
             columns: 'th:not(:last-child)'
@@ -287,20 +257,17 @@ var dataTable = $('#sample_data').DataTable({
 		"ajax":{
 			url:"/financial/get-student-financial",
 			type:"POST",
-         data:{classId:classId},
 		},
          columns: [
        
         { data: "name" },
-        { data: "fathername" },
-        { data: "email" },
+        { data: "class" },
+        { data: "fee" },
         { data: "action" },
 	],
 		
 	});
 
-})
-  
 	
 });	
 setTimeout(function () {

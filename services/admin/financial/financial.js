@@ -82,9 +82,9 @@ class FinancialManagement {
         whereClause = ` student.track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,track_class_id,track_school_id,name,email,fathers_name FROM student INNER JOIN student_financial ON student_financial.track_student_id = student.track_id WHERE student.track_school_id = '${id}' AND ` + whereClause + `(name like "%${
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,student.name,class.annual_fee,class.class_name FROM student INNER JOIN class ON class.track_id = student.track_class_id LEFT JOIN student_payment ON student_payment.track_student_id = student.track_id WHERE student.track_school_id = '${id}' AND ` + whereClause + `(name like "%${
           req.body.search.value
-        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+        }%") LIMIT ${parseInt(
           req.body.length
         )} OFFSET ${parseInt(req.body.start)}`,
         {
@@ -94,14 +94,14 @@ class FinancialManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
+       
         data[i]["name"] = `${data[i].name}`;
-        data[i]["fathername"] = `${data[i].fathers_name}`;
-        data[i]["email"] = `${data[i].email}`;
-
+        data[i]["class"] = `${data[i].class_name}`;
+        data[i]["fee"] = `${data[i].annual_fee}`;
+       
         data[i][
           "action"
-        ] = `<a href="/financial/view-student-fee-details/${data[i].track_id}" class='btn btn-success btn-sm'  data-id='${data[i].track_id}'> View Fee Details </a> `;
+        ] = `<button class='btn btn-primary btn-sm addBtn' onclick='addPayment(${data[i].track_id})' data-id='${data[i].track_id}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewStudentPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View Payment Detail </button> `;
        
       }
 
@@ -115,16 +115,16 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(req,res) {
+    async countStudentFinancial(req,res) {
     try {
 //  console.log(sequelize)
        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = ` student.track_id = '${req.user[0].track_id}'`
+        whereClause = ` AND student.track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,track_class_id,track_school_id,name,email,fathers_name FROM student INNER JOIN student_financial ON student_financial.track_student_id = student.track_id WHERE student.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT student.track_id,student.track_class_id,student.track_school_id,student.name,class.annual_fee,class.class_name FROM student INNER JOIN class ON class.track_id = student.track_class_id LEFT JOIN student_payment ON student_payment.track_student_id = student.track_id WHERE student.track_school_id = '${id}' ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
@@ -145,16 +145,15 @@ class FinancialManagement {
   }
      async getFacultyFinancial(req,res) {
     try {
-//  console.log(sequelize)
      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
         whereClause = `faculty.track_id = '${req.user[0].track_id}' AND `
       }
        const data = await sequelize.query(
-        `SELECT track_id,track_class_id,track_school_id,name,email,gender FROM faculty INNER JOIN faculty_financial ON faculty_financial.track_faculty_id = faculty.track_id WHERE faculty.track_school_id = '${id}' AND ` + whereClause + `(name like "%${
+        `SELECT faculty.track_id,faculty.track_school_id,faculty.name,faculty.salery FROM faculty LEFT JOIN faculty_payment ON faculty_payment.track_faculty_id = faculty.track_id WHERE faculty.track_school_id = '${id}' AND ` + whereClause + `(name like "%${
           req.body.search.value
-        }%" OR email like "%${req.body.search.value}%") LIMIT ${parseInt(
+        }%") LIMIT ${parseInt(
           req.body.length
         )} OFFSET ${parseInt(req.body.start)}`,
         {
@@ -164,17 +163,15 @@ class FinancialManagement {
       
 
       for (let i = 0; i < data.length; i++) {
-        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
+      
         data[i]["name"] = `${data[i].name}`;
-        data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
-
+        data[i]["salery"] = `${data[i].salery}`;
+       
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editAdmission(${data[i].track_id})' data-id='${data[i].track_id}' > Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteAdmission(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewAdmission(${data[i].track_id})' data-id='${data[i].track_id}' > View </button> `;
+        ] = `<button class='btn btn-primary btn-sm  addBtn' onclick='addPayment(${data[i].track_id})' data-id='${data[i].track_id}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFacultyPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View PAyment Details </button> `;
        
       }
-
 
       return data;
     } catch (error) {
@@ -185,25 +182,21 @@ class FinancialManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countFaculty(req,res) {
+    async countFacultyFinancial(req,res) {
     try {
 //  console.log(sequelize)
       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "faculty") {
-        whereClause = `faculty.track_id = '${req.user[0].track_id}'`
+        whereClause = `AND faculty.track_id = '${req.user[0].track_id}'`
       }
        const data = await sequelize.query(
-        `SELECT track_id,track_class_id,track_school_id,name,email,gender FROM faculty INNER JOIN faculty_financial ON faculty_financial.track_faculty_id = faculty.track_id WHERE faculty.track_school_id = '${id}' AND ` + whereClause,
+        `SELECT faculty.track_id,faculty.track_school_id,faculty.name,faculty.salery FROM faculty LEFT JOIN faculty_payment ON faculty_payment.track_faculty_id = faculty.track_id WHERE faculty.track_school_id = '${id}' ` + whereClause,
         {
           type: QueryTypes.SELECT,
         }
       );
       
-
-     
-
-
       return data;
     } catch (error) {
       if (error.statusCode) {

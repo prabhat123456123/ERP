@@ -63,6 +63,10 @@ module.exports = (sequelize, DataTypes) => {
        specialize: {
       type: DataTypes.STRING(100),
       allowNull: true
+    },
+        salery: {
+      type: DataTypes.STRING(100),
+      allowNull: true
       },
     password: {
       type: DataTypes.STRING(100),

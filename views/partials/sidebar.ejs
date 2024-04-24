@@ -65,7 +65,7 @@
                   
 
                   <%  }  %>
-                  <!-- <li class="treeview">
+                  <li class="treeview">
                      <a href="#">
                      <i class="fa fa-shopping-basket"></i><span>Financial Module</span>
                      <span class="pull-right-container">
@@ -73,13 +73,14 @@
                      </span>
                      </a>
                      <ul class="treeview-menu">
-                         
+                         <% if(user[0].role == "student" || user[0].role == "school" || user[0].role == "faculty"){ %> 
                         <li><a href="/financial/student-financial">Student Wise</a></li>
-                       
+                        <% } %>
+                         <% if(user[0].role == "faculty" || user[0].role == "school"){ %> 
                         <li><a href="/financial/faculty-financial">Faculty Wise</a></li>
-                    
+                      <% } %>
                      </ul>
-                  </li> -->
+                  </li>
                   <% if(user[0].role == "student"){ %> 
                   <li class="treeview">
                      <a href="#">

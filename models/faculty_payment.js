@@ -29,7 +29,19 @@ module.exports = (sequelize, DataTypes) => {
       transaction_status: {
       type: DataTypes.ENUM("success", "failure"),
 			 allowNull: true
-      },
+    },
+      razorpay_payment_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+     razorpay_order_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+      razorpay_signature: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"

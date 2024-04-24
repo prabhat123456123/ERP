@@ -20,7 +20,7 @@ const getStudentFinancial = async (req, res, next) => {
   try {
 
         const adm = await new FinancialManagement().getStudentFinancial(req,res);
-     const count = await new FinancialManagement().countStudent(req,res);
+     const count = await new FinancialManagement().countStudentFinancial(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,
@@ -45,8 +45,10 @@ const addFacultyFinancial = async (req, res, next) => {
 };
 const getFacultyFinancial = async (req, res, next) => {
   try {
+ console.log("??????????????????????????????????????????????????????????????????")
+
         const adm = await new FinancialManagement().getFacultyFinancial(req,res);
-     const count = await new FinancialManagement().countFaculty(req,res);
+     const count = await new FinancialManagement().countFacultyFinancial(req,res);
     const data = JSON.stringify({
       draw: parseInt(req.body.draw),
       recordsFiltered: count.length,

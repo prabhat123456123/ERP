@@ -13,7 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       track_student_id: {
       type: DataTypes.STRING(255),
       allowNull: true
-      },
+    },
+       frequency: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
       transaction_amount: {
       type: DataTypes.STRING(100),
       allowNull: true
@@ -29,7 +33,19 @@ module.exports = (sequelize, DataTypes) => {
     transaction_status: {
       type: DataTypes.ENUM("success", "failure"),
 			 allowNull: true
-      },
+    },
+     razorpay_payment_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+     razorpay_order_id: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+      razorpay_signature: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
     Status: {
       type: DataTypes.ENUM("active", "inactive"),
 			 defaultValue: "active"
