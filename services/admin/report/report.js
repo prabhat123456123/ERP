@@ -6,12 +6,13 @@ const { QueryTypes, Sequelize } = require("sequelize");
 //   casbinEnforcer,
 //   actionLogger,
 // } = require("../../../helper");
-// const {
-//   copyFiles,
-//   getDate,
-//   generateRandomNumber,
-//   addDate,
-// } = require("../../../utils");
+const {
+  copyFiles,
+  getDate,
+  generateRandomNumber,
+  addDate,
+  titletoslug
+} = require("../../../utils");
 // var FormData = require("form-data");
 // let {uploadDocument} = require("../../utils/upload");
 const { v4: uuidv4 } = require("uuid");
@@ -34,16 +35,170 @@ const BASEURL = process.env.BASEURL;
 class ReportManagement {
   constructor() {}
 
-  async getAdmission(body) {
+    async createCertificate(files, fields, req, res) {
+      try {
+        const slug = titletoslug(fields.certificate_name[0])
+        
+        const currentTime = getDate("YYYY-MM-DD hh:mm");
+        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+        const certificateExist = await sequelize.query(
+          "SELECT * FROM certificate WHERE slug =?",
+          {
+            replacements: [slug],
+            type: QueryTypes.SELECT,
+          }
+          );
+        
+
+      if (certificateExist.length > 0) {
+        return false;
+      } else {
+       
+        const uniqueNum = uuidv4();
+        const dir = path.join(
+          __dirname,
+          `../../../public/uploads/${fields.certificate_school_id[0]}/document`
+        );
+
+        let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.certificate_photo[0].originalFilename.toString().replace(/\s/g, "-");
+
+        copyFiles(files.certificate_photo[0].filepath, `${dir}/${fileName}`, dir);
+
+        const url = `${fileName}`;
+
+        const data = await sequelize.query(
+          "INSERT INTO certificate(track_id,track_class_id,track_school_id,slug,certificate_name,certificate_desc,certificate_photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?)",
+          {
+            replacements: [
+              uniqueNum,
+               fields.certificate_class_id[0],
+              fields.certificate_school_id[0],
+              slug,
+              fields.certificate_name[0],
+              fields.certificate_desc[0],
+              url,
+              "School",
+               currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
+        );
+        // await sendEmail("prabhatpandey181291@gmail.com", "test", "lol");
+        return true;
+      }
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  
+   async updateCertificateById(files, fields, req, res) {
+     try {
+         const slug = titletoslug(fields.certificate_name[0])
+        const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+       const currentTime = getDate("YYYY-MM-DD hh:mm");
+      if (files.certificate_photo[0].size>0) {
+        
+         const dir = path.join(
+          __dirname,
+          `../../../public/uploads/${id}/document`
+        );
+
+        let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.certificate_photo[0].originalFilename.toString().replace(/\s/g, "-");
+
+        copyFiles(files.certificate_photo[0].filepath, `${dir}/${fileName}`, dir);
+
+        const url = `${fileName}`;
+
+        const data = await sequelize.query(
+          "UPDATE certificate SET slug=?,certificate_name=?,certificate_desc=?,certificate_photo=?,updated_by=?,updated_at=? WHERE track_id = ?",
+          {
+            replacements: [
+             slug,
+              fields.certificate_name[0],
+              fields.certificate_desc[0],
+              url,
+              "SCHOOL",
+              currentTime,
+                fields.certificate_id[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+      } else {
+        const data = await sequelize.query(
+          "UPDATE certificate SET slug=?,certificate_name=?,certificate_desc=?,updated_by=?,updated_at=? WHERE track_id = ?",
+          {
+            replacements: [
+              slug,
+              fields.certificate_name[0],
+              fields.certificate_desc[0],
+              
+              "SCHOOL",
+              currentTime,
+               fields.certificate_id[0],
+            ],
+            type: QueryTypes.UPDATE,
+          }
+        );
+      
+        return true;
+      
+       
+}
+     
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async getClass(req,res) {
     try {
 //  console.log(sequelize)
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+      
      
        const data = await sequelize.query(
-        `SELECT track_id,name,email,gender FROM student WHERE name like "%${
-          body.search.value
-        }%" OR email like "%${body.search.value}%" LIMIT ${parseInt(
-          body.length
-        )} OFFSET ${parseInt(body.start)}`,
+        `SELECT * FROM class WHERE track_school_id = '${id}'`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  async getCertificate(req,res) {
+    try {
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+     
+       const data = await sequelize.query(
+        `SELECT class.class_name,certificate.track_id,certificate.track_class_id,certificate.track_school_id,certificate.certificate_name,certificate.certificate_desc,certificate.certificate_photo FROM certificate INNER JOIN class ON class.track_id = certificate.track_class_id WHERE certificate.track_school_id = '${id}' AND (certificate_name like "%${
+          req.body.search.value
+        }%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
         {
           type: QueryTypes.SELECT,
         }
@@ -52,16 +207,15 @@ class ReportManagement {
 
       for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
-        data[i]["name"] = `${data[i].name}`;
-        data[i]["email"] = `${data[i].email}`;
-        data[i]["gender"] = `${data[i].gender}`;
+        data[i]["certificate_name"] = `${data[i].certificate_name}`;
+        data[i]["certificate_desc"] = `${data[i].certificate_desc}`;
+        data[i]["class_name"] = `${data[i].class_name}`;
 
         data[i][
           "action"
-        ] = `<button class='btn btn-danger btn-sm delBtn' data-id='${data[i].track_id}' > Delete </button>`;
+        ] = `<button class='btn btn-primary btn-sm editBtn' onclick='editCertificate(${data[i].track_id})' data-id='${data[i].track_id}'> Edit </button> <button class='btn btn-danger btn-sm deleteBtn' onclick='deleteCertificate(${data[i].track_id})' data-id='${data[i].track_id}' > Delete </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewCertificate(${data[i].track_id})' data-id='${data[i].track_id}'> View </button> `;
        
       }
-
 
       return data;
     } catch (error) {
@@ -72,12 +226,13 @@ class ReportManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async countStudent(body) {
+    async countCertificate(req,res) {
     try {
 //  console.log(sequelize)
-     
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+   
        const data = await sequelize.query(
-        `SELECT * FROM student`,
+        `SELECT class.class_name,certificate.track_id,certificate.track_class_id,certificate.track_school_id,certificate.certificate_name,certificate.certificate_desc,certificate.certificate_photo FROM certificate INNER JOIN class ON class.track_id = certificate.track_class_id WHERE certificate.track_school_id = '${id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -96,58 +251,21 @@ class ReportManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   async updateAdmission(body) {
+  
+
+    async deleteCertificate(req,res) {
     try {
- console.log(body)
-      let id = body.pk
 
-      if (body.name === "name") {
-         const data = await sequelize.query(
-        `UPDATE student SET name=? WHERE track_id = '${id}'`,
+      const certificateId = req.body.certificateId;
+   
+     const data = await sequelize.query(
+        `DELETE FROM certificate WHERE track_id = '${certificateId}'`,
         {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
+          type: QueryTypes.DELETE,
+         
         }
         );
           return data;
-      }
-       if (body.name == "email") {
-         const data = await sequelize.query(
-        `UPDATE student SET email=? WHERE track_id = '${id}'`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
-       if (body.name == "gender") {
-         const data = await sequelize.query(
-        `UPDATE student SET gender=? WHERE track_id = '${id}'`,
-        {
-          type: QueryTypes.UPDATE,
-           replacements: [
-            body.value,
-           
-
-          ],
-        }
-         );
-           return data;
-      }
-      
-      
-
-     
-
 
     
     } catch (error) {
@@ -158,6 +276,87 @@ class ReportManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
+  async fetchCertificateById(req,res) {
+    try {
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+   
+      const certificateId = req.body.certificateId;
+     
+     const data = await sequelize.query(
+        `SELECT * FROM certificate WHERE track_id = '${certificateId}'`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+       const classes = await sequelize.query(
+        `SELECT * FROM class WHERE class.track_school_id = '${id}'`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+        );
+          return {data,classes};
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async viewCertificateById(req,res) {
+    try {
+      const certificateId = req.body.certificateId;
+     
+     const data = await sequelize.query(
+        `SELECT class.class_name,certificate.track_id,certificate.track_class_id,certificate.track_school_id,certificate.certificate_name,certificate.certificate_desc,certificate.certificate_photo FROM certificate INNER JOIN class ON class.track_id = certificate.track_class_id WHERE certificate.track_id = '${certificateId}'`,
+        {
+          type: QueryTypes.SELECT,
+         
+        }
+      );
+      
+          return data;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+  
+    async deleteMultipleCertificate(body) {
+    try {
+
+      let ids = body.deleteids_arr;
+      for (let index = 0; index < ids.length; index++) {
+     
+     const data = await sequelize.query(
+        `DELETE FROM certificate WHERE track_id = ('${ids[index]}')`,
+        {
+          type: QueryTypes.DELETE,
+         
+        }
+        );
+        }
+          return true;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+ 
  async fetchStudentByClass(req) {
      try {
        
@@ -233,53 +432,8 @@ console.log("LLLLLLLLLL",studentData);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-    async deleteAdmission(body) {
-    try {
-
-      const id = body.id;
-     const data = await sequelize.query(
-        `DELETE FROM student WHERE track_id ='${id}'`,
-        {
-          type: QueryTypes.DELETE,
-         
-        }
-        );
-          return data;
-
-    
-    } catch (error) {
-      if (error.statusCode) {
-        console.log("hello");
-        throw new ErrorHandler(error.statusCode, error.message);
-      }
-      throw new ErrorHandler(SERVER_ERROR, error);
-    }
-  }
-    async deleteMultiple(body) {
-    try {
-
-      let ids = body.deleteids_arr;
-      for (let index = 0; index < ids.length; index++) {
-     
-     const data = await sequelize.query(
-        `DELETE FROM student WHERE track_id = ('${ids[index]}')`,
-        {
-          type: QueryTypes.DELETE,
-         
-        }
-        );
-        }
-          return true;
-
-    
-    } catch (error) {
-      if (error.statusCode) {
-        console.log("hello");
-        throw new ErrorHandler(error.statusCode, error.message);
-      }
-      throw new ErrorHandler(SERVER_ERROR, error);
-    }
-  }
+   
+   
   
  
 }

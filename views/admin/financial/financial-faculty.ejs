@@ -84,7 +84,7 @@
                             <div class="row">
                                <div class="form-group col-lg-6">
                                     <label>Monthly salery</label>
-                                    <input type="text" id="annual_fee" class="form-control" name="annual_fee" required>
+                                    <input type="text" id="monthly_salery" class="form-control" name="monthly_salery" disabled>
                                 </div>
                                 
                                 <div class="form-group col-lg-6">
@@ -121,7 +121,7 @@
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-plus m-r-5"></i> View Student Details</h3>
+                           <h3><i class="fa fa-plus m-r-5"></i> View Payment Details</h3>
                         </div>
                         <div class="modal-body">
                          
@@ -151,13 +151,51 @@ document.addEventListener("click", function(event) {
     const target = event.target;
      if (target.classList.contains("viewBtn")) {
         viewFacultyPayment(target.dataset.id);
+    } else if (target.classList.contains("addBtn")) {
+        addPayment(target.dataset.id,target.dataset.salary);
     }
 });
      
-      
                  
-                 
-                  
+          function addPayment(facultyPaymentId,salery) {
+    try {
+      $("#addFacultyPayment-lg").modal("toggle");
+      $("#monthly_salery").val(salery);
+//       $.ajax({
+//          url: `/admission/view-student-byid`,
+//          type: "post",
+//          data:{facultyPaymentId:facultyPaymentId},
+//          dataType: "json",
+//          cache: false,
+//          beforeSend: function() {
+//           $('#loader').removeClass('hidden')
+//              },
+//          success: function (data) {
+//     console.log(data);
+//            let formDetails = ``;
+//        if(data.length>0){
+//  for(let i=0; i<data.length; i++){
+//     formDetails += `<table class="table table-bordered table-striped"> 
+//        <tr><td>Salery</td><td>${data[i].exam_name}</td></tr>
+//        <tr><td>Paid Amount</td><td>${data[i].exam_mode}</td></tr>
+//        <tr><td>Date</td><td>${data[i].exam_type}</td></tr>
+//         <tr><td>Status</td><td>${data[i].exam_level}</td></tr>
+//        </table> </br></br></br>`;
+//  }
+//              $("#viewFacultyDiv").html(formDetails);
+//        }else{
+//           $("#viewFacultyDiv").html(`This Candidate has not any Transaction History`);
+//        }
+          
+//         },
+//           complete: function(){
+//                       $('#loader').addClass('hidden')
+//                       },
+//       });
+    } catch (err) {
+      console.error(err);
+    }
+  }        
 
        
 function viewFacultyPayment(facultyPaymentId) {

@@ -37,7 +37,7 @@ const getStudentFinancial = async (req, res, next) => {
 const addFacultyFinancial = async (req, res, next) => {
   try {
       const data = await new FinancialManagement().getClass(req, res);
-     return res.render("admin/financial/financial-student",{nonce: res.locals.nonce,data:data});
+     return res.render("admin/financial/financial-faculty",{nonce: res.locals.nonce,data:data});
 
   } catch (error) {
     next(error);

@@ -101,7 +101,7 @@ class FinancialManagement {
        
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm addBtn' onclick='addPayment(${data[i].track_id})' data-id='${data[i].track_id}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewStudentPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View Payment Detail </button> `;
+        ] = `<button class='btn btn-primary btn-sm addBtn' onclick='addPayment(${data[i].track_id})' data-id='${data[i].track_id}' data-annualfee='${data[i].annual_fee}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewStudentPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View Payment Detail </button> `;
        
       }
 
@@ -169,7 +169,7 @@ class FinancialManagement {
        
         data[i][
           "action"
-        ] = `<button class='btn btn-primary btn-sm  addBtn' onclick='addPayment(${data[i].track_id})' data-id='${data[i].track_id}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFacultyPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View PAyment Details </button> `;
+        ] = `<button class='btn btn-primary btn-sm addBtn' onclick='addPayment(${data[i].track_id},${data[i].salery})'  data-salary='${data[i].salery}' data-id='${data[i].track_id}' > Pay </button> <button class='btn btn-success btn-sm viewBtn' onclick='viewFacultyPayment(${data[i].track_id})' data-id='${data[i].track_id}' > View PAyment Details </button> `;
        
       }
 
