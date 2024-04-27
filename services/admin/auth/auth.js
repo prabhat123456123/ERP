@@ -90,7 +90,7 @@ class AuthManagement {
               url,
            
               currentTime,
-              "INSTITUTE",
+              req.user[0].role
             ],
             type: QueryTypes.INSERT,
           }
@@ -106,8 +106,7 @@ class AuthManagement {
              
                 data[0],
                 `class${i}`,
-           
-                "INSTITUTE",
+               req.user[0].role,
                 currentTime,
               ],
               type: QueryTypes.INSERT,
@@ -222,7 +221,7 @@ console.log('Next date and time:', nextDateTime);
               req.body.razorpay_order_id,
                  req.body.razorpay_signature,
              nextDateTime,
-              "INSTITUTE",
+              req.user[0].role,
               currentTime,
             ],
             type: QueryTypes.INSERT,

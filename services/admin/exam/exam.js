@@ -79,7 +79,7 @@ async createExam(files, fields, req, res) {
               fields.end_date[0],
               fields.total_marks[0],
              
-              "SCHOOL",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -96,7 +96,7 @@ async createExam(files, fields, req, res) {
                 uniqueNum,
             findAllstudentByClass[i].track_id,
                "new",
-                "SCHOOL",
+               req.user[0].role,
                 currentTime,
               ],
               type: QueryTypes.INSERT,
@@ -410,7 +410,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
                req.body.start_date,
                req.body.end_date,
              
-              "Faculty",
+              req.user[0].role,
               currentTime,
                 req.body.exam_id,
             ],
@@ -492,7 +492,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.right_marks[0],
               fields.wrong_marks[0],
           
-              "SCHOOL",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -567,7 +567,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.right_marks[0],
               fields.wrong_marks[0],
              
-              "SCHOOL",
+              req.user[0].role,
               currentTime,
                 fields.questionId[0],
             ],
@@ -591,7 +591,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.right_marks[0],
               fields.wrong_marks[0],
             
-              "SCHOOL",
+            req.user[0].role,
               currentTime,
                fields.questionId[0],
             ],
@@ -857,7 +857,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
                fields["obtained_marks"+i][0],
                fields["passing_marks"+i][0],
              
-              "SCHOOL",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -892,7 +892,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               body.obtained_marks,
               body.passing_marks,
            
-              "SCHOOL",
+              req.user[0].role,
               currentTime,
                 body.subjectId,
             ],

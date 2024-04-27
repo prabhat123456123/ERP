@@ -90,9 +90,7 @@ class FacultyManagement {
               fields.specialize[0],
               genratedPassword,
               url,
-           
-             
-              "Faculty",
+           req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -380,7 +378,7 @@ class FacultyManagement {
               fields.specialize[0],
              
               url,
-              "Faculty",
+              req.user[0].role,
               currentTime,
                 fields.faculty_id[0],
             ],
@@ -410,8 +408,7 @@ class FacultyManagement {
               fields.experience[0],
               fields.qualification[0],
               fields.specialize[0],
-             
-              "Faculty",
+             req.user[0].role,
               currentTime,
                 fields.faculty_id[0],
             ],

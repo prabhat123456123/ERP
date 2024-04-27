@@ -707,7 +707,7 @@ class TestManagement {
               req.body.givenOption,
               "saved",
              marks,
-              "STUDENT",
+             req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -861,7 +861,6 @@ class TestManagement {
         );
         
            return true;
-	
        } else {
           const currentTime = getDate("YYYY-MM-DD hh:mm");
       
@@ -876,7 +875,7 @@ class TestManagement {
              correctAnswers,
               incorrectAnswers,
               obtainedMarks,
-              "STUDENT",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,

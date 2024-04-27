@@ -89,9 +89,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.student_hobbies[0],
               genratedPassword,
               url,
-           
-             
-              "STUDENT",
+           req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -166,7 +164,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
                  record.hobby,
                  genratedPassword,
            
-                 "STUDENT",
+                req.user[0].role,
                  currentTime,
                ],
                type: QueryTypes.INSERT,
@@ -223,9 +221,8 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.student_mother_name[0],
               fields.student_parent_phone[0],
               fields.student_hobbies[0],
-             
               url,
-              "STUDENT",
+             req.user[0].role,
               currentTime,
                 fields.student_id[0],
             ],
@@ -254,7 +251,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
               fields.student_mother_name[0],
               fields.student_parent_phone[0],
               fields.student_hobbies[0],
-              "STUDENT",
+              req.user[0].role,
               currentTime,
                fields.student_id[0],
             ],

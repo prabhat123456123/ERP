@@ -650,7 +650,7 @@ if (req.user[0].role == "faculty") {
                 "1",
                 req.body.latitude,
                 req.body.longitude,
-                "STUDENT",
+                req.user[0].role,
                 currentTime,
               ],
               type: QueryTypes.INSERT,

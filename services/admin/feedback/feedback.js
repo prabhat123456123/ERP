@@ -139,7 +139,7 @@ class FeedbackManagement {
               fields.title[0],
               fields.rate[0],
              
-              "STUDENT",
+             req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -171,7 +171,7 @@ class FeedbackManagement {
               req.body.feedback,
               req.body.rate,
             
-              "STUDENT",
+              req.user[0].role,
               currentTime,
                req.body.feedback_id,
             ],
@@ -209,7 +209,7 @@ class FeedbackManagement {
               req.body.title,
               req.body.rate,
              
-              "STUDENT",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,

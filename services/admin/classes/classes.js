@@ -51,7 +51,7 @@ class ClassesManagement {
               fields.class_name[0],
               fields.annual_fee[0],
             
-              "SCHOOL",
+             req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,

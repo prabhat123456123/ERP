@@ -150,7 +150,7 @@ class ComplaintManagement {
               fields.description[0],
               fields.faculty_id[0],
             
-              "STUDENT",
+             req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -179,7 +179,7 @@ class ComplaintManagement {
             replacements: [
               req.body.complaint,
             
-              "STUDENT",
+             req.user[0].role,
               currentTime,
                req.body.complaint_id,
             ],

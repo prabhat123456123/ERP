@@ -49,7 +49,7 @@ class SubjectManagement {
              fields.classesId[0],
                fields.subject_name[0],
              
-              "SCHOOL",
+              req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -80,7 +80,7 @@ class SubjectManagement {
               body.classesId,
               body.subject_name,
            
-              "SCHOOL",
+              req.user[0].role,
               currentTime,
                 body.subjectId,
             ],

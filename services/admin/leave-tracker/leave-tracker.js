@@ -50,9 +50,8 @@ class LeaveTrackerManagement {
             req.body.studentId,
               req.body.reason,
               req.body.from_date,
-              req.body.to_date,
-              
-              "STUDENT",
+            req.body.to_date,
+            req.user[0].role,
               currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -85,7 +84,7 @@ class LeaveTrackerManagement {
               req.body.from_date,
               req.body.to_date,
             
-              "STUDENT",
+             req.user[0].role,
               currentTime,
                req.body.LeaveId,
             ],
@@ -409,7 +408,7 @@ console.log(req.body);
               req.body.from_date,
               req.body.to_date,
               
-              "Faculty",
+             req.user[0].role,
                currentTime,
             ],
             type: QueryTypes.INSERT,
@@ -441,7 +440,7 @@ console.log(req.body);
               req.body.from_date,
               req.body.to_date,
             
-              "Faculty",
+              req.user[0].role,
               currentTime,
                req.body.leaveId,
             ],
