@@ -18,51 +18,7 @@
         <link href="/assets/dist/css/stylecrm.css" rel="stylesheet" type="text/css"/>
         <!-- Theme style rtl -->
         <!--<link href="assets/dist/css/stylecrm-rtl.css" rel="stylesheet" type="text/css"/>-->
-        <style>
-          	body {
-  background: #ececec;
-}
-.lds-dual-ring.hidden { 
-display: none;
-}
-.lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 20% auto;
-  border-radius: 50%;
-  border: 6px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0,0,0,.8);
-    z-index: 999;
-    opacity: 1;
-    transition: all 0.5s;
-} 
-        </style>
+        
     </head>
     <body>
       <div id="loader" class="lds-dual-ring hidden overlay"></div>
@@ -102,6 +58,7 @@ display: none;
                               </div>
                              
                     <div class="panel-body" id="school-tab">
+                       <%- include('../partials/loader') %>
                         <form action="http://thememinister.com/crm/index.html" id="schoolForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
@@ -148,6 +105,7 @@ display: none;
                         </form>
                         </div>
                          <div class="panel-body" id="student-tab">
+                           <%- include('../partials/loader') %>
                        <form action="" id="studentForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
@@ -170,14 +128,15 @@ display: none;
                                     <label>School</label>
                                    <select name="student_school_id" id="student_school_id" class="form-control" required>
                                     <option value="">Please Select</option>
-                                    <option value="1">School1</option>
+                                   <% for(let i = 0; i < data.length; i++){%> 
+                                    <option value="<%= data[i].track_id %>"><%= data[i].school_name %></option>
+                                       <% } %>
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
                                     <label>Class</label>
                                    <select name="student_class_id" id="student_class_id" class="form-control" required>
-                                    <option value="">Please Select</option>
-                                    <option value="1">class1</option>
+                                   
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
@@ -224,6 +183,7 @@ display: none;
                         </form>
                         </div>
                          <div class="panel-body" id="faculty-tab">
+                           <%- include('../partials/loader') %>
                            <form action="http://thememinister.com/crm/index.html" id="facultyForm" novalidate>
                             <div class="row">
                                 <div class="form-group col-lg-6">
@@ -242,7 +202,9 @@ display: none;
                                     <label>School</label>
                                    <select name="school_id" id="school_id" class="form-control" required>
                                     <option value="">Please Select</option>
-                                    <option value="1">School1</option>
+                                     <% for(let i = 0; i < data.length; i++){%> 
+                                    <option value="<%= data[i].track_id %>"><%= data[i].school_name %></option>
+                                       <% } %>
                                    </select>
                                 </div>
                                     
@@ -472,11 +434,11 @@ $('#studentaddresscheck').click(function(){
             $("#studentForm").on("submit", async e => {
 							e.preventDefault();
 							try {
-								alert("pop")
+							
 									const formData = new FormData($(`#${e.target.id}`)[0]);
 									e.preventDefault();
 									$.ajax({
-										url: `/admission/create-student`,
+										url: `/create-student-outside`,
 										type: "post",
 										processData: false,
 										contentType: false,
@@ -531,7 +493,7 @@ $('#studentaddresscheck').click(function(){
 									const formData = new FormData($(`#${e.target.id}`)[0]);
 									e.preventDefault();
 									$.ajax({
-										url: `/faculty/create-faculty`,
+										url: `/create-faculty-outside`,
 										type: "post",
 										processData: false,
 										contentType: false,
@@ -554,9 +516,7 @@ $('#studentaddresscheck').click(function(){
                     showConfirmButton: false,
                     timer: 2000,
                   });
-                
 
-                
                 } else {
                     Swal.fire({
                     icon: "error",
@@ -572,14 +532,46 @@ $('#studentaddresscheck').click(function(){
                       },
 									});
 
-								
-
 							} catch (e) {
 								console.error(e)
 							}
 						});
 
     })
-   
+   $(document).on('change','#student_school_id', function () {
+   var id = $(this).val(); 
+  $.ajax({
+         url: `/fetch-class-by-school`,
+         type: "post",
+         data:{schoolId:id},
+         dataType: "json",
+         cache: false,
+          beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
+         success: function (data) {
+            console.log(data);
+         let option;
+         if(data.length>0){
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].track_id}">${data[i].class_name}</option>`
+        }
+             $("#student_class_id").html("");
+             
+             $("#student_class_id").html(`<option value="">Please Select.</option>`);
+            $("#student_class_id").append(option);
+          
+      }else{
+         $("#student_class_id").html("");
+             
+             $("#student_class_id").html(`<option value="">No date Found.</option>`);
+      }
+          
+        },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+})
 
 </script>

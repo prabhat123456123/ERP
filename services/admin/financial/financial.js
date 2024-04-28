@@ -79,7 +79,7 @@ class FinancialManagement {
       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
       let whereClause = "";
       if (req.user[0].role == "student") {
-        whereClause = ` student.track_id = '${req.user[0].track_id}'`
+        whereClause = ` student.track_id = '${req.user[0].track_id}' AND `
       }
        const data = await sequelize.query(
         `SELECT student.track_id,student.track_class_id,student.track_school_id,student.name,class.annual_fee,class.class_name FROM student INNER JOIN class ON class.track_id = student.track_class_id LEFT JOIN student_payment ON student_payment.track_student_id = student.track_id WHERE student.track_school_id = '${id}' AND ` + whereClause + `(name like "%${
@@ -130,10 +130,6 @@ class FinancialManagement {
         }
       );
       
-
-     
-
-
       return data;
     } catch (error) {
       if (error.statusCode) {

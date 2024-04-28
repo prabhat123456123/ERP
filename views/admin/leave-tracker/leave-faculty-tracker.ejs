@@ -38,25 +38,26 @@
                         </div>
                         <div class="panel-body">
                             <%- include('../../partials/message') %>
-                            <% if(user[0].role==="school"){ %>
+                            
 					 <div class="row"> 
  <div class="col-md-6 text-left">
+        <% if(user[0].role==="school" || user[0].role==="faculty" || user[0].role==="student"){ %>
 								 <input type="checkbox" class='checkall' id='checkall'> &nbsp;&nbsp; <input type="button" class="btn-sm btn-danger" id="multDel"  value='Check All & Delete' >
-
+ <% } %>
                
 				
             </div>
            
             <div class="col-md-6 text-right">
- 
+ <% if(user[0].role==="student"){ %>
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addLeave-lg"><i class="fa fa-plus"></i>Apply For Leave</a>  
-                                 
+                              <% } %>    
                              
             </div>
 			<br>
         </div>
 
-        <% } %>
+       
 		<br>
 
 					<div class="table-responsive">

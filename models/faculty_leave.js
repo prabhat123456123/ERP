@@ -18,13 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: true
       },
-      description: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-      },
-    
-    
-    
+     
   from_date: {
       type: DataTypes.DATE,
       allowNull: true
@@ -35,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       leave_status: {
       type: DataTypes.ENUM("Approved", "Rejected","Pending"),
-      allowNull: true
+      defaultValue: "Pending"
       },
      
      

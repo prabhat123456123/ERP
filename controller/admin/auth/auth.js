@@ -79,7 +79,8 @@ const createOrder = async (req, res, next) => {
 
 const register = async (req, res, next) => {
   try {
-    return res.render("admin/register",{nonce: res.locals.nonce});
+     const data = await new AuthManagement().getAllSchool(req,res);
+    return res.render("admin/register",{nonce: res.locals.nonce,data:data});
   } catch (error) {
     next(error);
   }
@@ -121,6 +122,17 @@ const createSchool = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+const fetchClassBySchool = async (req, res, next) => {
+  try {
+    const data = await new AuthManagement().fetchClassBySchool(req,res);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
 };
 const postLogin = async (req, res, next) => {
   try {
@@ -166,8 +178,39 @@ const logout = async (req, res) => {
   res.redirect("/");
 };
 
-
+const createStudentOutside = async (req, res, next) => {
+  try {
+     const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new AuthManagement().createStudentOutside(
+      files,
+      fields,
+      req,
+      res
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+const createFacultyOutside = async (req, res, next) => {
+  try {
+    const { files, fields } = await formidableUpload(req);
+    // console.log(fields)
+    // console.log(files)
+    const data = await new AuthManagement().createFacultyOutside(
+      files,
+      fields,
+      req,
+      res
+    );
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
-  login,register,createSchool,postLogin,logout,dashboard,getDashboardDataBySchool,paymentSuccess,payment,submitPayment,createOrder
+  login,register,createSchool,postLogin,logout,dashboard,getDashboardDataBySchool,paymentSuccess,payment,submitPayment,createOrder,fetchClassBySchool,createStudentOutside,createFacultyOutside
  
 };

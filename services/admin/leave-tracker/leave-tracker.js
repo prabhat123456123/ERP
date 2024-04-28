@@ -27,6 +27,7 @@ const { Console, log } = require("console");
 // const { Review: ReviewFc } = require("./fc");
 const axios = require("axios");
 const fs = require("fs");
+const console = require("console");
 // const pdf = require("pdf-creator-node");
 
 // const { SERVER_ERROR, BAD_GATEWAY } = statusCodes;
@@ -39,14 +40,12 @@ class LeaveTrackerManagement {
     async createStudentLeave(req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-
-      
-      
+        const uniqueNum = uuidv4();
       const data = await sequelize.query(
-        "INSERT INTO student_leave(track_student_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
+        "INSERT INTO student_leave(track_id,track_student_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?,?)",
         {
           replacements: [
-            
+            uniqueNum,
             req.body.studentId,
               req.body.reason,
               req.body.from_date,
@@ -124,7 +123,7 @@ class LeaveTrackerManagement {
           type: QueryTypes.SELECT,
         }
       );
-    
+   
 
       for (let i = 0; i < data.length; i++) {
         data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
@@ -186,7 +185,7 @@ class LeaveTrackerManagement {
   }
    async updateStudentLeave(body) {
     try {
-
+console.log(">>>>>>>>>>>>>>>>>>>>",body);
       let id = body.pk;
 
       if (body.name === "reason") {
@@ -397,12 +396,13 @@ class LeaveTrackerManagement {
   async createFacultyLeave(req, res) {
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
-console.log(req.body);
+
+        const uniqueNum = uuidv4();
         const data = await sequelize.query(
-          "INSERT INTO faculty_leave(track_faculty_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?)",
+          "INSERT INTO faculty_leave(track_id,track_faculty_id,reason,from_date,to_date,created_by,created_at) VALUES (?,?,?,?,?,?,?)",
           {
             replacements: [
-             
+             uniqueNum,
              req.body.facultyId,
               req.body.reason,
               req.body.from_date,

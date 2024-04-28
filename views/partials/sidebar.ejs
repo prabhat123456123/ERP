@@ -198,6 +198,7 @@
                      </a>
                   </li>
                   <% } %>
+                    <% if(user[0].role == "school" || user[0].role == "faculty"){ %> 
                    <li class="treeview">
                      <a href="#">
                      <i class="fa fa-shopping-basket"></i><span>Document Module</span>
@@ -208,10 +209,9 @@
                      <ul class="treeview-menu">
                         
                         <li><a href="/report/certificate-render">Certificate</a></li>
-                       
-                        
                      </ul>
                   </li>
+                   <% } %>
                    <li>
                      <a href="/download/view-download">
                      <i class="fa fa-file-text"></i> <span>Download Center</span>

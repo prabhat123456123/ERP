@@ -31,8 +31,151 @@ const BASEURL = process.env.BASEURL;
 
 class AuthManagement {
   constructor() {}
+async createStudentOutside(files, fields, req, res) {
+    try {
+      const currentTime = getDate("YYYY-MM-DD hh:mm");
+      const userExist = await sequelize.query(
+        "SELECT * FROM student WHERE email =? OR phone=?",
+        {
+          replacements: [fields.student_email[0], fields.student_phone[0]],
+          type: QueryTypes.SELECT,
+        }
+      );
 
+      if (userExist.length > 0) {
+        return false;
+      } else {
+       
+       
+        const password = await generateRandomPassword();
+        const genratedPassword = await hashPassword(password);
 
+        const uniqueNum = uuidv4();
+        const dir = path.join(
+          __dirname,
+          `../../../public/uploads/student/${fields.student_email[0]}`
+        );
+
+        let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.student_photo[0].originalFilename.toString().replace(/\s/g, "-");
+
+        copyFiles(files.student_photo[0].filepath, `${dir}/${fileName}`, dir);
+
+        const url = `${fileName}`;
+
+        const data = await sequelize.query(
+          "INSERT INTO student(track_id,role,name,email,dob,gender,phone,track_class_id,track_school_id,address,fathers_name,mothers_name,parent_phone,hobby,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          {
+            replacements: [
+             
+              uniqueNum,
+              "student",
+              fields.student_name[0],
+              fields.student_email[0],
+              fields.student_dob[0],
+              fields.student_gender[0],
+              fields.student_phone[0],
+              fields.student_class_id[0],
+              fields.student_school_id[0],
+              fields.student_address[0],
+              fields.student_father_name[0],
+              fields.student_mother_name[0],
+              fields.student_parent_phone[0],
+              fields.student_hobbies[0],
+              genratedPassword,
+              url,
+          "STUDENT",
+               currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
+        );
+        // await sendEmail("prabhatpandey181291@gmail.com", "test", "lol");
+        return true;
+      }
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+ async createFacultyOutside(files, fields, req, res) {
+    try {
+
+      const currentTime = getDate("YYYY-MM-DD hh:mm");
+
+      const userExist = await sequelize.query(
+        "SELECT * FROM faculty WHERE email =? OR phone=?",
+        {
+          replacements: [fields.email[0], fields.phone[0]],
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      if (userExist.length > 0) {
+        return false;
+      } else {
+        
+        const password = await generateRandomPassword();
+        const genratedPassword = await hashPassword(password);
+        
+        const uniqueNum = uuidv4();
+        const dir = path.join(
+          __dirname,
+          `../../../public/uploads/faculty/${fields.email[0]}`
+          );
+          
+          let fileName =
+          new Date().toISOString().replace(/:/g, "-") +
+          "-" +
+          files.photo[0].originalFilename.toString().replace(/\s/g, "-");
+          
+          copyFiles(files.photo[0].filepath, `${dir}/${fileName}`, dir);
+          
+          const url = `${fileName}`;
+          
+         const data = await sequelize.query(
+          "INSERT INTO faculty(track_id,role,track_school_id,name,mothers_name,fathers_name,email,dob,phone,address,gender,experience,qualification,specialize,password,photo,created_by,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          {
+            replacements: [ 
+             
+              uniqueNum,
+              "faculty",
+              fields.school_id[0],
+              fields.name[0],
+              fields.mother_name[0],
+              fields.father_name[0],
+              fields.email[0],
+              fields.dob[0],
+              fields.phone[0],
+              fields.address[0],
+              fields.gender[0],
+              fields.experience[0],
+              fields.qualification[0],
+              fields.specialize[0],
+              genratedPassword,
+              url,
+           "Faculty",
+               currentTime,
+            ],
+            type: QueryTypes.INSERT,
+          }
+        );
+      
+        return true;
+      }
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
     async createSchool(files, fields, req, res) {
       try {
         const classes = fields.number_class[0];
@@ -90,29 +233,29 @@ class AuthManagement {
               url,
            
               currentTime,
-              req.user[0].role
+              "SCHOOL"
             ],
             type: QueryTypes.INSERT,
           }
         );
-        console.log(data);
-        for (let i = lower; i <= higher; i++) {
-          await sequelize.query(
-            "INSERT INTO class(track_id,track_school_id,class_name,created_by,created_at) VALUES (?,?,?,?,?)",
-            {
-              replacements: [
+        // console.log(data);
+        // for (let i = lower; i <= higher; i++) {
+        //   await sequelize.query(
+        //     "INSERT INTO class(track_id,track_school_id,class_name,created_by,created_at) VALUES (?,?,?,?,?)",
+        //     {
+        //       replacements: [
              
-             uniqueNum,
+        //      uniqueNum,
              
-                data[0],
-                `class${i}`,
-               req.user[0].role,
-                currentTime,
-              ],
-              type: QueryTypes.INSERT,
-            }
-          );
-        }
+        //         data[0],
+        //         `class${i}`,
+        //        req.user[0].role,
+        //         currentTime,
+        //       ],
+        //       type: QueryTypes.INSERT,
+        //     }
+        //   );
+        // }
         return true;
       }
     } catch (error) {
@@ -123,7 +266,30 @@ class AuthManagement {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-   
+    async fetchClassBySchool(req,res) {
+     try {
+       
+       const schoolId = req.body.schoolId;
+      
+       const studentData = await sequelize.query(
+         `SELECT * FROM class WHERE track_school_id = '${schoolId}'`,
+         {
+           type: QueryTypes.SELECT,
+           
+          }
+          );
+        
+          return studentData;
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
  async getSchool( username) {
     try {
       const userData = await sequelize.query(
@@ -397,6 +563,23 @@ console.log('Next date and time:', nextDateTime);
       );
 
       return userData;
+    } catch (error) {
+      console.error(error);
+      dashLogger.error(`Error : ${error}`);
+    }
+  }
+
+  async getAllSchool( req,res) {
+    try {
+      const schoolData = await sequelize.query(
+        "SELECT * FROM `school`",
+        {
+          type: QueryTypes.SELECT,
+          replacements: [],
+        }
+      );
+
+      return schoolData;
     } catch (error) {
       console.error(error);
       dashLogger.error(`Error : ${error}`);
