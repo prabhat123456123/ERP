@@ -351,10 +351,10 @@ function viewQuestion(questionId) {
          cache: false,
          success: function (data) {
     console.log(data);
-    let img1 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_one}" width="100px">`;
-    let img2 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_two}" width="100px">`;
-    let img3 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_three}" width="100px">`;
-    let img4 = `<img src="/uploads/exam/${data[0].id}/${data[0].option_image_four}" width="100px">`;
+    let img1 = `<img src="/uploads/exam/${data[0].track_exam_id}/${data[0].option_image_one}" width="100px">`;
+    let img2 = `<img src="/uploads/exam/${data[0].track_exam_id}/${data[0].option_image_two}" width="100px">`;
+    let img3 = `<img src="/uploads/exam/${data[0].track_exam_id}/${data[0].option_image_three}" width="100px">`;
+    let img4 = `<img src="/uploads/exam/${data[0].track_exam_id}/${data[0].option_image_four}" width="100px">`;
             let formDetails = ``;
             formDetails += `<table class="table table-bordered table-striped"> 
                

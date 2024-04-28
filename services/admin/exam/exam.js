@@ -445,25 +445,25 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
           `../../../public/uploads/exam/${fields.exam_id[0]}`
         );
 
-        let optionImage1 =
+        let optionImage1 =files.option_image_one[0].originalFilename?
           new Date().toISOString().replace(/:/g, "-") +
           "-" +
-        files.option_image_one[0].originalFilename.toString().replace(/\s/g, "-");
+        files.option_image_one[0].originalFilename.toString().replace(/\s/g, "-"):null;
       
-       let optionImage2 =
+       let optionImage2 =files.option_image_two[0].originalFilename?
           new Date().toISOString().replace(/:/g, "-") +
           "-" +
-        files.option_image_two[0].originalFilename.toString().replace(/\s/g, "-");
+        files.option_image_two[0].originalFilename.toString().replace(/\s/g, "-"):null;
       
-       let optionImage3 =
+       let optionImage3 =files.option_image_three[0].originalFilename?
           new Date().toISOString().replace(/:/g, "-") +
           "-" +
-        files.option_image_three[0].originalFilename.toString().replace(/\s/g, "-");
+        files.option_image_three[0].originalFilename.toString().replace(/\s/g, "-"):null;
       
-       let optionImage4 =
+       let optionImage4 =files.option_image_four[0].originalFilename?
           new Date().toISOString().replace(/:/g, "-") +
           "-" +
-          files.option_image_four[0].originalFilename.toString().replace(/\s/g, "-");
+          files.option_image_four[0].originalFilename.toString().replace(/\s/g, "-"):null;
    
 
         copyFiles(files.option_image_one[0].filepath, `${dir}/${optionImage1}`, dir);
