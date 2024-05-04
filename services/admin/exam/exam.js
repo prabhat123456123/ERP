@@ -41,13 +41,7 @@ async createExam(files, fields, req, res) {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
   
     const slug = titletoslug(fields.exam_name[0])
-     const findAllstudentByClass = await sequelize.query(
-        "SELECT * FROM student WHERE track_class_id=?",
-        {
-          replacements: [fields.class_id[0]],
-          type: QueryTypes.SELECT,
-        }
-      );
+   
       const userExist = await sequelize.query(
         "SELECT * FROM exam WHERE slug=?",
         {
@@ -86,23 +80,7 @@ async createExam(files, fields, req, res) {
           }
         );
 
-        for (let i = 0; i < findAllstudentByClass.length; i++) {
-          await sequelize.query(
-            "INSERT INTO exam_status(track_id,track_exam_id,track_student_id,exam_status,created_by,created_at) VALUES (?,?,?,?,?,?)",
-            {
-              replacements: [
-             
-                uuidv4(),
-                uniqueNum,
-            findAllstudentByClass[i].track_id,
-               "new",
-               req.user[0].role,
-                currentTime,
-              ],
-              type: QueryTypes.INSERT,
-            }
-          );
-        }
+       
         return true;
       }
     } catch (error) {
@@ -808,7 +786,126 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
- 
+   async assignExam(req,res) {
+    try {
+      const id = req.user[0].role == "school" ? req.user[0].track_id : req.user[0].track_school_id
+        const currentTime = getDate("YYYY-MM-DD hh:mm");
+      const examData = req.body.exam;
+      let data;
+      if (req.body.schoolValue == "" && req.body.classValue != "") {
+         data = await sequelize.query(
+        `SELECT * FROM student WHERE track_school_id = '${id}' AND track_class_id = '${req.body.classId}'`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+         
+      } else if (req.body.schoolValue != "" && req.body.classValue == "") {
+          data = await sequelize.query(
+        `SELECT * FROM student WHERE track_school_id = '${id}'`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      } else {
+          data = await sequelize.query(
+        `SELECT * FROM student WHERE track_school_id = '${id}' AND track_id = '${req.body.studentId}'`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      }
+      
+
+       const bulkInsertValues = [];
+
+// // Assuming req.user[0].role and currentTime are already defined
+// for (let i = 0; i < examData.length; i++) {
+//   for (let j = 0; j < data.length; j++) {
+//        // Check if the data already exists in the database
+//         const existingData = await sequelize.query(
+//             "SELECT * FROM exam_status WHERE track_exam_id = ? AND track_student_id = ?",
+//             {
+//                 replacements: [examData[i], data[j].track_id],
+//                 type: QueryTypes.SELECT,
+//             }
+//         );
+
+//         // If data doesn't exist, add it to the bulk insert array
+//     if (existingData.length === 0) {
+//       bulkInsertValues.push([
+//         uuidv4(),
+//         examData[i],
+//         data[j].track_id,
+//         "new",
+//         req.user[0].role,
+//         currentTime
+//       ]);
+//     }
+//     }
+//       }
+      
+// await sequelize.query(
+//     "INSERT INTO exam_status(track_id,track_exam_id,track_student_id,exam_status,created_by,created_at) VALUES ?",
+//     {
+//         replacements: [bulkInsertValues],
+//         type: QueryTypes.INSERT,
+//     }
+// );
+      
+      // Construct an array of arrays containing track_certificate_id and track_student_id for the new data
+const newDataValues = examData.map((certId, i) => data.map(track => [certId, track.track_id]));
+
+// Flatten the array of arrays into a single array of [track_certificate_id, track_student_id] pairs
+const flattenedNewData = newDataValues.flat();
+
+// Retrieve existing combinations of track_certificate_id and track_student_id from the database
+const existingData = await sequelize.query(
+    "SELECT track_exam_id, track_student_id FROM exam_status WHERE track_exam_id IN (?) AND track_student_id IN (?)",
+    {
+        replacements: [examData, data.map(track => track.track_id)],
+        type: QueryTypes.SELECT,
+    }
+);
+
+// Convert the existing data into a Set for faster lookup
+const existingSet = new Set(existingData.map(({ track_exam_id, track_student_id }) => `${track_exam_id}-${track_student_id}`));
+
+// Iterate through the new data and check if each combination already exists
+flattenedNewData.forEach(([track_exam_id, track_student_id]) => {
+    // If the combination doesn't exist, add it to the bulk insert array
+    if (!existingSet.has(`${track_exam_id}-${track_student_id}`)) {
+        bulkInsertValues.push([
+             uuidv4(),
+            track_exam_id,
+          track_student_id,
+            "new",
+            req.user[0].role,
+            currentTime
+        ]);
+    }
+});
+
+// Perform bulk insertion using raw SQL query
+await sequelize.query(
+    "INSERT INTO exam_status(track_id,track_exam_id,track_student_id,exam_status,created_by,created_at) VALUES ?",
+    {
+        replacements: [bulkInsertValues],
+        type: QueryTypes.INSERT,
+    }
+);
+
+         
+      
+      return true;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
  
     async deleteMultipleQuestion(body) {
     try {
@@ -840,17 +937,15 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
     try {
       const currentTime = getDate("YYYY-MM-DD hh:mm");
       const dataNum = fields.lenghtMarks[0].split(",");
-  
-      
-      console.log(dataNum);
+   
       for (let i = 1; i <= dataNum.length; i++) {
 
        const data = await sequelize.query(
-          "INSERT INTO subject_marks(track_student_id,track_subject_id,total_marks,obtained_marks,passing_marks,created_by,created_at) VALUES (?,?,?,?,?,?,?)",
+          "INSERT INTO subject_marks(track_id,track_student_id,track_subject_id,total_marks,obtained_marks,passing_marks,created_by,created_at) VALUES (?,?,?,?,?,?,?,?)",
           {
             replacements: [
               
-            
+           uuidv4(),
                fields.studentId[0],
               fields["subject"+i][0],
                fields["total_marks"+i][0],
@@ -876,25 +971,23 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
     }
   }
   
-   async updateSubjectMarksById(body) {
+   async updateSubjectMarksById(req,res) {
      try {
       
        const currentTime = getDate("YYYY-MM-DD hh:mm");
     
         const data = await sequelize.query(
-          "UPDATE subject_marks SET student_id=?,subject_id=?,total_marks=?,obtained_marks=?,passing_marks=?,updated_by=?,updated_at=? WHERE track_id = ?",
+          "UPDATE subject_marks SET track_student_id=?,track_subject_id=?,total_marks=?,obtained_marks=?,passing_marks=?,updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
-             
-              body.studentId1,
-              body.subject2,
-              body.total_marks,
-              body.obtained_marks,
-              body.passing_marks,
-           
+              req.body.studentId1,
+              req.body.subject2,
+              req.body.total_marks,
+              req.body.obtained_marks,
+              req.body.passing_marks,
               req.user[0].role,
               currentTime,
-                body.subjectId,
+                req.body.subjectId,
             ],
             type: QueryTypes.UPDATE,
           }

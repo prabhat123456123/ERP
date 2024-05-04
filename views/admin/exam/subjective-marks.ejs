@@ -311,6 +311,16 @@
    <%- include('../../partials/footer-script') %>
 
    <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
+   document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("editBtn")) {
+        editSubjectMarks(target.dataset.id);
+    } else if (target.classList.contains("deleteBtn")) {
+        deleteSubjectMarks(target.dataset.id);
+    } else if (target.classList.contains("viewBtn")) {
+        viewSubjectMarks(target.dataset.id);
+    }
+});
 $('select[name="classesId"]').on('change', function () {
         	var id = $(this).val(); 
   $.ajax({
@@ -375,18 +385,35 @@ $(document).on('change','#classes', function () {
     files.push();
     lenghtMarks.push(1);
     $("#addMarks").click(function () {
-   
+   	var id = $('#classesId').val(); 
+  $.ajax({
+         url: `/exam/fetch-studentAndSubject-by-class`,
+         type: "post",
+         data:{classId:id},
+         dataType: "json",
+         cache: false,
+         success: function (data) {
+        
+  let optionSubject;
+        for(let i=0; i<data.subjectData.length; i++){
+           optionSubject += `<option value="${data.subjectData[i].track_id}">${data.subjectData[i].subject_name}</option>`
+        }           
+          $(`#subject${i}`).html("");
+           
+              $(`#subject${i}`).html(`<option value="">Please Select.</option>`);
+           
+            $(`#subject${i}`).append(optionSubject);
+          
+          
+        },
+      });
          
  i++;
       $(
         "#subMarks"
       ).append(`<tr id="row${i}"><td><select  class="form-control" name="subject${i}" id="subject${i}">
                         <option value="">Choose..</option>
-                          <% for(let i=0; i<data.length; i++){ %>
-
-                                       <option value="<%= data[i].track_id  %>"><%= data[i].class_name  %></option>
-
-                                        <% } %>
+                        
                        
                       </select></td><td><input
                       name="total_marks${i}"
@@ -787,37 +814,11 @@ var dataTable = $('#sample_data').DataTable({
         { data: "pass" },
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 1)
-				{
-					$(this).attr('data-name', 'name');
-					$(this).attr('class', 'name');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				
-			});
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.name',
-		url:'/subject/update-subject-marks',
-		title:'Name',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
 		
 	});
+
+	
+   
 
 });	
 setTimeout(function () {

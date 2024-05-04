@@ -514,37 +514,10 @@ var dataTable = $('#sample_data').DataTable({
         { data: "subject" },
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 1)
-				{
-					$(this).attr('data-name', 'name');
-					$(this).attr('class', 'name');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				
-			});
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.name',
-		url:'/subject/update-subject',
-		title:'Name',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
 		
 	});
+
+
 
 });	
 setTimeout(function () {

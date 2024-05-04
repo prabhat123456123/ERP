@@ -30,6 +30,7 @@ db.Student = require("./student")(sequelize, DataTypes, Model);
 db.Subject = require("./subject")(sequelize, DataTypes, Model);
 db.Subjectmarks = require("./subject_marks")(sequelize, DataTypes, Model);
 db.Certificate = require("./certificate")(sequelize, DataTypes, Model);
+db.Certificatestatus = require("./certificate_status")(sequelize, DataTypes, Model);
 
 db.sequelize
   .sync({logging:false,force:false})

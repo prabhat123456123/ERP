@@ -7,7 +7,7 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
  
 const {
   viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion
- ,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass
+ ,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass ,assignExam
 } = require("../../../controller/admin");
 
 
@@ -45,6 +45,7 @@ router.post("/delete-subject-marks",isAuthenticatedUser(), deleteSubjectMarks);
 router.post("/delete-multiple-subject-marks",isAuthenticatedUser(), deleteMultipleSubjectMarks);
 router.post("/create-subject-marks", isAuthenticatedUser(),createSubjectMarks);
 
+router.post("/assign-exam", isAuthenticatedUser(),assignExam);
 
 
 module.exports = router;

@@ -77,7 +77,7 @@ const deleteStudentMultipleLeave = async (req, res, next) => {
 
 const fetchStudentLeaveById = async (req, res, next) => {
   try {
-    const data = await new LeaveTrackerManagement().fetchStudentLeaveById(req.body);
+    const data = await new LeaveTrackerManagement().fetchStudentLeaveById(req,res);
    
     //  console.log(data)
     return res.send(data);
@@ -182,7 +182,7 @@ const deleteFacultyMultipleLeave = async (req, res, next) => {
 
 const fetchFacultyLeaveById = async (req, res, next) => {
   try {
-    const data = await new LeaveTrackerManagement().fetchFacultyLeaveById(req.body);
+    const data = await new LeaveTrackerManagement().fetchFacultyLeaveById(req,res);
    
     //  console.log(data)
     return res.send(data);

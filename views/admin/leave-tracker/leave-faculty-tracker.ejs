@@ -314,16 +314,23 @@ function viewLeaveTracker(leaveId) {
 								   <div class="form-group col-lg-6">
                                     <label>To Date</label>
                                     <input type="date" value="${data[0].to_date}" class="form-control" name="to_date">
-                                </div>
-                               
-                            </div>
-                            <div align="center">
-                               <input type="submit" class="btn btn-success"
-															value="Update">
-															
-														
-                            </div>
-                        </form>`;
+                                </div>`;
+                                 if (data[0].role === "school" || data[0].role === "faculty") {
+            formDetails += `<div class="form-group col-lg-6">
+                                <label>Leave Status</label>
+                                <select name="leave_status"  class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="Approved" ${data[0].leave_status == "Approved" ? 'selected' : ""}>Approved</option>
+                                    <option value="Rejected" ${data[0].leave_status == "Rejected" ? 'selected' : ""}>Rejected</option>
+                                    <option value="Pending" ${data[0].leave_status == "Pending" ? 'selected' : ""}>Pending</option>
+                                </select>
+                            </div>`;
+        }
+        formDetails += `</div>
+                        <div align="center">
+                            <input type="submit" class="btn btn-success" value="Update">
+                        </div>
+                    </form>`;
             $("#editLeaveDiv").html(formDetails);
           
         },
@@ -512,107 +519,14 @@ var dataTable = $('#sample_data').DataTable({
         { data: "leave_status" },
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 2)
-				{
-					$(this).attr('data-name', 'reason');
-					$(this).attr('class', 'reason');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 3)
-				{
-					$(this).attr('data-name', 'from_date');
-					$(this).attr('class', 'from_date');
-					$(this).attr('data-type', 'date');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 4)
-				{
-					$(this).attr('data-name', 'to_date');
-					$(this).attr('class', 'to_date');
-					$(this).attr('data-type', 'date');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 5)
-				{
-					$(this).attr('data-name', 'leave_status');
-					$(this).attr('class', 'leave_status');
-					$(this).attr('data-type', 'select');
-					$(this).attr('data-pk', data.id);
-				}
-			});
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.reason',
-		url:'/leave/update-faculty-leave',
-		title:'Reason',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
 		
 	});
 
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.from_date',
-		url:'/leave/update-faculty-leave',
-		title:'From Date',
-		type:'POST',
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
 
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.to_date',
-		url:'/leave/update-faculty-leave',
-		title:'To Date',
-		type:'POST',
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.leave_status',
-		url:'/leave/update-faculty-leave',
-		title:'Leave',
-		type:'POST',
-		datatype:'json',
-		source:[{value: "Approved", text: "Approved"}, {value: "Pending", text: "Pending"}, {value: "Rejected", text: "Rejected"}],
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
-  
+
+
+
+
 	
 });	
 setTimeout(function () {

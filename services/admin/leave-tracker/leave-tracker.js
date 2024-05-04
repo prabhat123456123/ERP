@@ -76,12 +76,13 @@ class LeaveTrackerManagement {
   console.log( req.body);
        
         const data = await sequelize.query(
-          "UPDATE `student_leave` SET reason=?, from_date=?, to_date=?,updated_by=?,updated_at=? WHERE track_id = ?",
+          "UPDATE `student_leave` SET reason=?, from_date=?, to_date=?,leave_status=?, updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               req.body.reason,
               req.body.from_date,
               req.body.to_date,
+              req.body.leave_status,
             
              req.user[0].role,
               currentTime,
@@ -282,9 +283,9 @@ console.log(">>>>>>>>>>>>>>>>>>>>",body);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  async fetchStudentLeaveById(body) {
+  async fetchStudentLeaveById(req,res) {
     try {
-      const leaveId = body.leaveId;
+      const leaveId = req.body.leaveId;
    
      const leaveData = await sequelize.query(
         `SELECT * FROM student_leave WHERE track_id = '${leaveId}'`,
@@ -298,6 +299,8 @@ console.log(">>>>>>>>>>>>>>>>>>>>",body);
 
       const leave = {
         reason:leaveData[0].reason,
+        leave_status: leaveData[0].leave_status,
+         role:req.user[0].role,
         from_date: updateFormat(
                   moment(leaveData[0].from_date),
                   "YYYY-MM-DD"
@@ -433,12 +436,13 @@ console.log(">>>>>>>>>>>>>>>>>>>>",body);
   
        
         const data = await sequelize.query(
-          "UPDATE `faculty_leave` SET reason=?,from_date=?,to_date=?, updated_by=?,updated_at=? WHERE track_id = ?",
+          "UPDATE `faculty_leave` SET reason=?,from_date=?,to_date=?,leave_status=?, updated_by=?,updated_at=? WHERE track_id = ?",
           {
             replacements: [
               req.body.reason,
               req.body.from_date,
               req.body.to_date,
+              req.body.leave_status,
             
               req.user[0].role,
               currentTime,
@@ -640,9 +644,9 @@ console.log(">>>>>>>>>>>>>>>>>>>>",body);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  async fetchFacultyLeaveById(body) {
+  async fetchFacultyLeaveById(req,res) {
     try {
-      const leaveId = body.leaveId;
+      const leaveId = req.body.leaveId;
    
      const leaveData = await sequelize.query(
         `SELECT * FROM faculty_leave WHERE track_id = '${leaveId}'`,
@@ -654,7 +658,9 @@ console.log(">>>>>>>>>>>>>>>>>>>>",body);
         const data = []
 
       const leave = {
-        reason:leaveData[0].reason,
+        reason: leaveData[0].reason,
+         leave_status:leaveData[0].leave_status,
+         role:req.user[0].role,
         from_date: updateFormat(
                   moment(leaveData[0].from_date),
                   "YYYY-MM-DD"

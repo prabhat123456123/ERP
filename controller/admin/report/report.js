@@ -107,6 +107,29 @@ const fetchCertificateById = async (req, res, next) => {
   }
 
 };
+const getClass = async (req, res, next) => {
+  try {
+    const data = await new ReportManagement().getClass(req,res);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
+const assignCertificate = async (req, res, next) => {
+  try {
+    const data = await new ReportManagement().assignCertificate(req,res);
+   
+     console.log(">>>>>>>>>>>>>>>>>>>>>",data)
+      return res.send(data);
+    
+  } catch (error) {
+    next(error);
+  }
+
+};
 
 const viewCertificateById = async (req, res, next) => {
   try {
@@ -163,6 +186,6 @@ const updateCertificateById = async (req, res, next) => {
 };
 
 module.exports = {
- reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass,getCertificate,updateCertificateById,fetchCertificateById,viewCertificateById,deleteCertificate,deleteMultipleCertificate,createCertificate,certificateRender
+ reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass,getCertificate,updateCertificateById,fetchCertificateById,viewCertificateById,deleteCertificate,deleteMultipleCertificate,createCertificate,certificateRender,getClass,assignCertificate
  
 };

@@ -4,7 +4,7 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
 
  
 const {
- reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass,getCertificate,updateCertificateById,fetchCertificateById,viewCertificateById,deleteCertificate,deleteMultipleCertificate,createCertificate,certificateRender
+ reportStudent,reportFaculty,fetchStudentByClass,fetchStudentReportByClass,getCertificate,updateCertificateById,fetchCertificateById,viewCertificateById,deleteCertificate,deleteMultipleCertificate,createCertificate,certificateRender,getClass,assignCertificate
  
 } = require("../../../controller/admin");
 
@@ -20,6 +20,8 @@ router.post("/view-certificate-byid",isAuthenticatedUser(), viewCertificateById)
 router.post("/delete-certificate",isAuthenticatedUser(), deleteCertificate);
 router.post("/delete-multiple",isAuthenticatedUser(), deleteMultipleCertificate);
 router.post("/create-certificate", isAuthenticatedUser(),createCertificate);
+router.post("/get-class", isAuthenticatedUser(),getClass);
+router.post("/assign-certificate", isAuthenticatedUser(),assignCertificate);
 
 
 module.exports = router;

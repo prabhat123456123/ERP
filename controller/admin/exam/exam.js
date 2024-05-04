@@ -290,6 +290,17 @@ const deleteSubjectMarks = async (req, res, next) => {
     next(error);
   }
 };
+const assignExam = async (req, res, next) => {
+  try {
+    const data = await new ExamManagement().assignExam(req,res);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+
+};
 const deleteMultipleSubjectMarks = async (req, res, next) => {
   try {
     const data = await new ExamManagement().deleteMultipleSubjectMarks(req.body);
@@ -341,7 +352,7 @@ const viewSubjectMarksById = async (req, res, next) => {
 
 const updateSubjectMarksById = async (req, res, next) => {
   try {
-    const data = await new ExamManagement().updateSubjectMarksById(req.body);
+    const data = await new ExamManagement().updateSubjectMarksById(req,res);
    
     req.flash("success_msg", "Subject Updated Successfully !");
       
@@ -372,5 +383,5 @@ const createSubjectMarks = async (req, res, next) => {
 
 
 module.exports = {
-  viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass
+  viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass,assignExam
 };

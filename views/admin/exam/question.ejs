@@ -651,42 +651,9 @@ var dataTable = $('#sample_data').DataTable({
        
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 1)
-				{
-					$(this).attr('data-name', 'question');
-					$(this).attr('class', 'question');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				
-			});
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.question',
-		url:'/admission/update-admission',
-		title:'Question',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
 		
 	});
 
-	
-
-  
-	
 });	
 setTimeout(function () {
     $("#error").hide();

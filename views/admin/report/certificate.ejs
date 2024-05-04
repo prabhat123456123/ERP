@@ -51,6 +51,7 @@
             <div class="col-md-6 text-right">
  
                                  <a href="#" class="btn btn-add" data-toggle="modal" data-target="#addCertificate-lg"><i class="fa fa-plus"></i> Add New</a>  
+                                 <input type="button" class="btn-sm btn-primary" id="multAssign"  value='Assign to Student' >
                                  
                              
             </div>
@@ -190,6 +191,34 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
+                 <div class="modal fade" id="asignMultipleCertificateModal" tabindex="-1" role="dialog">
+                      
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-plus m-r-5"></i> Assign Certificate</h3>
+                        </div>
+                        <div class="modal-body">
+                          <input type="checkbox" class='assignAllClass' id='assignAllClass'> &nbsp;class wise &nbsp;&nbsp;&nbsp;
+                          <input type="checkbox" class='assignAllstudent' id='assignAllschool'> &nbsp;school wise
+
+                          <input type="hidden" name="classValue" id="classValue">
+                          <input type="hidden" name="schoolValue" id="schoolValue">
+                        </br>
+                              <div id="asignMultipleCertificateDiv">
+                               
+                             
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-danger pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>
                  <%- include('../../partials/loader') %>
                  <div class="modal fade" id="editCertificateModal" tabindex="-1" role="dialog">
                  
@@ -255,6 +284,107 @@ document.addEventListener("click", function(event) {
         viewCertificate(target.dataset.id);
     }
 });
+$(document).on('change','#classes', function () {
+   var id = $(this).val(); 
+  $.ajax({
+         url: `/report/fetch-student-by-class`,
+         type: "post",
+         data:{classId:id},
+         dataType: "json",
+         cache: false,
+          beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].track_id}">${data[i].name}</option>`
+        }
+             $("#student").html("");
+             
+             $("#student").html(`<option value="">Please Select.</option>`);
+            $("#student").append(option);
+          
+          
+          
+        },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+})
+
+   $('#assignAllClass').change(function(){
+      if($(this).is(':checked')) {
+        $('#student').prop('disabled', true);
+        $('#classValue').val('class');
+
+      } else {
+        $('#student').prop('disabled', false);
+             $('#classValue').val('');
+
+      }
+    });
+
+    $('#assignAllschool').change(function(){
+    if ($(this).is(':checked')) {
+        $('#schoolValue').val('school');
+         $('#classValue').val('');
+        $('#student').prop('disabled', true);
+        $('#classes').prop('disabled', true);
+        $('#assignAllClass').prop('disabled', true);
+    } else {
+        if (!$('#assignAllClass').is(':checked')) {
+            $('#student').prop('disabled', false);
+              $('#classValue').val('');
+        }else{
+
+           $('#classValue').val('class');
+        }
+          $('#schoolValue').val('');
+        $('#classes').prop('disabled', false);
+        $('#assignAllClass').prop('disabled', false);
+    }
+});
+
+$(document).on('click','#assign', function () {
+   var classId = $('#classes').val(); 
+   var studentId = $('#student').val();
+   let schoolValue =  $('#schoolValue').val();
+       let classValue =  $('#classValue').val(); 
+   // Read all checked checkboxes
+   if($('#assignAllClass').is(':checked') && classId ==""){
+      toastr.error("Please select Class !!")
+   }else{
+      
+      var certificate = [];
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         certificate.push($(this).attr('data-id'));
+      });
+       
+     
+      // Check checkbox checked or not
+      if(certificate.length > 0){
+  $.ajax({
+         url: `/report/assign-certificate`,
+         type: "post",
+         data:{classId:classId,studentId:studentId,certificate:certificate,schoolValue:schoolValue,classValue:classValue },
+         dataType: "json",
+         success: function (data) {
+            console.log(data);
+           
+
+               toastr.success("Certificate Assigned !")
+            
+        },
+         
+      });
+      }else{
+         toastr.error("Checkbox are not selected !")
+      }
+   }
+})
      
         $("#certificateForm").on("submit", async e => {
          
@@ -487,7 +617,7 @@ $(document).ready(function(){
    });
      // Check all 
    $('#multDel').click(function(){
-  if($('#checkall').is(':checked')){
+  if($('.delete_check:checked').length > 0){
  
        
       $("#deleteMultipleCertificateDiv").html("");
@@ -497,7 +627,6 @@ $(document).ready(function(){
             let formDetails = ``;
             formDetails += `
                   
-                    
                    <div class="col-md-12">
                     Are You Sure. ?
                    </div>
@@ -516,7 +645,76 @@ $(document).ready(function(){
                  `;
             $("#deleteMultipleCertificateDiv").html(formDetails);
             }else{
-   alert("Please Select All")
+                toastr.error("Please select at least one checkbox !")
+
+ }
+      
+   });
+
+    $('#multAssign').click(function(){
+  if($('.delete_check:checked').length > 0){
+  
+      $("#asignMultipleCertificateDiv").html("");
+      $("#asignMultipleCertificateModal").modal("toggle");
+    $.ajax({
+         url: `/report/get-class`,
+         type: "post",
+         data:{},
+         dataType: "json",
+         cache: false,
+          beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].track_id}">${data[i].class_name}</option>`
+        }
+             $("#classes").html("");
+             
+             $("#classes").html(`<option value="">Please Select.</option>`);
+            $("#classes").append(option);
+          
+          
+          
+        },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+          
+            let formDetails = ``;
+            formDetails += `
+                            <div class="row">
+                             
+                                   <div class="form-group col-lg-6">
+                                    <label>Class</label>
+                                   <select name="student_class_id" id="classes" class="form-control">
+                                    <option value="">Please Select</option>
+                                  
+                                   </select>
+                                </div>
+                                  <div class="form-group col-lg-6">
+                                    <label>Student</label>
+                                   <select name="student_class_id" class="form-control" id="student">
+                                    <option value="">Please Select</option>
+                                  
+                                   </select>
+                                </div>
+                               
+                            </div>
+                            <div align="center">
+                               <input type="submit" id="assign" class="btn btn-success"
+															value="Assign">
+															
+														
+                            </div>
+                       
+                 `;
+            $("#asignMultipleCertificateDiv").html(formDetails);
+            }else{
+   toastr.error("Please select at least one Certificate !")
 
  }
       

@@ -256,84 +256,10 @@ $(document).ready(function(){
         { data: "gender" },
         { data: "action" },
 	],
-		createdRow:function(row, data, rowIndex)
-		{
-			$.each($('td', row), function(colIndex){
-				if(colIndex == 1)
-				{
-					$(this).attr('data-name', 'name');
-					$(this).attr('class', 'name');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 2)
-				{
-					$(this).attr('data-name', 'email');
-					$(this).attr('class', 'email');
-					$(this).attr('data-type', 'text');
-					$(this).attr('data-pk', data.id);
-				}
-				if(colIndex == 3)
-				{
-					$(this).attr('data-name', 'gender');
-					$(this).attr('class', 'gender');
-					$(this).attr('data-type', 'select');
-					$(this).attr('data-pk', data.id);
-				}
-			});
-		}
+	
 	});
 
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.name',
-		url:'/admission/update-admission',
-		title:'Name',
-		type:'POST',
-		validate:function(value){
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-				toastr.success('Record Updated Successfuly !!')
-
-		}
-		
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.email',
-		url:'/admission/update-admission',
-		title:'Email',
-		type:'POST',
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
-
-	$('#sample_data').editable({
-		container:'body',
-		selector:'td.gender',
-		url:'/admission/update-admission',
-		title:'Gender',
-		type:'POST',
-		datatype:'json',
-		source:[{value: "Male", text: "Male"}, {value: "Female", text: "Female"}],
-		validate:function(value){
-			
-			if($.trim(value) == '')
-			{
-				return 'This field is required';
-			}
-			toastr.success('Record Updated Successfuly !!')
-		}
-	});
+	
 	
 });	
 </script>
