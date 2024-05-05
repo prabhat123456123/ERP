@@ -8,7 +8,7 @@
          <!-- =============================================== -->
          <!-- Left side column. contains the sidebar -->
        <%- include('../../partials/sidebar') %>
-	
+
    
          <!-- =============================================== -->
          <!-- Content Wrapper. Contains page content -->
@@ -88,8 +88,9 @@
         <%- include('../../partials/footer') %>
       </div>
 	 <!-- Modal1 -->
+      <%- include('../../partials/loader') %>
                <div class="modal fade" id="addStudent-lg" tabindex="-1" role="dialog">
-                  <%- include('../../partials/loader') %>
+                 
                   <div class="modal-dialog modal-lg"  role="document">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -182,7 +183,7 @@
                   <!-- /.modal-dialog -->
                </div>
                 <div class="modal fade" id="bulkStudentModal" tabindex="-1" role="dialog">
-                   <%- include('../../partials/loader') %>
+                  
                  <div id="loaderBulk" class="lds-dual-ring hidden overlay"></div>
 
                   <div class="modal-dialog modal-lg"  role="document">
@@ -225,7 +226,7 @@
                   <!-- /.modal-dialog -->
                </div>
                 <div class="modal fade" id="deleteStudentModal" tabindex="-1" role="dialog">
-                   <%- include('../../partials/loader') %>
+                 
                   <div class="modal-dialog">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -248,7 +249,7 @@
                   <!-- /.modal-dialog -->
                </div>
                   <div class="modal fade" id="deleteMultipleStudentModal" tabindex="-1" role="dialog">
-                      <%- include('../../partials/loader') %>
+                    
                   <div class="modal-dialog">
                      <div class="modal-content">
                         <div class="modal-header modal-header-primary">
@@ -270,7 +271,7 @@
                   </div>
                   <!-- /.modal-dialog -->
                </div>
-                 <%- include('../../partials/loader') %>
+               
                  <div class="modal fade" id="editStudentModal" tabindex="-1" role="dialog">
                  
                   <div class="modal-dialog modal-lg"  role="document">
@@ -358,9 +359,9 @@ document.addEventListener("click", function(event) {
                       
                      
                   if (data) {
-                       const url = '/success.mp3'
-                    const audio = new Audio(url);
-                    audio.play();
+                  //      const url = '/success.mp3'
+                  //   const audio = new Audio(url);
+                  //   audio.play();
                      Swal.fire({
                     position: "top-center",
                     icon: "success",

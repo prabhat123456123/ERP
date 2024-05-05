@@ -147,7 +147,7 @@ document.getElementById('rzp-button1').onclick = function(e){
             case 'monthly':
                 totalAmount = numStudents * monthlyCharge;
                 break;
-            case 'quartly':
+            case 'quarterly':
                 totalAmount = numStudents * monthlyCharge * 3;
                 break;
             case 'halfyearly':
@@ -171,6 +171,7 @@ document.getElementById('rzp-button1').onclick = function(e){
                     var frequency = frequencySelect.value;
         
         var totalAmount = calculateTotalAmount(numStudents, frequency);
+        alert(totalAmount)
         document.getElementById("amount").value =totalAmount;
                 });
             }

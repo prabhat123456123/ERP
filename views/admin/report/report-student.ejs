@@ -3,7 +3,7 @@
       <!-- Site wrapper -->
       <div class="wrapper">
          <%- include('../../partials/header') %>
-		  <style>
+		  <!-- <style>
       .loading-image {
         position: absolute;
 		
@@ -19,7 +19,7 @@
         position: fixed;
         z-index: 99999;
       }
-    </style>
+    </style> -->
          <!-- =============================================== -->
          <!-- Left side column. contains the sidebar -->
        <%- include('../../partials/sidebar') %>
@@ -182,7 +182,7 @@ $(document).on('click','#find', function () {
  }
              $("#dataReport").html(formDetails);
        }else{
-          $("#dataReport").html(`This Candidate has not Appeared in any exam`);
+          $("#dataReport").html(`This Candidate has not Appeared in any exam in this month`);
        }
           
         },
