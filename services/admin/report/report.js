@@ -221,74 +221,35 @@ class ReportManagement {
       }
       const bulkInsertValues = [];
 
-// // Assuming req.user[0].role and currentTime are already defined
-// for (let i = 0; i < certificateData.length; i++) {
-//   for (let j = 0; j < data.length; j++) {
+// Assuming req.user[0].role and currentTime are already defined
+for (let i = 0; i < certificateData.length; i++) {
+  for (let j = 0; j < data.length; j++) {
       
-//      // Check if the data already exists in the database
-//         const existingData = await sequelize.query(
-//             "SELECT * FROM certificate_status WHERE track_certificate_id = ? AND track_student_id = ?",
-//             {
-//                 replacements: [certificateData[i], data[j].track_id],
-//                 type: QueryTypes.SELECT,
-//             }
-//         );
+     // Check if the data already exists in the database
+        const existingData = await sequelize.query(
+            "SELECT * FROM certificate_status WHERE track_certificate_id = ? AND track_student_id = ?",
+            {
+                replacements: [certificateData[i], data[j].track_id],
+                type: QueryTypes.SELECT,
+            }
+        );
 
-//         // If data doesn't exist, add it to the bulk insert array
-//     if (existingData.length === 0) {
-//       bulkInsertValues.push([
-//         uuidv4(),
-//         certificateData[i],
-//         data[j].track_id,
-//         req.user[0].role,
-//         currentTime
-//       ]);
-//     }
-//     }
-// }
-
-// // Perform bulk insertion using raw SQL query
-// await sequelize.query(
-//     "INSERT INTO certificate_status (track_id, track_certificate_id, track_student_id, created_by, created_at) VALUES ?",
-//     {
-//         replacements: [bulkInsertValues],
-//         type: QueryTypes.INSERT,
-//     }
-// );
-       
-       // Construct an array of arrays containing track_certificate_id and track_student_id for the new data
-const newDataValues = certificateData.map((certId, i) => data.map(track => [certId, track.track_id]));
-
-// Flatten the array of arrays into a single array of [track_certificate_id, track_student_id] pairs
-const flattenedNewData = newDataValues.flat();
-
-// Retrieve existing combinations of track_certificate_id and track_student_id from the database
-const existingData = await sequelize.query(
-    "SELECT track_certificate_id, track_student_id FROM certificate_status WHERE track_certificate_id IN (?) AND track_student_id IN (?)",
-    {
-        replacements: [certificateData, data.map(track => track.track_id)],
-        type: QueryTypes.SELECT,
+        // If data doesn't exist, add it to the bulk insert array
+    if (existingData.length === 0) {
+      bulkInsertValues.push([
+        uuidv4(),
+        certificateData[i],
+        data[j].track_id,
+        req.user[0].role,
+        currentTime
+      ]);
     }
-);
+    }
+}
 
-// Convert the existing data into a Set for faster lookup
-const existingSet = new Set(existingData.map(({ track_certificate_id, track_student_id }) => `${track_certificate_id}-${track_student_id}`));
 
-// Iterate through the new data and check if each combination already exists
-flattenedNewData.forEach(([track_certificate_id, track_student_id]) => {
-    // If the combination doesn't exist, add it to the bulk insert array
-    if (!existingSet.has(`${track_certificate_id}-${track_student_id}`)) {
-        bulkInsertValues.push([
-             uuidv4(),
-            track_certificate_id,
-            track_student_id,
-            req.user[0].role,
-            currentTime
-        ]);
-    } 
-});
-
-// Perform bulk insertion using raw SQL query
+      if (bulkInsertValues.length > 0) {
+       // Perform bulk insertion using raw SQL query
 await sequelize.query(
     "INSERT INTO certificate_status (track_id, track_certificate_id, track_student_id, created_by, created_at) VALUES ?",
     {
@@ -296,8 +257,11 @@ await sequelize.query(
         type: QueryTypes.INSERT,
     }
 );
-      
-      return true;
+        return true;
+}else{
+  
+        return false
+}
     } catch (error) {
       if (error.statusCode) {
         console.log("hello");

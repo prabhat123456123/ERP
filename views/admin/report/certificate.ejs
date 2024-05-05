@@ -373,9 +373,11 @@ $(document).on('click','#assign', function () {
          dataType: "json",
          success: function (data) {
             console.log(data);
-           
-
-               toastr.success("Certificate Assigned !")
+             if (data) {
+            toastr.success("Exam(s) Assigned Successfully!"); // Display success message
+        } else {
+            toastr.error("All Exams are Already Assigned!"); // Display error message
+        }
             
         },
          

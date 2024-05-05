@@ -405,8 +405,11 @@ $(document).on('click','#assign', function () {
          data:{classId:classId,studentId:studentId,exam:exam,schoolValue:schoolValue,classValue:classValue },
          dataType: "json",
          success: function (data) {
-          
-               toastr.success("Exam Assigned !")
+           if (data) {
+            toastr.success("Exam(s) Assigned Successfully!"); // Display success message
+        } else {
+            toastr.error("All Exams are Already Assigned!"); // Display error message
+        }
            
         },
          
