@@ -44,7 +44,7 @@
                        
                              <div class="form-group">
                                 <label class="control-label" for="username">Enter Number of Student</label>
-                                <input type="number" value="<%= countStudent.length %>" required name="num_of_student" id="num_of_student" disabled class="form-control">
+                                <input type="number" required name="num_of_student" id="num_of_student" class="form-control">
                                
                             </div>
                              <div class="form-group">
@@ -79,6 +79,7 @@
     <!-- Your script -->
     <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
      $(document).ready(function(){
+      
           $.ajax({
                 url: `/create-order`,
                 type: "post",

@@ -22,11 +22,9 @@ const login = async (req, res, next) => {
 };
 const payment = async (req, res, next) => {
   try {
-    
     const data = await new AuthManagement().getPaymentStatus(req, res);
     const countStudent = await new AuthManagement().countStudentOfSchool(req, res);
     if (data.length) {
-      
       return res.redirect("/admission/admission");
     } else {
        return res.render("admin/payment",{nonce: res.locals.nonce,countStudent:countStudent});
