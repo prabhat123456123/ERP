@@ -7,10 +7,10 @@ module.exports = {
       ignore_watch: ["node_modules", "public/uploads"],
       env: {
         NODE_ENV: "development",
-        DB_HOST: "localhost",
-        DB_USER: "root",
-        DB_PASSWORD: "",
-        DB_NAME: "erp",
+        DB_HOST: "database-1.c9yoee0ua5de.us-east-1.rds.amazonaws.com",
+        DB_USER: "admin",
+        DB_PASSWORD: "Admin123",
+        DB_NAME: "database-1",
         PORT: 2098,
 
         EMAIL_PORT: 465,
