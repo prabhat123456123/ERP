@@ -21,7 +21,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 
 const { admin } = require("./routes");
-console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 // const { validator, validateToken, handleError } = require("./middleware");
 // const { handleError } = require("./middleware");
 
@@ -174,13 +173,13 @@ app.use((err, req, res, next) => {
 
 
 
-// sequelize
-//   .sync()
-//   .then(() => {
-//     console.log(":::::::::::::::::::::::::::::::::::::::::::");
+sequelize
+  .sync()
+  .then(() => {
+    console.log("database connecred !!!!");
 
-//   })
-//   .catch((err) => {
-//     throw err;
-//   });
+  })
+  .catch((err) => {
+    throw err;
+  });
 module.exports = app;
