@@ -24,11 +24,11 @@ const { admin } = require("./routes");
 // const { validator, validateToken, handleError } = require("./middleware");
 // const { handleError } = require("./middleware");
 
-// const {sequelize} = require("./models");
-const sequelize = require("./config/database");
+const {sequelize} = require("./models");
+// const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
-console.log("?????????????????????????",sequelize);
+// console.log("?????????????????????????",sequelize);
 
 // Define your middleware function
 
@@ -174,13 +174,13 @@ app.use((err, req, res, next) => {
 
 
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log("database connecred !!!!");
+// sequelize
+//   .sync()
+//   .then(() => {
+//     console.log("database connecred !!!!");
 
-  })
-  .catch((err) => {
-    throw err;
-  });
+//   })
+//   .catch((err) => {
+//     throw err;
+//   });
 module.exports = app;
