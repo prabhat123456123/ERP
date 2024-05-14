@@ -3,7 +3,7 @@ const { createNamespace } = require("cls-hooked");
 
 const cls = createNamespace("transaction-namespace"); // any string
 Sequelize.useCLS(cls);
-console.log(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD);
+console.log("?????????????????????????",process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD);
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
