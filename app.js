@@ -28,6 +28,7 @@ const { admin } = require("./routes");
 const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
+console.log("?????????????????????????",sequelize);
 
 // Define your middleware function
 
