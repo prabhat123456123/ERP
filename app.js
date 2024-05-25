@@ -31,7 +31,7 @@ const sequelize = require("./config/database");
 // console.log("?????????????????????????",sequelize);
 
 // Define your middleware function
-
+app.set('trust proxy', true);
 app.use(express.json());
 app
   // .use(logger("dev", { stream: accessLogStream }))
