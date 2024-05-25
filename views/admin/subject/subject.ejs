@@ -103,7 +103,7 @@
                                 <div class="form-group col-lg-6">
                                     <label>Class Name</label>
                                     <select name="classesId" class="form-control" id="classesId">
-                                       <option value="">please Select</option>
+                                      
                                        <% if(data.length){ %>
                                        <% for(let i=0; i<data.length; i++){ %>
 
@@ -482,7 +482,8 @@ $(document).ready(function(){
 	
  
 });
-	
+
+	let classId = $("#classesId").val();
 var dataTable = $('#sample_data').DataTable({
 		"processing": true,
 		"serverSide": true,
@@ -507,6 +508,9 @@ var dataTable = $('#sample_data').DataTable({
 		"ajax":{
 			url:"/subject/get-subject",
 			type:"POST",
+           data: function (d) {
+            d.classId = classId; // Add classId to the data being sent to the server
+        }
 		},
          columns: [
         { data: "check" },

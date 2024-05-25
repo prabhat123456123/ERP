@@ -228,8 +228,6 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
   }
   async getSubject(req,res) {
     try {
-//  console.log(sequelize)
-     
        const data = await sequelize.query(
         `SELECT * FROM subject`,
         {
@@ -1042,12 +1040,12 @@ console.log(data);
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-     async getClass(body) {
+     async getClass(req,res) {
     try {
 //  console.log(sequelize)
-     
+     const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
        const data = await sequelize.query(
-        `SELECT * FROM class`,
+        `SELECT * FROM class where track_school_id = '${id}'`,
         {
           type: QueryTypes.SELECT,
         }
@@ -1183,6 +1181,31 @@ console.log(data);
             }
             );
           return {studentData,subjectData};
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+   async fetchSubjectByClass(req) {
+     try {
+       
+       const classId = req.body.classId;
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+       
+     
+          const subjectData = await sequelize.query(
+            `SELECT subject.track_id,subject.subject_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE track_class_id = '${classId}' AND class.track_school_id = '${id}'`,
+            {
+              type: QueryTypes.SELECT,
+              
+            }
+            );
+          return subjectData;
 
     
     } catch (error) {

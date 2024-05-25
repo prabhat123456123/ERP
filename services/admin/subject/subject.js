@@ -110,7 +110,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
       
      
        const data = await sequelize.query(
-        `SELECT subject.track_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE class.track_school_id = '${id}' AND subject_name like "%${
+        `SELECT subject.track_id,subject.track_class_id,subject.subject_name,class.class_name FROM subject INNER JOIN class ON class.track_id = subject.track_class_id WHERE class.track_school_id = '${id}' AND subject.track_class_id = '${req.body.classId}' AND subject_name like "%${
           req.body.search.value
         }%" LIMIT ${parseInt(
           req.body.length
@@ -169,7 +169,7 @@ const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_
 //  console.log(sequelize)
      
        const data = await sequelize.query(
-        `SELECT * FROM class WHERE track_school_id = '${req.user[0].track_id}'`,
+        `SELECT * FROM class WHERE track_school_id = '${req.user[0].track_id}' AND track_id = '${req.params.id}'`,
         {
           type: QueryTypes.SELECT,
         }

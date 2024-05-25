@@ -24,8 +24,8 @@ const { admin } = require("./routes");
 // const { validator, validateToken, handleError } = require("./middleware");
 // const { handleError } = require("./middleware");
 
-const {sequelize} = require("./models");
-// const sequelize = require("./config/database");
+// const {sequelize} = require("./models");
+const sequelize = require("./config/database");
 // const accessLogStream = fs.createWriteStream(path.join(__dirname, './logs/access.log'), { flags: 'a' });
 
 // console.log("?????????????????????????",sequelize);

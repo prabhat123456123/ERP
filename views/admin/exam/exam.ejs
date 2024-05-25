@@ -112,9 +112,7 @@
                                     <label>Subject</label>
                                    <select name="subject_id" id="subject_id" class="form-control">
                                     <option value="">Please Select</option>
-                                    <% for(let i = 0; i < subject.length; i++){%> 
-                                    <option value="<%= subject[i].track_id %>"><%= subject[i].subject_name %></option>
-                                       <% } %>
+                                  
                                    </select>
                                 </div>
                                   <div class="form-group col-lg-6">
@@ -334,6 +332,36 @@ $(document).on('change','#classes', function () {
              
              $("#student").html(`<option value="">Please Select.</option>`);
             $("#student").append(option);
+          
+          
+          
+        },
+         complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+})
+$(document).on('change','#class_id', function () {
+   var id = $(this).val(); 
+  $.ajax({
+         url: `/exam/fetch-subject-by-class`,
+         type: "post",
+         data:{classId:id},
+         dataType: "json",
+         cache: false,
+          beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
+         success: function (data) {
+            console.log(data);
+         let option;
+        for(let i=0; i<data.length; i++){
+           option += `<option value="${data[i].track_id}">${data[i].subject_name}</option>`
+        }
+             $("#subject_id").html("");
+             
+             $("#subject_id").html(`<option value="">Please Select.</option>`);
+            $("#subject_id").append(option);
           
           
           

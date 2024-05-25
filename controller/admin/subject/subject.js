@@ -16,6 +16,7 @@ const addSubject = async (req, res, next) => {
 };
 const getSubject = async (req, res, next) => {
   try {
+    console.log("data[0].track_id??????????????????????????????????",req.body);
     const adm = await new SubjectManagement().getSubject(req,res);
      const count = await new SubjectManagement().countSubject(req,res);
     const data = JSON.stringify({

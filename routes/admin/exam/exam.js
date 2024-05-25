@@ -7,7 +7,7 @@ const {isAuthenticatedUser} = require("../../../helper/auth");
  
 const {
   viewExam,getExam,updateExamById,fetchExamById,viewExamById,updateExam,deleteExam,deleteMultipleExam,createExam,examWiseQuestion
- ,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass ,assignExam
+ ,getQuestion,updateQuestionById,fetchQuestionById,viewQuestionById,updateQuestion,deleteQuestion,deleteMultipleQuestion,createQuestion,subjectMarks,getSubjectMarks,updateSubjectMarksById,fetchSubjectMarksById,viewSubjectMarksById,updateSubjectMarks,deleteSubjectMarks,deleteMultipleSubjectMarks,createSubjectMarks,fetchStudentAndSubjectByClass ,assignExam,fetchSubjectByClass
 } = require("../../../controller/admin");
 
 
@@ -38,6 +38,7 @@ router.post("/get-subject-marks",isAuthenticatedUser(), getSubjectMarks);
 router.post("/update-subject-marks-by-id", isAuthenticatedUser(), updateSubjectMarksById);
 router.post("/fetch-subject-marks-byid", isAuthenticatedUser(), fetchSubjectMarksById);
 router.post("/fetch-studentAndSubject-by-class", isAuthenticatedUser(), fetchStudentAndSubjectByClass);
+router.post("/fetch-subject-by-class", isAuthenticatedUser(), fetchSubjectByClass);
 
 router.post("/view-subject-marks-byid",isAuthenticatedUser(), viewSubjectMarksById);
 router.post("/update-subject-marks",isAuthenticatedUser(), updateSubjectMarks);
