@@ -29,6 +29,7 @@ const leaveFacultyTracker = async (req, res, next) => {
 
 const getStudentLeave = async (req, res, next) => {
   try {
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
     const adm = await new LeaveTrackerManagement().getStudentLeave(req,res);
      const count = await new LeaveTrackerManagement().countStudentLeave(req,res);
     const data = JSON.stringify({
