@@ -111,3 +111,27 @@ module.exports = {
     }
   },
 };
+
+const AWS = require('aws-sdk');
+
+// Update AWS configuration
+AWS.config.update({
+  accessKeyId: 'your_access_key_id',
+  secretAccessKey: 'your_secret_access_key',
+  region: 'your_region'
+});
+
+// Create SNS service object
+const sns = new AWS.SNS();
+const params = {
+  Message: 'Hello, this is a test SMS!', // Message to send
+  PhoneNumber: '+1234567890' // Phone number in E.164 format
+};
+
+sns.publish(params, (err, data) => {
+  if (err) {
+    console.error("Error sending SMS:", err);
+  } else {
+    console.log("SMS sent:", data);
+  }
+});

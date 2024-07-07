@@ -118,4 +118,35 @@ const sendEmail = async (to, subject, text)=>{
     }
 }
 
+const nodemailer = require('nodemailer');
+
+// Configure Nodemailer to use Amazon SES SMTP
+const transporter = nodemailer.createTransport({
+    host: 'email-smtp.us-east-1.amazonaws.com', // replace with your SES SMTP endpoint
+    port: 587, // use 587 for TLS
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: 'your_smtp_username', // replace with your SMTP username
+        pass: 'your_smtp_password'  // replace with your SMTP password
+    }
+});
+
+// Define email options
+const mailOptions = {
+    from: 'your_verified_email@example.com',
+    to: 'recipient_email@example.com',
+    subject: 'Test Email from SES and Nodemailer with SMTP',
+    text: 'This is a test email sent using Amazon SES and Nodemailer with SMTP.',
+    html: '<p>This is a test email sent using Amazon SES and Nodemailer with SMTP.</p>'
+};
+
+// Send email
+transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+        console.log('Error sending email:', error);
+    } else {
+        console.log('Email sent successfully:', info);
+    }
+});
+
 module.exports={sendEmail}

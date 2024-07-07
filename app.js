@@ -6,7 +6,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 const cronJobs = require('./helper/job');
 const session = require("express-session");
-
+// const jobQueue = require('./helper/queue');
 const passport = require("passport");
 const flash = require("connect-flash");
 const csrf = require("csurf");
@@ -56,6 +56,14 @@ app
 // },
 // }));
 
+
+
+//add job to the queue
+// app.post('/add-job', (req, res) => {
+//     const { task, email } = req.body;
+//     jobQueue.add({ task, email });
+//     res.send('Job added to the queue');
+// });
 
 
 // Middleware to generate nonce for each request
