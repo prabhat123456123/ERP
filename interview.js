@@ -162,19 +162,19 @@ let optionalKey9 = undefined;
 let optionalKey10 = false;
 let optionalKey11 = null;
 let optionalKey12 = "twelve";
-const obj = {
-  requiredKey1: 1,
-  requiredKey2: 2,
-  ...(flag1 && { optionalKey3: 3 }),
-  ...(flag2 && { optionalKey4: 4, optionalKey5: 5 }), // ignored
-  ...(flag1 && { optionalKey6: 6, optionalKey7: 7 }),
-  ...(optionalKey8 && { optionalKey8 }),
-  ...(optionalKey9 && { optionalKey9 }), // ignored
-  ...(optionalKey10 && { optionalKey10 }), // ignored
-  ...(optionalKey11 && { optionalKey11 }), // ignored
-  ...(optionalKey12 && { optionalKey12 }),
-};
-console.log(obj);
+// const obj = {
+//   requiredKey1: 1,
+//   requiredKey2: 2,
+//   ...(flag1 && { optionalKey3: 3 }),
+//   ...(flag2 && { optionalKey4: 4, optionalKey5: 5 }), // ignored
+//   ...(flag1 && { optionalKey6: 6, optionalKey7: 7 }),
+//   ...(optionalKey8 && { optionalKey8 }),
+//   ...(optionalKey9 && { optionalKey9 }), // ignored
+//   ...(optionalKey10 && { optionalKey10 }), // ignored
+//   ...(optionalKey11 && { optionalKey11 }), // ignored
+//   ...(optionalKey12 && { optionalKey12 }),
+// };
+// console.log(obj);
 
 //------
 
@@ -376,22 +376,22 @@ isDead() - //Returns true if the worker's process is dead, otherwise false
 isMaster() - //Returns true if the current process is master, otherwise false
 isWorker() - //Returns true if the current process is worker, otherwise false
 
-var cluster = require("cluster");
+// var cluster = require("cluster");
 
-if (cluster.isWorker) {
-  console.log("I am a worker");
-} else {
-  console.log("I am a master");
-  cluster.fork();
-  cluster.fork();
-}
+// if (cluster.isWorker) {
+//   console.log("I am a worker");
+// } else {
+//   console.log("I am a master");
+//   cluster.fork();
+//   cluster.fork();
+// }
 
 //crypto
-var crypto = require('crypto');
+// var crypto = require('crypto');
 
-var mykey = crypto.createCipher('aes-128-cbc', 'mypassword');
-var mystr = mykey.update('abc', 'utf8', 'hex')
-mystr += mykey.final('hex');
+// var mykey = crypto.createCipher('aes-128-cbc', 'mypassword');
+// var mystr = mykey.update('abc', 'utf8', 'hex')
+// mystr += mykey.final('hex');
 
 console.log(mystr); //34feb914c099df25794bf9ccb85bea72
 
@@ -589,7 +589,7 @@ console.log("Parsed Query:", parsedQuery); // user=sam&access=true&role=admin&ro
 import querystring from "querystring" 
   
 // String to be decoded 
-let str = "I%20love%20geeksforgeeks"; 
+// let str = "I%20love%20geeksforgeeks"; 
   
 // Using the unescape function to decode 
 let decodedURL = querystring.unescape(str); 
@@ -722,107 +722,107 @@ function customSort(arr) {
 }
 
 // Example usage:
-const mixedArray = [10, 'apple', 5, 'orange', 3, 'banana'];
+// const mixedArray = [10, 'apple', 5, 'orange', 3, 'banana'];
 
-const sortedResult = customSort(mixedArray);
+// const sortedResult = customSort(mixedArray);
 
-console.log('Original Array:', mixedArray);
-console.log('Sorted Array:', sortedResult);
+// console.log('Original Array:', mixedArray);
+// console.log('Sorted Array:', sortedResult);
 
-// sequelize
-SELECT foo, COUNT(hats) AS n_hats, bar FROM;
+// // sequelize
+// // SELECT foo, COUNT(hats) AS n_hats, bar FROM;
 
-Model.findAll({
-  attributes: [
-    'foo',
-    [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats'],
-    'bar'
-  ]
-});
+// Model.findAll({
+//   attributes: [
+//     'foo',
+//     [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats'],
+//     'bar'
+//   ]
+// });
 
-// This is shorter, and less error prone because it still works if you add / remove attributes from your model later
-Model.findAll({
-  attributes: {
-    include: [
-      [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats']
-    ]
-  }
-});
+// // This is shorter, and less error prone because it still works if you add / remove attributes from your model later
+// Model.findAll({
+//   attributes: {
+//     include: [
+//       [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats']
+//     ]
+//   }
+// });
 
-Post.findAll({
-  where: {
-    [Op.and]: [
-      { authorId: 12 },
-      { status: 'active' }
-    ]
-  }
-});
+// Post.findAll({
+//   where: {
+//     [Op.and]: [
+//       { authorId: 12 },
+//       { status: 'active' }
+//     ]
+//   }
+// });
 
-Post.findAll({
-  where: {
-    [Op.or]: [
-      { authorId: 12 },
-      { authorId: 13 }
-    ]
-  }
-});
+// Post.findAll({
+//   where: {
+//     [Op.or]: [
+//       { authorId: 12 },
+//       { authorId: 13 }
+//     ]
+//   }
+// });
 
-Foo.findAll({
-  where: {
-    rank: {
-      [Op.or]: {
-        [Op.lt]: 1000,
-        [Op.eq]: null
-      }
-    },
-    // rank < 1000 OR rank IS NULL
+// Foo.findAll({
+//   where: {
+//     rank: {
+//       [Op.or]: {
+//         [Op.lt]: 1000,
+//         [Op.eq]: null
+//       }
+//     },
+//     // rank < 1000 OR rank IS NULL
 
-    {
-      createdAt: {
-        [Op.lt]: new Date(),
-        [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
-      }
-    },
-    // createdAt < [timestamp] AND createdAt > [timestamp]
+//     {
+//       createdAt: {
+//         [Op.lt]: new Date(),
+//         [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+//       }
+//     },
+//     // createdAt < [timestamp] AND createdAt > [timestamp]
 
-    {
-      [Op.or]: [
-        {
-          title: {
-            [Op.like]: 'Boat%'
-          }
-        },
-        {
-          description: {
-            [Op.like]: '%boat%'
-          }
-        }
-      ]
-    }
-    // title LIKE 'Boat%' OR description LIKE '%boat%'
-  }
-});
+//     {
+//       [Op.or]: [
+//         {
+//           title: {
+//             [Op.like]: 'Boat%'
+//           }
+//         },
+//         {
+//           description: {
+//             [Op.like]: '%boat%'
+//           }
+//         }
+//       ]
+//     }
+//     // title LIKE 'Boat%' OR description LIKE '%boat%'
+//   }
+// });
 
-Post.findAll({
-  where: {
-    [Op.or]: [
-      sequelize.where(sequelize.fn('char_length', sequelize.col('content')), 7),
-      {
-        content: {
-          [Op.like]: 'Hello%'
-        }
-      },
-      {
-        [Op.and]: [
-          { status: 'draft' },
-          sequelize.where(sequelize.fn('char_length', sequelize.col('content')), {
-            [Op.gt]: 10
-          })
-        ]
-      }
-    ]
-  }
-});
+// Post.findAll({
+//   where: {
+//     [Op.or]: [
+//       sequelize.where(sequelize.fn('char_length', sequelize.col('content')), 7),
+//       {
+//         content: {
+//           [Op.like]: 'Hello%'
+//         }
+//       },
+//       {
+//         [Op.and]: [
+//           { status: 'draft' },
+//           sequelize.where(sequelize.fn('char_length', sequelize.col('content')), {
+//             [Op.gt]: 10
+//           })
+//         ]
+//       }
+//     ]
+//   }
+// });
 
 
 const { Sequelize, DataTypes } = require('sequelize');
@@ -848,10 +848,10 @@ console.log(User === sequelize.models.User); // true
 const { Sequelize } = require('sequelize');
 
 // Replace these values with your actual database connection details
-const sequelize = new Sequelize('your_database', 'your_username', 'your_password', {
-  host: 'your_host',
-  dialect: 'mysql',
-});
+// const sequelize = new Sequelize('your_database', 'your_username', 'your_password', {
+//   host: 'your_host',
+//   dialect: 'mysql',
+// });
 
 // Test the connection
 sequelize
@@ -898,7 +898,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Create a mongoose model from the schema
-const User = mongoose.model('User', userSchema);
+// const User = mongoose.model('User', userSchema);
 
 // Create a new user document
 const newUser = new User({
@@ -969,73 +969,73 @@ mongoose
       console.error('Aggregation error:', err);
     });
   
-//transaction in momngodb 
-const mongoose = require('mongoose');
+// //transaction in momngodb 
+// const mongoose = require('mongoose');
 
-// Replace these values with your actual MongoDB connection details
-const url = 'mongodb://localhost:27017/your_database';
+// // Replace these values with your actual MongoDB connection details
+// const url = 'mongodb://localhost:27017/your_database';
 
-// Connect to MongoDB
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+// // Connect to MongoDB
+// mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Define your Mongoose model
-const YourModel = mongoose.model('YourModel', new mongoose.Schema({
-  field1: String,
-  field2: Number,
-}));
+// // Define your Mongoose model
+// const YourModel = mongoose.model('YourModel', new mongoose.Schema({
+//   field1: String,
+//   field2: Number,
+// }));
 
-// Start a session
-const session = await mongoose.startSession();
-session.startTransaction();
+// // Start a session
+// const session = await mongoose.startSession();
+// session.startTransaction();
 
-try {
-  // Operations within the transaction
-  const document1 = await YourModel.create({ field1: 'Value1', field2: 123 }, { session });
-  const document2 = await YourModel.create({ field1: 'Value2', field2: 456 }, { session });
+// try {
+//   // Operations within the transaction
+//   const document1 = await YourModel.create({ field1: 'Value1', field2: 123 }, { session });
+//   const document2 = await YourModel.create({ field1: 'Value2', field2: 456 }, { session });
 
-  // Other operations...
+//   // Other operations...
 
-  // Commit the transaction
-  await session.commitTransaction();
-  session.endSession();
+//   // Commit the transaction
+//   await session.commitTransaction();
+//   session.endSession();
 
-  console.log('Transaction committed successfully.');
-} catch (error) {
-  // If an error occurs, abort the transaction
-  await session.abortTransaction();
-  session.endSession();
+//   console.log('Transaction committed successfully.');
+// } catch (error) {
+//   // If an error occurs, abort the transaction
+//   await session.abortTransaction();
+//   session.endSession();
 
-  console.error('Error in transaction:', error);
-}
+//   console.error('Error in transaction:', error);
+// }
 
-//sequelize transaction 
-const t = await sequelize.transaction();
+// //sequelize transaction 
+// const t = await sequelize.transaction();
 
-try {
+// try {
 
   // Then, we do some calls passing this transaction as an option:
 
-  const user = await User.create({
-    firstName: 'Bart',
-    lastName: 'Simpson'
-  }, { transaction: t });
+//   const user = await User.create({
+//     firstName: 'Bart',
+//     lastName: 'Simpson'
+//   }, { transaction: t });
 
-  await user.addSibling({
-    firstName: 'Lisa',
-    lastName: 'Simpson'
-  }, { transaction: t });
+//   await user.addSibling({
+//     firstName: 'Lisa',
+//     lastName: 'Simpson'
+//   }, { transaction: t });
 
-  // If the execution reaches this line, no errors were thrown.
-  // We commit the transaction.
-  await t.commit();
+//   // If the execution reaches this line, no errors were thrown.
+//   // We commit the transaction.
+//   await t.commit();
 
-} catch (error) {
+// } catch (error) {
 
-  // If the execution reaches this line, an error was thrown.
-  // We rollback the transaction.
-  await t.rollback();
+//   // If the execution reaches this line, an error was thrown.
+//   // We rollback the transaction.
+//   await t.rollback();
 
-}
+// }
 
 // mongodb doesnot support migration features as relational database do because of schemaless featurses of mongodb
 
@@ -1062,30 +1062,30 @@ try {
 //npx sequelize-cli db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js
 
 
-const project = await Project.findOne({ where: { title: 'My Title' } });
-const [user, created] = await User.findOrCreate({
-  where: { username: 'sdepold' },
-  defaults: {
-    job: 'Technical Lead JavaScript'
-  }
-});
-const { count, rows } = await Project.findAndCountAll({
-  where: {
-    title: {
-      [Op.like]: 'foo%'
-    }
-  },
-  offset: 10,
-  limit: 2
-});
+// const project = await Project.findOne({ where: { title: 'My Title' } });
+// const [user, created] = await User.findOrCreate({
+//   where: { username: 'sdepold' },
+//   defaults: {
+//     job: 'Technical Lead JavaScript'
+//   }
+// });
+// const { count, rows } = await Project.findAndCountAll({
+//   where: {
+//     title: {
+//       [Op.like]: 'foo%'
+//     }
+//   },
+//   offset: 10,
+//   limit: 2
+// });
 
-const project = await Project.findByPk(123);
-if (project === null) {
-  console.log('Not found!');
-} else {
-  console.log(project instanceof Project); // true
-  // Its primary key is 123
-}
+// const project = await Project.findByPk(123);
+// if (project === null) {
+//   console.log('Not found!');
+// } else {
+//   console.log(project instanceof Project); // true
+//   // Its primary key is 123
+// }
 // mongoose query
 YourModel.findByIdAndUpdate(documentId, { age: 30 }, { new: true })
 YourModel.findOneAndUpdate({ name: 'John' }, { age: 30 }, { new: true })
@@ -1118,10 +1118,10 @@ schema.post('save', function() {
   console.log('this gets printed fourth');
 });
 
-const User = mongoose.model('User', userSchema);
+// const User = mongoose.model('User', userSchema);
 
-const doc = new User({ name: 'John', age: 30 });
-await doc.save({ validateModifiedOnly: true });
+// const doc = new User({ name: 'John', age: 30 });
+// await doc.save({ validateModifiedOnly: true });
 
 
 // sequelize hooks
@@ -1133,7 +1133,7 @@ await doc.save({ validateModifiedOnly: true });
 (2)
   beforeValidate(instance, options)
 
-[... validation happens ...]
+// [... validation happens ...]
 
 (3)
   afterValidate(instance, options)
@@ -1145,7 +1145,7 @@ await doc.save({ validateModifiedOnly: true });
   beforeSave(instance, options)
   beforeUpsert(values, options)
 
-[... creation/update/destruction happens ...]
+// [... creation/update/destruction happens ...]
 
 (5)
   afterCreate(instance, options)
