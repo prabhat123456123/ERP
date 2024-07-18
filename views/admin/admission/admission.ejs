@@ -22,7 +22,12 @@
                <div class="header-title">
                   <h1>SMART SCHOOL Dashboard</h1>
                   <small>Very detailed & featured admin.</small>
+                   <% if(user[0].role==="school"){ %>
+                   <a href="/attendance/attendance" class="btn  btn-success text-right" target="_blank"><i class="fa fa-plus"></i>Go to Attendance Section</a> 
+                   <% } %>
                </div>
+              
+
             </section>
 			
             <!-- Main content -->

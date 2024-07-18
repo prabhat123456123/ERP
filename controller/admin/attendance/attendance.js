@@ -15,6 +15,14 @@ const attendanceStudent = async (req, res, next) => {
     next(error);
   }
 };
+const attendance = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().getClass(req);
+    return res.render("admin/attendance/attendance",{nonce: res.locals.nonce,data:data});
+  } catch (error) {
+    next(error);
+  }
+};
 const getStudent = async (req, res, next) => {
   try {
     const adm = await new AttendanceManagement().getStudent(req,res);
@@ -89,6 +97,16 @@ const getFaculty = async (req, res, next) => {
 const updateFaculty = async (req, res, next) => {
   try {
     const data = await new AttendanceManagement().updateFaculty(req.body);
+   
+    //  console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
+const updateAttendanceById = async (req, res, next) => {
+  try {
+    const data = await new AttendanceManagement().updateAttendanceById(req,res);
    
     //  console.log(data)
     return res.send(data);
@@ -234,9 +252,24 @@ const getReportByFaculty = async (req, res, next) => {
     next(error);
   }
 };
-
+const getAttendance = async (req, res, next) => {
+  try {
+    const adm = await new AttendanceManagement().getAttendance(req,res);
+     const count = await new AttendanceManagement().getAttendanceCount(req,res);
+    const data = JSON.stringify({
+      draw: parseInt(req.body.draw),
+      recordsFiltered: count.length,
+      recordsTotal: count.length,
+      data: adm.length ? adm : [],
+    });
+     console.log(data)
+    return res.send(data);
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 module.exports = {
- attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,checkinStudentAttendance,checkoutStudentAttendance,getStudentAttendanceReport,checkinFacultyAttendance,checkoutFacultyAttendance,getFacultyAttendanceReport,getReportByStudent,getReportByFaculty
+ attendanceStudent,attendanceFaculty,getFaculty,updateFaculty,deleteFaculty,deleteMultipleStudent,deleteMultipleFaculty,getStudent,updateStudent,deleteStudent,checkinStudentAttendance,checkoutStudentAttendance,getStudentAttendanceReport,checkinFacultyAttendance,checkoutFacultyAttendance,getFacultyAttendanceReport,getReportByStudent,getReportByFaculty,attendance,getAttendance,updateAttendanceById
 };

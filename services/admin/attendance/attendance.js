@@ -108,6 +108,61 @@ if (req.user[0].role == "faculty") {
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
+  async updateAttendanceById(req,res) {
+    try {
+         const uniqueNum = uuidv4();
+       const currentTime = getDate("YYYY-MM-DD hh:mm");
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+       if (req.user[0].role == "school") {
+         const data = await sequelize.query(
+           `SELECT * FROM student_attendance WHERE track_student_id = '${req.body.studentId}'`,
+           {
+             type: QueryTypes.SELECT,
+           
+           }
+         );
+         if (data.length > 0) {
+           console.log("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
+          await sequelize.query(
+            `UPDATE student_attendance SET check_in ='${currentTime}', check_in_flag = "1",attendance_status = '${req.body.status}' WHERE track_student_id = '${id}'`,
+            {
+              type: QueryTypes.UPDATE,
+          
+            }
+          );
+          return true;
+        } else {
+    
+          await sequelize.query(
+            "INSERT INTO student_attendance(track_id,track_student_id,attendance_status,check_in,check_in_flag,created_by,created_at)VALUES(?,?,?,?,?,?,?)",
+            {
+              replacements: [
+                uniqueNum,
+                req.body.studentId,
+               req.body.status,
+               currentTime,
+                "1",
+                req.user[0].role,
+                currentTime,
+              ],
+              type: QueryTypes.INSERT,
+            }
+          );
+      
+          return true;
+        }
+        
+       }
+
+    
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
  async getStudent(req,res) {
     try {
 //  console.log(sequelize)
@@ -849,7 +904,75 @@ data[i]["attendance_status"] = `${data[i].attendance_status}`;
       throw new ErrorHandler(SERVER_ERROR, error);
     }
   }
-  
+  async getAttendance(req,res) {
+    try {
+    
+       const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = `track_id = '${req.user[0].track_id}' AND `
+      }
+    
+       const data = await sequelize.query(
+        `SELECT student.track_id,track_class_id,track_school_id,name,email,gender,student_attendance.attendance_status FROM student LEFT JOIN student_attendance ON student_attendance.track_student_id = student.track_id  WHERE track_school_id = '${id}' AND ` + whereClause + `(name like "%${
+          req.body.search.value
+        }%" OR email like "%${req.body.search.value}%" OR attendance_status like "%${req.body.search.value}%") LIMIT ${parseInt(
+          req.body.length
+        )} OFFSET ${parseInt(req.body.start)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      
+
+      for (let i = 0; i < data.length; i++) {
+        let buttonText = await (!data[i].attendance_status || data[i].attendance_status==="A")?"Check IN":"Check OUT"
+        let parameter = await (!data[i].attendance_status || data[i].attendance_status==="A")?"P":"A"
+        data[i]["check"] = `<input type='checkbox' data-id='${data[i].track_id}' class='delete_check'>`;
+        data[i]["name"] = `${data[i].name}`;
+        data[i]["email"] = `${data[i].email}`;
+        data[i]["gender"] = `${data[i].gender}`;
+        data[i]["attendance_status"] = `${data[i].attendance_status?"Present":"Absent"}`;
+
+        data[i][
+          "action"
+        ] = `<button class='btn btn-primary btn-sm checkinBtn' onclick='checkInAttendance(${data[i].track_id},${parameter})' data-id='${data[i].track_id}' data-status='${parameter}'> ${buttonText} </button> `;
+       
+      }
+
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
+    async getAttendanceCount(req,res) {
+    try {
+//  console.log(sequelize)
+      const id = req.user[0].role=="school"? req.user[0].track_id : req.user[0].track_school_id
+      let whereClause = "";
+      if (req.user[0].role == "student") {
+        whereClause = ` AND track_id = '${req.user[0].track_id}'`
+      }
+       const data = await sequelize.query(
+        `SELECT * FROM student WHERE track_school_id = '${id}'`+ whereClause,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+ 
+      return data;
+    } catch (error) {
+      if (error.statusCode) {
+        console.log("hello");
+        throw new ErrorHandler(error.statusCode, error.message);
+      }
+      throw new ErrorHandler(SERVER_ERROR, error);
+    }
+  }
  
 }
 

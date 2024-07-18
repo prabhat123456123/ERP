@@ -1,0 +1,295 @@
+<%- include('../../partials/top-bar') %>
+
+
+      <!-- Site wrapper -->
+      <div class="wrapper">
+         <%- include('../../partials/header') %>
+		
+         <!-- =============================================== -->
+         <!-- Left side column. contains the sidebar -->
+      
+         <!-- =============================================== -->
+         <!-- Content Wrapper. Contains page content -->
+            
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+               <div class="header-icon">
+                  <i class="fa fa-dashboard"></i>
+               </div>
+               <div class="header-title">
+                  <h1>SMART SCHOOL Dashboard</h1>
+                  <small>Very detailed & featured admin.</small>
+               </div>
+            </section>
+			
+            <!-- Main content -->
+            <section class="content">
+          
+			<div class="panel panel-bd lobidrag">
+                        <div class="panel-heading">
+                           <div class="btn-group" id="buttonexport">
+                              <a href="#">
+                                 <h4>All student</h4>
+                              </a>
+                           </div>
+                        </div>
+                        <div class="panel-body">
+                            
+                            <%- include('../../partials/message') %>
+                            <% if(user[0].role==="school"){ %>
+					 
+
+        <% } %>
+		<br>
+
+					<div class="table-responsive">
+						
+						<table id="sample_data" style="width: 100%;" class="table table-bordered table-striped">
+						
+							<thead>
+								<tr>
+									<th></th>
+									<th> Name</th>
+									<th> Email</th>
+									<th>Gender</th>
+									<th>Status</th>
+									<th class="noExport">Action</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		
+            </section>
+		
+         <!-- /.content-wrapper -->
+        <footer class="main-footer" style="margin-left: 0;">
+            <strong>Copyright &copy; 2023-2024 <a href="#">School Portal</a>.</strong> All rights reserved.
+         </footer>
+      </div>
+	 <!-- Modal1 -->
+      <%- include('../../partials/loader') %>
+            
+               
+      <!-- /.wrapper -->
+      <!-- Start Core Plugins
+        
+         =====================================================================-->
+   <%- include('../../partials/footer-script') %>
+
+   <script nonce="<%= nonce %>" type="text/javascript" language="javascript">
+
+document.addEventListener("click", function(event) {
+    const target = event.target;
+    if (target.classList.contains("checkinBtn")) {
+        checkInAttendance(target.dataset.id,target.dataset.status);
+    }
+});
+     
+    
+       
+function checkInAttendance(studentId,status) {
+    try {
+      
+      $.ajax({
+         url: `/attendance/update-attendance-byid`,
+         type: "post",
+         data:{studentId:studentId,status:status},
+         dataType: "json",
+         cache: false,
+         beforeSend: function() {
+          $('#loader').removeClass('hidden')
+             },
+         success: function (data) {
+    alert("lplplp")
+          
+          
+        },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+           
+ 
+    
+$(document).ready(function(){
+	
+
+	toastr.options = {
+				'closeButton': true,
+				'debug': false,
+				'newestOnTop': false,
+				'progressBar': true,
+				'positionClass': 'toast-top-center',
+				'preventDuplicates': false,
+				'showDuration': '1000',
+				'hideDuration': '1000',
+				'timeOut': '5000',
+				'extendedTimeOut': '1000',
+				'showEasing': 'swing',
+				'hideEasing': 'linear',
+				'showMethod': 'fadeIn',
+				'hideMethod': 'fadeOut',
+			}
+
+    
+    // Check all 
+   $('#checkall').click(function(){
+      if($(this).is(':checked')){
+         $('.delete_check').prop('checked', true);
+      }else{
+         $('.delete_check').prop('checked', false);
+      }
+   });
+     // Check all 
+   $('#multDel').click(function(){
+  if($('#checkall').is(':checked')){
+ 
+       
+      $("#deleteMultipleStudentDiv").html("");
+      $("#deleteMultipleStudentModal").modal("toggle");
+   
+          
+            let formDetails = ``;
+            formDetails += `
+                  
+                    
+                   <div class="col-md-12">
+                    Are You Sure. ?
+                   </div>
+
+                   <div class="text-center mt-3">
+                    <a  class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal"> No </a>
+                     <button
+                       type="submit"
+                       class="btn btn-primary waves-effect waves-light"
+                       id="delete_record"
+                    
+                     >
+                       Yes
+                     </button>
+                   </div>
+                 `;
+            $("#deleteMultipleStudentDiv").html(formDetails);
+            }else{
+   alert("Please Select All")
+
+ }
+      
+   });
+
+   // Delete record
+   $(document).on('click','#delete_record',function(){
+      var deleteids_arr = [];
+      // Read all checked checkboxes
+      $("input:checkbox[class=delete_check]:checked").each(function () {
+         deleteids_arr.push($(this).attr('data-id'));
+      });
+      // Check checkbox checked or not
+      if(deleteids_arr.length > 0){
+        
+      
+            $.ajax({
+               url: '/admission/delete-multiple',
+               type: 'post',
+               data: {deleteids_arr: deleteids_arr},
+               beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+               success: function(response){
+                   $("#deleteMultipleStudentModal").modal("hide");
+				toastr.error('Record Deleted Successfuly !!')
+                  $('#sample_data').DataTable().ajax.reload();
+               },
+                 complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+            });
+         
+      }
+   });
+	$(document).on("click",".delBtn",function(){
+		
+ const studentId = $("#studentId").val();
+  $.ajax({
+        url: '/admission/delete-admission',
+        type: "POST",
+        data: {
+          studentId:studentId,
+        
+        },
+        beforeSend: function() {
+                     $('#loader').removeClass('hidden')
+                     },
+        success: function () {
+      $("#deleteStudentModal").modal("hide");
+     $('#sample_data').DataTable().ajax.reload();
+	toastr.error('Record Deleted Successfuly !!')
+
+        },
+          complete: function(){
+                      $('#loader').addClass('hidden')
+                      },
+    });
+	
+ 
+});
+	
+var dataTable = $('#sample_data').DataTable({
+		"processing": true,
+		"serverSide": true,
+		 dom: 'Bfrtip',
+   buttons: [
+      {
+         extend: 'csv',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      },
+       {
+         extend: 'pdfHtml5',
+        
+         exportOptions: {
+            columns: 'th:not(:last-child)'
+         }
+      }
+   ],
+		"order":[],
+		"ajax":{
+			url:"/attendance/get-attendance",
+			type:"POST",
+		},
+         columns: [
+        { data: "check" },
+        { data: "name" },
+        { data: "email" },
+        { data: "gender" },
+        { data: "attendance_status" },
+        { data: "action" },
+        
+        
+	],
+		
+	});
+
+	
+  
+	
+});	
+setTimeout(function () {
+    $("#error").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#error_msg").hide();
+  }, 3000);
+  setTimeout(function () {
+    $("#success_msg").hide();
+  }, 3000);
+</script>
