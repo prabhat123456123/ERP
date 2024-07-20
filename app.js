@@ -128,9 +128,9 @@ require("./config/passport")(passport);
 
 app.use((req, res, next) => {
   console.log(req.originalUrl);
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
-  res.header('X-XSS-Protection', '1; mode=block');
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  // res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  // res.header('X-XSS-Protection', '1; mode=block');
+  // res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");

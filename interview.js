@@ -585,8 +585,11 @@ let parsedQuery = querystring.stringify(urlObject);
 
 console.log("Parsed Query:", parsedQuery); // user=sam&access=true&role=admin&role=editor&role=manager
 
+import { find, update } from "lodash";
 // unescape()	Returns an unescaped query string
 import querystring from "querystring" 
+import { encryptUsingSessionKey } from "./utils/message-helper";
+import { INSERT, SELECT, UPDATE } from "sequelize/lib/query-types";
   
 // String to be decoded 
 // let str = "I%20love%20geeksforgeeks"; 
@@ -2803,27 +2806,27 @@ fs.readFile('file.txt', 'utf8')
 //   }
 // ]);
 
-// { 
-//   "_id": 1, 
-//   "product_id": 101, 
-//   "customer_id": 1, 
-//   "quantity": 2, 
+// {
+//   "_id": 1,
+//   "product_id": 101,
+//   "customer_id": 1,
+//   "quantity": 2,
 //   "customerDetails": { "_id": 1, "name": "Alice", "email": "alice@example.com" },
 //   "productDetails": { "_id": 101, "name": "Laptop", "price": 800 }
 // }
-// { 
-//   "_id": 2, 
-//   "product_id": 102, 
-//   "customer_id": 2, 
-//   "quantity": 1, 
+// {
+//   "_id": 2,
+//   "product_id": 102,
+//   "customer_id": 2,
+//   "quantity": 1,
 //   "customerDetails": { "_id": 2, "name": "Bob", "email": "bob@example.com" },
 //   "productDetails": { "_id": 102, "name": "Phone", "price": 500 }
 // }
-// { 
-//   "_id": 3, 
-//   "product_id": 103, 
-//   "customer_id": 1, 
-//   "quantity": 3, 
+// {
+//   "_id": 3,
+//   "product_id": 103,
+//   "customer_id": 1,
+//   "quantity": 3,
 //   "customerDetails": { "_id": 1, "name": "Alice", "email": "alice@example.com" },
 //   "productDetails": { "_id": 103, "name": "Tablet", "price": 300 }
 // }
@@ -2900,10 +2903,220 @@ fs.readFile('file.txt', 'utf8')
 
   // statusCode and error code (200,401,503 AND ERR001,INVALID_PARAMETER)
 // put and patch
-    // socketIo
+// The PATCH method is used to partially update a resource. When you send a PATCH request, you only send the fields you want to update, and the server only updates those specific fields, leaving the rest of the resource unchanged.
+
+// PUT updates the entire resource, replacing it with the new resource provided.
+// PATCH updates only the specified fields in the resource.
+  
+// socketIo
+// WebSocket is a protocol that provides full-duplex communication channels over a single TCP connection. It is designed to be a more efficient alternative to HTTP for real-time communication.
+//     Full-Duplex Communication: Both client and server can send and receive messages simultaneously.
+// Persistent Connection: Once established, the connection remains open, allowing for real-time data exchange.
+// Low Latency: Because the connection stays open, there is less overhead in establishing connections, leading to faster communication.
+// Binary and Text Data: WebSockets can transmit both binary and text data, making them versatile for various types of real - time applications.
+  
+//   Use Cases:
+// Real-time chat applications
+// Online gaming
+// Real-time notifications
+// Live streaming
+
+// Socket.IO is a library that enables real - time, bidirectional, and event - based communication between web clients and servers.It is built on top of WebSocket but provides additional features and fallbacks for environments where WebSocket is not supported.
+  
+//   Event-Based Communication: Socket.IO uses an event-driven model, making it easier to handle complex interactions.
+// Automatic Reconnection: If the connection drops, Socket.IO will automatically attempt to reconnect.
+// Fallback Mechanisms: If WebSocket is not available, Socket.IO will fall back to other techniques such as long polling.
+// Rooms and Namespaces: These features allow for better organization and management of connections and events.
+// Cross-Browser Compatibility: Socket.IO ensures that your real-time application works across various browsers and network conditions.
+// Example Use Cases:
+// Real-time chat applications
+// Collaborative document editing
+// Real-time analytics
+// Multiplayer online games
 // eventEmitter
+// EventEmitter is a core module in Node.js that provides a way to handle asynchronous events. It is a class that is part of the events module/
+// const EventEmitter = require('events');
+// const myEmitter = new EventEmitter();
+// myEmitter.on('event', () => {
+//   console.log('An event occurred!');
+// });
+// myEmitter.emit('event');
+
 // promise and observable
 // setImmediate and process.nextTick
 // promise.all and promise.allSettled
 // stored procedure and viwes
-  // trigger
+
+// Views can encapsulate complex queries, making it easier to work with data without needing to rewrite those complex queries repeatedly.
+// For example, if you frequently need to join several tables and filter data, you can create a view that handles this logic.
+// Consistency and Reusability:
+// By using views, you ensure that complex logic is defined in one place and reused wherever needed, promoting consistency across the application.
+// Views also make it easier to manage and maintain SQL queries.
+// Views can help manage derived data or aggregated information more efficiently.For example, you can create a view to show the average sales per region based on a sales table.
+
+// Views can abstract the underlying table structures. This means that if the schema of the underlying tables changes, the view can be updated to reflect these changes without affecting the end users or applications relying on the view.
+// CREATE Proc findDetails // alter and drop we can also used
+// @emp_id INTEGER;
+// @name varchar(20)
+
+// with encryption
+// AS
+// BEGIN
+// SELECT * FROM employee WHERE id = @emap_id;
+// SELECT * FROM employee WHERE name = @name;
+// END
+
+// call stored procedure
+// findDetails 2, 'lol';
+// OR
+// execute findDetails 2, 'lol'
+// OR
+// exec findDetails 2, 'lol'
+// trigger
+// in mongodb we have two types of trigger (database trigger and scheduled trigger) in atlas provided
+// database trigger will execute at real time when we perform database operation operation ( insert docement,update docement,delete docement, replace docement) with collection.
+// example -- sending mails to user when he creates an order.
+// scheduled trigger will execute at specefic time or in a interval of time.
+//  example ---trigger a function that will move orders older than one year to the archived_orders collection:
+
+  // Calculate the date one year ago from today
+  // const oneYearAgo = new Date();
+//   oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+//   // Find orders older than one year
+//   const oldOrders = await ordersCollection.find({ orderDate: { $lt: oneYearAgo } }).toArray();
+
+//   if (oldOrders.length > 0) {
+//     // Insert old orders into the archived_orders collection
+//     await archivedOrdersCollection.insertMany(oldOrders);
+
+//     // Remove old orders from the orders collection
+//     await ordersCollection.deleteMany({ orderDate: { $lt: oneYearAgo } });
+//   }
+
+//   console.log(`Archived ${oldOrders.length} orders`);
+// };
+
+// trigger in mysql
+// before INSERT
+// after INSERT
+// before update
+// after update
+// before delete
+// after delete
+
+// DELIMITER//
+// CREATE TRIGGER after_user_insert AFTER INSERT
+// on user
+// FOR EACH ROW
+// BIGIN
+// INSERT INTO new_user(new_user_id)values(new.id);
+// END
+// DELEMITER;
+
+// DELEMITER//
+// CREATE TRIGGER before_user_update BEFORE UPDATE
+// on user
+// FOR EACH ROW
+// BEGIN
+// INSERT INTO user_log(name, email, phone) values(old.name, old.email, old.phone);
+// END
+// DELEMITER;
+
+// DELEMITER//
+// CREATE TRIGGER before_user_update BEFORE UPDATE
+// on user
+// FOR EACH ROW FOLLOW before_user_update1
+// BEGIN
+// INSERT INTO user_log(name, email, phone) values(old.name, old.email, old.phone);
+// END
+// DELEMITER;
+
+
+// SELECT * FROM information_schema.TRIGGERS where TRIGGER_SCHEMA = 'databaseName'
+
+// SHOW TRIGGERS;
+  
+// DROP TRIGGER databaseName.triggerName
+
+
+// assoication in sequelize
+// Define the associations
+// A one-to-many relationship means a single record in one table is associated with multiple records in another table. Conversely, many-to-one means multiple records in one table are associated with a single record in another table.
+// A many-to-many relationship means that multiple records in one table are associated with multiple records in another table. This is typically implemented with a join table.
+
+// The HasOne association
+// The BelongsTo association
+// The HasMany association
+// The BelongsToMany association
+
+// To create a One-To-One relationship, the hasOne and belongsTo associations are used together;
+// To create a One-To-Many relationship, the hasMany and belongsTo associations are used together;
+// To create a Many-To-Many relationship, two belongsToMany calls are used together
+
+
+User.hasMany(Post, { foreignKey: 'userId' }); // One-to-Many
+Post.belongsTo(User, { foreignKey: 'userId' }); // Many-to-One
+
+Student.belongsToMany(Course, { through: Enrollment });
+Course.belongsToMany(Student, { through: Enrollment });
+
+// set and get in sequelize
+// const User = sequelize.define('user', {
+  
+//   username: {
+//     type: DataTypes.STRING,
+//     get() {
+//       const rawValue = this.getDataValue('username');
+//       return rawValue ? rawValue.toUpperCase() : null;
+//     },
+//   },
+// });
+
+// const User = sequelize.define('user', {
+//   username: DataTypes.STRING,
+//   password: {
+//     type: DataTypes.STRING,
+//     set(value) {
+//       // Storing passwords in plaintext in the database is terrible.
+//       // Hashing the value with an appropriate cryptographic hash function is better.
+//       this.setDataValue('password', hash(value));
+//     },
+//   },
+// });
+
+// const { DataTypes } = require('sequelize');
+
+// const User = sequelize.define('user', {
+//   firstName: DataTypes.TEXT,
+//   lastName: DataTypes.TEXT,
+//   fullName: {
+//     type: DataTypes.VIRTUAL,
+//     get() {
+//       return `${this.firstName} ${this.lastName}`;
+//     },
+//     set(value) {
+//       throw new Error('Do not try to set the `fullName` value!');
+//     },
+//   },
+// });
+// dialectOptions: { multipleStatements: true }
+  const sql = `
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL
+      );
+      CREATE TABLE IF NOT EXISTS posts (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        userId INT,
+        content TEXT,
+        FOREIGN KEY (userId) REFERENCES users(id)
+      );
+    `;
+
+// advantage of test case
+// Bug Detection: Test cases help identify bugs and issues early in the development process, reducing the cost and effort needed for fixing them later.
+// Self - Documenting Code: Well - written test cases serve as documentation for the codebase, explaining how different parts of the application are supposed to work.
+
+// we can identify the requirements and expected behavior of the application and API
+// Easier Maintenance: Test cases make it easier to maintain and update the codebase by ensuring that changes do not introduce new bugs.
