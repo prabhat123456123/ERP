@@ -4,7 +4,7 @@ module.exports = {
       name: "ADMIN-DEV",
       script: "./bin/www-admin",
       watch: false,
-      ignore_watch: ["./.pm2","node_modules", "public/uploads"],
+      ignore_watch: ["./.pm2","node_modules"],
       env: {
         NODE_ENV: "development",
         DB_HOST: "localhost",
