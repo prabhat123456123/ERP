@@ -1,4 +1,4 @@
-//Sort array using loop
+//Sort array using loop for number array and string array
 function bubbleSort(arr) {
   const n = arr.length;
 
@@ -18,29 +18,9 @@ function bubbleSort(arr) {
 }
 
 // Example usage
-const unsortedArray = [64, 34, 25, 12, 22, 11, 90];
+const unsortedArray = [64, 34, 25, 12, 22, 11, 90] or ["banana", "apple", "orange", "grape", "kiwi"];
 const sortedArray = bubbleSort(unsortedArray.slice()); // Create a copy to avoid modifying the original array
 
-console.log("Unsorted Array:", unsortedArray);
-console.log("Sorted Array:", sortedArray);
-
-function bubbleSortStrings(arr) {
-  const n = arr.length;
-
-  for (let i = 0; i < n - 1; i++) {
-    for (let j = 0; j < n - 1 - i; j++) {
-      // Compare adjacent strings and swap if necessary
-      if (arr[j] > arr[j + 1]) {
-        // Swap
-        const temp = arr[j];
-        arr[j] = arr[j + 1];
-        arr[j + 1] = temp;
-      }
-    }
-  }
-
-  return arr;
-}
 
 // Example usage
 const unsortedStrings = ["banana", "apple", "orange", "grape", "kiwi"];
@@ -48,10 +28,6 @@ const sortedStrings = bubbleSortStrings(unsortedStrings.slice()); // Create a co
 
 console.log("Unsorted Strings:", unsortedStrings);
 console.log("Sorted Strings:", sortedStrings);
-
-
-
-
 
 function findSubstring(mainString, substring) {
   const index = mainString.indexOf(substring);
@@ -80,6 +56,18 @@ if (index1 !== -1) {
 //S3
 //how to use switch case, forloop, forin forOf in mongodb query and sql query.
 //Difference between docker and github
+// Purpose: Docker Hub is a cloud-based repository where you can store, share, and manage Docker container images.
+// Docker Hub: Focuses on storing and distributing Docker images.
+// Docker Hub: Used in the deployment phase to pull and run pre-built Docker images.
+
+// Purpose: GitHub is a web-based platform for version control and collaborative software development using Git.
+// GitHub: Focuses on source code management and version control.
+// GitHub: Used in the development phase for source code management, collaboration, and CI/CD workflows.
+
+// Development Workflow: Developers use Git to manage source code. When the code is ready, they use Docker to package the application into a container. This ensures that the application runs the same way in development, testing, and production environments
+
+// git stash is a powerful command in Git that allows you to temporarily save changes in your working directory without committing them. This can be useful when you need to switch branches or perform other tasks but want to return to your current work later
+
 //Integrate razor pay
 //Write a cron job for checking all file in folder upload to cloudinary
 //Fetch , Ajax, axios
@@ -111,12 +99,12 @@ const readableStream = fs.createReadStream("example.txt", "utf-8");
 
 //Curried functions can make code more readable and maintainable, especially when dealing with complex functions or a series of transformations.
 
-// Non-curried function
+// Non-curried function speed is fast because it will take all arguement at one time and return it immediatly
 function add(x, y) {
   return x + y;
 }
 
-// Curried version
+// Curried version speed is slow because it will create a function every time so it will take extra peformance cost.
 function curryAdd(x) {
   return function (y) {
     return x + y;
@@ -127,7 +115,10 @@ function curryAdd(x) {
 const sum = add(2, 3); // Result: 5
 const curriedSum = curryAdd(2)(3); // Result: 5
 //------------------------------
-
+// Data Encapsulation: Closures allow private data to be encapsulated within a function.
+// Reusability: Currying helps in reusing a function with a fixed initial argument.
+// Readability: It improves code readability since the scope and lifetime of variables are clearly defined by their lexical context.
+// Security: Lexical scope can restrict access to variables, enhancing security and avoiding naming conflicts.
 console.log("1");
 const promise = new Promise((resolve, reject) => {
   for (var i = 0; i < 100000000000000; i++) {
@@ -459,7 +450,7 @@ console.log(sampleUrl.toString());
 
 const url = require('url'); 
   
-// URL address 
+// URL address  
 const address = 'https://geeksforgeeks.org/projects?sort=newest&lang=nodejs'; 
   
 // Call parse() method using url module 
@@ -735,97 +726,6 @@ function customSort(arr) {
 // // sequelize
 // // SELECT foo, COUNT(hats) AS n_hats, bar FROM;
 
-// Model.findAll({
-//   attributes: [
-//     'foo',
-//     [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats'],
-//     'bar'
-//   ]
-// });
-
-// // This is shorter, and less error prone because it still works if you add / remove attributes from your model later
-// Model.findAll({
-//   attributes: {
-//     include: [
-//       [sequelize.fn('COUNT', sequelize.col('hats')), 'n_hats']
-//     ]
-//   }
-// });
-
-// Post.findAll({
-//   where: {
-//     [Op.and]: [
-//       { authorId: 12 },
-//       { status: 'active' }
-//     ]
-//   }
-// });
-
-// Post.findAll({
-//   where: {
-//     [Op.or]: [
-//       { authorId: 12 },
-//       { authorId: 13 }
-//     ]
-//   }
-// });
-
-// Foo.findAll({
-//   where: {
-//     rank: {
-//       [Op.or]: {
-//         [Op.lt]: 1000,
-//         [Op.eq]: null
-//       }
-//     },
-//     // rank < 1000 OR rank IS NULL
-
-//     {
-//       createdAt: {
-//         [Op.lt]: new Date(),
-//         [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
-//       }
-//     },
-//     // createdAt < [timestamp] AND createdAt > [timestamp]
-
-//     {
-//       [Op.or]: [
-//         {
-//           title: {
-//             [Op.like]: 'Boat%'
-//           }
-//         },
-//         {
-//           description: {
-//             [Op.like]: '%boat%'
-//           }
-//         }
-//       ]
-//     }
-//     // title LIKE 'Boat%' OR description LIKE '%boat%'
-//   }
-// });
-
-// Post.findAll({
-//   where: {
-//     [Op.or]: [
-//       sequelize.where(sequelize.fn('char_length', sequelize.col('content')), 7),
-//       {
-//         content: {
-//           [Op.like]: 'Hello%'
-//         }
-//       },
-//       {
-//         [Op.and]: [
-//           { status: 'draft' },
-//           sequelize.where(sequelize.fn('char_length', sequelize.col('content')), {
-//             [Op.gt]: 10
-//           })
-//         ]
-//       }
-//     ]
-//   }
-// });
 
 
 const { Sequelize, DataTypes } = require('sequelize');
@@ -1042,7 +942,6 @@ mongoose
 
 // mongodb doesnot support migration features as relational database do because of schemaless featurses of mongodb
 
-
 //Unmanaged transactions: Committing and rolling back the transaction should be done manually by the user (by calling the appropriate Sequelize methods).
 
 // Managed transactions: Sequelize will automatically rollback the transaction if any error is thrown, or commit the transaction otherwise. Also, if CLS (Continuation Local Storage) is enabled, all queries within the transaction callback will automatically receive the transaction object.
@@ -1213,8 +1112,8 @@ sequelize.beforeConnect(async (config) => {
 // YourModel.beforeBulkDestroy()
 // YourModel.afterBulkCreate()
 
-// Aggregate functions: 
-// These functions are used to do operations from the values of the column and a single value is returned. 
+// Aggregate functions:
+// These functions are used to do operations from the values of the column and a single value is returned.
 // AVG()
 // COUNT()
 // FIRST()
@@ -1223,8 +1122,8 @@ sequelize.beforeConnect(async (config) => {
 // MIN()
 // SUM()
 
-// Scalar functions: 
-// These functions are based on user input, these too returns single value. 
+// Scalar functions:
+// These functions are based on user input, these too returns single value.
 // UCASE()
 // LCASE()
 // MID()
@@ -1233,7 +1132,7 @@ sequelize.beforeConnect(async (config) => {
 // NOW()
 // FORMAT()
 
-//mysql string function 
+//mysql string function
 // CHAR_LENGTH	Returns the length of a string (in characters)
 // CHARACTER_LENGTH	Returns the length of a string (in characters)
 // CONCAT	Adds two or more expressions together
@@ -1268,6 +1167,7 @@ sequelize.beforeConnect(async (config) => {
 // UPPER	Converts a string to upper-case
 
 //MySQL Numeric Functions
+
 
 // ABS	Returns the absolute value of a number
 // ACOS	Returns the arc cosine of a number
@@ -1662,10 +1562,10 @@ var x = true&&false;
 // Foreign keys are supported by the InnoDB storage engine. Make sure your tables are using InnoDB, or convert them if needed. You can do this when creating the table:
 
 // ALTER TABLE child_table
-// ADD FOREIGN KEY (child_column)
+// ADD  FOREIGN KEY (child_column)
 // REFERENCES parent_table(parent_column);
 
-// for adding index on a existing table 
+// for adding index on a existing table
 // CREATE INDEX index_name
 // ON table_name (column1, column2, ...);
 
@@ -1707,7 +1607,7 @@ var x = true&&false;
 
 // -- Update all active to inactive and all inactive to active in one query
 // UPDATE your_table
-// SET status = CASE 
+// SET status = CASE
 //     WHEN status = 'active' THEN 'inactive'
 //     WHEN status = 'inactive' THEN 'active'
 //     ELSE status
@@ -1725,14 +1625,9 @@ var x = true&&false;
 // 202 Accepted: The request has been accepted for processing but is not yet complete.
 // 204 No Content: The server successfully processed the request, but there is no additional content to send in the response.
 
-// 400 Bad Request: The server cannot understand the request due to a client error.
-// 401 Unauthorized: Similar to 403 Forbidden but specifically for authentication purposes.
-// 402 Payment Required: Reserved for future use.
-// 403 Forbidden: The client does not have permission to access the requested resource.
-// 404 Not Found: The server cannot find the requested resource.
-// 405 Method Not Allowed: The method specified in the request is not allowed for the resource.
+//  If the server runs out of memory, disk space, or other critical resources, it might not be able to process requests properly, leading to a 500 error 
 
-//500 Internal Server Error: A generic error message returned when an unexpected condition was encountered by the server.
+//500 Internal Server Error: A generic error message returned when an unexpected condition was encountered by the server(Database Connection Failures).
 // 501 Not Implemented: The server does not support the functionality required to fulfill the request.
 // 502 Bad Gateway: The server, while acting as a gateway or proxy, received an invalid response from the upstream server.
 // 503 Service Unavailable: The server is not ready to handle the request. Common causes are a server that is down for maintenance or is overloaded.
@@ -1956,14 +1851,6 @@ console.log(object)
 //Views do not store the data themselves; they represent a query's result set dynamically.
 // When you query a view, the underlying SELECT statement is executed to retrieve the data.
 
-//create view in mysq;l
-
-// CREATE VIEW myview AS
-// SELECT column1, column2
-// FROM mytable
-// WHERE condition;
-
-// SELECT * FROM myview;
 
 
 // If your application requires transactions, data integrity, and foreign key constraints, InnoDB is a good choice.
@@ -1995,173 +1882,7 @@ const fs = require('fs');
 // console.log(data);
 // console.log('Program finished.');
 
-// mongodb Query
-// db.myColl.deleteOne(
-//   { category: "cafe", status: "A" },
-//   { collation: { locale: "fr", strength: 1 } }
-// )
-// db.orders.deleteMany(
-//   { "client" : "Crude Traders Inc." },
-//   { writeConcern: { w : "majority", wtimeout : 100 }}
-// );
-// db.students.drop( { writeConcern: { w: 1 } } )
-// db.pets.dropIndex( { "cat" : -1 } )
-// db.collection.dropIndexes( { a: 1, b: 1 } )
-// db.collection.find( { qty: { $gt: 4 } } )
 
-// db.people.findAndModify(
-//   {
-//     query: { name: "Andy" },
-//     update: { $inc: { score: 1 } },
-//     upsert: true
-//   }
-// )
-
-// db.people.findAndModify({
-//   query: { name: "Tom", state: "active", rating: { $gt: 10 } },
-//   sort: { rating: 1 },
-//   update: { $inc: { score: 1 } }
-// })
-
-//db.bios.findOne(
-  // { contribs: 'OOP' })
-
-  // db.scores.findOneAndDelete(
-  //   { "name" : "M. Tagnum" }
-//  )
-
-// db.scores.findOneAndReplace(
-//   { "score" : { $lt : 20000 } },
-//   { "team" : "Observant Badgers", "score" : 20000 },
-//   { sort: { "score" : 1 } }
-// )
-
-// db.grades.findOneAndUpdate(
-//   { "name" : "R. Stiles" },
-//   { $inc: { "points" : 5 } }
-// )
-
-// db.products.insert( { item: "card", qty: 15 } )
-// db.products.insert( { _id: 10, item: "box", qty: 20 } )
-
-// db.products.insert(
-//   [
-//     { _id: 11, item: "pencil", qty: 50, type: "no.2" },
-//     { item: "pen", qty: 20 },
-//     { item: "eraser", qty: 25 }
-//   ]
-// )
-
- 
-  // db.products.insertMany( [
-  //    { item: "card", qty: 15 },
-  //    { item: "envelope", qty: 20 },
-  //    { item: "stamps" , qty: 30 }
-  // ] );
-
-  // db.products.remove( { qty: { $gt: 20 } } )
-
-  // db.restaurant.replaceOne(
-    // { "name" : "Central Perk Cafe" },
-    // { "name" : "Central Pork Cafe", "Borough" : "Manhattan" }
-//  );
-
-// db.restaurant.replaceOne(
-//   { "name" : "Pizza Rat's Pizzaria" },
-//   { "_id": 4, "name" : "Pizza Rat's Pizzaria", "Borough" : "Manhattan", "violations" : 8 },
-//   { upsert: true }
-// );\
-
-// db.books.update(
-//   { _id: 1 },
-//   {
-//     $inc: { stock: 5 },
-//     $set: {
-//       item: "ABC123",
-//       "info.publisher": "2222",
-//       tags: [ "software" ],
-//       "ratings.1": { by: "xyz", rating: 3 }
-//     }
-//   }
-// )
-
-// db.restaurant.updateOne(
-//   { "name" : "Central Perk Cafe" },
-//   { $set: { "violations" : 3 } }
-// );
-
-// db.restaurant.updateMany(
-//   { violations: { $gt: 4 } },
-//   { $set: { "Review" : true } }
-// );
-
-// const cursor = db.collection('inventory').find({
-//   tags: { $all: ['red', 'blank'] }
-// });
-
-// Model.deleteMany()
-// Model.deleteOne()
-// Model.find()
-// Model.findById()
-// Model.findByIdAndDelete()
-// Model.findByIdAndRemove()
-// Model.findByIdAndUpdate()
-// Model.findOne()
-// Model.findOneAndDelete()
-// Model.findOneAndReplace()
-// Model.findOneAndUpdate()
-// Model.replaceOne()
-// Model.updateMany()
-// Model.updateOne()
-
-
-// sequelize Query
-
-// const { count, rows } = await Project.findAndCountAll({
-//   where: {
-//     title: {
-//       [Op.like]: 'foo%'
-//     }
-//   },
-//   offset: 10,
-//   limit: 2
-// });
-// console.log(count);
-// console.log(rows);
-
-
-// const [user, created] = await User.findOrCreate({
-//   where: { username: 'sdepold' },
-//   defaults: {
-//     job: 'Technical Lead JavaScript'
-//   }
-// });
-// console.log(user.username); // 'sdepold'
-// console.log(user.job); // This may or may not be 'Technical Lead JavaScript'
-// console.log(created); // The boolean indicating whether this instance was just created
-// if (created) {
-//   console.log(user.job); // This will certainly be 'Technical Lead JavaScript'
-// }
-
-// const project = await Project.findOne({ where: { title: 'My Title' } });
-// if (project === null) {
-//   console.log('Not found!');
-// } else {
-//   console.log(project instanceof Project); // true
-//   console.log(project.title); // 'My Title'
-// }
-
-// const project = await Project.findByPk(123);
-// if (project === null) {
-//   console.log('Not found!');
-// } else {
-//   console.log(project instanceof Project); // true
-//   // Its primary key is 123
-// }
-
-//// Create a new user
-const jane = await User.create({ firstName: "Jane", lastName: "Doe" });
-console.log("Jane's auto-generated ID:", jane.id);
 
 // const user = [
 //   { id: "1", title: "test1", desc: "test" },
@@ -2211,6 +1932,25 @@ console.log("Jane's auto-generated ID:", jane.id);
 
 // Sort the array based on the 'age' property
 user.sort((a, b) => a.age - b.age);
+const user = [
+  { id: "1", title: "test1", desc: "teet", age: 22 },
+  { id: "2", title: "test2", desc: "teet", age: 22 },
+  { id: "3", title: "test3", desc: "teet", age: 23 },
+  { id: "4", title: "tes4", desc: "teet", age: 23 },
+];
+
+for (let i = 0; i < user.length - 1; i++) {
+  for (let j = 0; j < user.length - 1 - i; j++) {
+    if (user[j].age > user[j + 1].age) {
+      // Swap elements if they are in the wrong order
+      let temp = user[j];
+      user[j] = user[j + 1];
+      user[j + 1] = temp;
+    }
+  }
+}
+
+console.log(user);
 
 // Sort the array based on the 'title' property
 user.sort((a, b) => b.title.localeCompare(a.title));
@@ -2218,23 +1958,29 @@ console.log(user);
 
 
 //string substring 
-function isSubstring(mainString, substring) {
-  for (let i = 0; i <= mainString.length - substring.length; i++) {
-    if (mainString.slice(i, i + substring.length) === substring) {
-      return true;
+const mainString = "Hello, world!";
+const substring = "d!";
+
+let found = false;
+
+for (let i = 0; i <= mainString.length - substring.length; i++) {
+  let match = true;
+
+  for (let j = 0; j < substring.length; j++) {
+    if (mainString[i + j] !== substring[j]) {
+      match = false;
+      break;
     }
   }
-  return false;
+
+  if (match) {
+    found = true;
+    break;
+  }
 }
 
-const mainString = "Hello, world!";
-const substring = "o, w";
+console.log(found); // Output: true
 
-if (isSubstring(mainString, substring)) {
-  console.log(`${substring} is a substring of ${mainString}`);
-} else {
-  console.log(`${substring} is not a substring of ${mainString}`);
-}
 
 
 
@@ -2316,7 +2062,7 @@ if (isSubstring(mainString, substring)) {
 //     return finalArr;
 // }
 //    console.log(splitArray([2,4,5,6,8,9],4));
-
+// reduce method executes reducer function on each element of array and return single output value
 // let arr = [1,4,5,2,3]
 // let obj = arr.reduce((a,lt,i)=>({...a,[i]:lt}),{})
 // console.log(obj);
@@ -2362,7 +2108,9 @@ if (isSubstring(mainString, substring)) {
 // console.log(str.indexOf("polpll"));
 // console.log(str.search("polpll"));
 // console.log(str.includes("lpll"));
-// console.log(str.match(/lpll/g));
+// let text = "The rain in SPAIN stays mainly in the plain";
+// let result = text.match(/ain/gi);
+// console.log(result) //[ 'ain', 'AIN', 'ain', 'ain' ]
 
 
 
@@ -2469,18 +2217,6 @@ if (isSubstring(mainString, substring)) {
 // shuffle element of array
 // const arr = [1,2,3,4,5]
 
-// let totShuffle = arr.length;
-
-// while(totShuffle > 0){
-//     totShuffle--
-//     let indexToChange = Math.floor(Math.random() * totShuffle);
-//          temp  = arr[totShuffle];
-//          arr[totShuffle] = arr[indexToChange];
-//         arr[indexToChange] = temp;
-
-// }
-// console.log(arr);
-
 // let person = {name:"lydia"}
 
 // const member = [person];
@@ -2488,18 +2224,6 @@ if (isSubstring(mainString, substring)) {
 // console.log(person);
 // console.log(member);
 
-
-// function reverseKaro(num){
-//     let rev = 0;
-//     while(num > 0){
-//         let rem = num % 10;
-//         rev = rev * 10 + rem;
-//         num = Math.floor(num/10);
-//     }
-//     return rev;
-
-// }
-// console.log(reverseKaro(12345));
 
 
 // const obj = {
@@ -2907,7 +2631,13 @@ fs.readFile('file.txt', 'utf8')
 
 // PUT updates the entire resource, replacing it with the new resource provided.
 // PATCH updates only the specified fields in the resource.
-  
+
+// WebSockets do not have built-in support for automatic reconnection. Developers need to implement their own reconnection logic.
+// Socket.IO has built-in support for automatic reconnection, including configurable options for reconnection attempts, delays, and exponential backoff.
+// in websocket implementing message broadcasting to multiple clients and organizing clients into groups (rooms) requires additional effort
+//  Socket.IO provides built-in support for broadcasting messages to all clients or to specific rooms, simplifying the implementation of group messaging and chat applications.
+//  WebSockets provide a simple, low-level API with basic message handling, requiring developers to implement their own event system.
+// Socket.IO offers an event-based communication model out of the box, making it easier to handle different types of messages and events.
 // socketIo
 // WebSocket is a protocol that provides full-duplex communication channels over a single TCP connection. It is designed to be a more efficient alternative to HTTP for real-time communication.
 //     Full-Duplex Communication: Both client and server can send and receive messages simultaneously.
@@ -2922,10 +2652,26 @@ fs.readFile('file.txt', 'utf8')
 // Live streaming
 
 // Socket.IO is a library that enables real - time, bidirectional, and event - based communication between web clients and servers.It is built on top of WebSocket but provides additional features and fallbacks for environments where WebSocket is not supported.
-  
+//   const io = require('socket.io')(3000);
+
+// io.on('connection', (socket) => {
+//   console.log('a user connected');
+
+//   socket.on('message', (msg) => {
+//     console.log('message received:', msg);
+//     // Broadcast the message to all connected clients
+//     io.emit('message', msg);
+//   });
+
+//   socket.on('disconnect', () => {
+//     console.log('user disconnected');
+//   });
+// });
+
 //   Event-Based Communication: Socket.IO uses an event-driven model, making it easier to handle complex interactions.
 // Automatic Reconnection: If the connection drops, Socket.IO will automatically attempt to reconnect.
 // Fallback Mechanisms: If WebSocket is not available, Socket.IO will fall back to other techniques such as long polling.
+// Long polling is a useful technique for maintaining a real-time connection when other options are not available,
 // Rooms and Namespaces: These features allow for better organization and management of connections and events.
 // Cross-Browser Compatibility: Socket.IO ensures that your real-time application works across various browsers and network conditions.
 // Example Use Cases:
@@ -2943,7 +2689,7 @@ fs.readFile('file.txt', 'utf8')
 // myEmitter.emit('event');
 
 // promise and observable
-// setImmediate and process.nextTick
+// setImmediate(macrotask) and process.nextTick(microtask)
 // promise.all and promise.allSettled
 // stored procedure and viwes
 
@@ -2974,7 +2720,7 @@ fs.readFile('file.txt', 'utf8')
 // exec findDetails 2, 'lol'
 // trigger
 // in mongodb we have two types of trigger (database trigger and scheduled trigger) in atlas provided
-// database trigger will execute at real time when we perform database operation operation ( insert docement,update docement,delete docement, replace docement) with collection.
+// database trigger will execute at real time when we perform database operation ( insert docement,update docement,delete docement, replace docement) with collection.
 // example -- sending mails to user when he creates an order.
 // scheduled trigger will execute at specefic time or in a interval of time.
 //  example ---trigger a function that will move orders older than one year to the archived_orders collection:
@@ -3038,7 +2784,90 @@ fs.readFile('file.txt', 'utf8')
 // SHOW TRIGGERS;
   
 // DROP TRIGGER databaseName.triggerName
+const original = { a: 1, b: 2, c: { d: 3 } };
+const shallowCopy = {};
 
+for (let key in original) {
+  if (original.hasOwnProperty(key)) {
+    shallowCopy[key] = original[key];
+  }
+}
+
+console.log(shallowCopy);  // Output: { a: 1, b: 2, c: { d: 3 } }
+shallowCopy.c.d = 4;
+console.log(original.c.d); // Output: 4  (because it's a shallow copy)
+
+const originalArray = [1, 2, 3, [4, 5]];
+const shallowCopyArray = [];
+
+for (let i = 0; i < originalArray.length; i++) {
+  shallowCopyArray[i] = originalArray[i];
+}
+
+console.log(shallowCopyArray);  // Output: [1, 2, 3, [4, 5]]
+shallowCopyArray[3][0] = 6;
+console.log(originalArray[3][0]); // Output: 6 (because it's a shallow copy)
+
+// const original = { a: 1, b: 2, c: { d: 3 } };
+
+// function deepCopy(obj) {
+//   let copy = Array.isArray(obj) ? [] : {};
+  
+//   for (let key in obj) {
+//     if (obj.hasOwnProperty(key)) {
+//       if (typeof obj[key] === 'object' && obj[key] !== null) {
+//         copy[key] = deepCopy(obj[key]);  // Recursive call
+//       } else {
+//         copy[key] = obj[key];
+//       }
+//     }
+//   }
+  
+//   return copy;
+// }
+
+// const deepCopyObject = deepCopy(original);
+
+// console.log(deepCopyObject);  // Output: { a: 1, b: 2, c: { d: 3 } }
+// deepCopyObject.c.d = 4;
+// console.log(original.c.d);    // Output: 3 (original object remains unchanged)
+
+
+// const originalArray = [1, 2, 3, [4, 5]];
+
+// function deepCopyArray(arr) {
+//   let copy = [];
+
+//   for (let i = 0; i < arr.length; i++) {
+//     if (Array.isArray(arr[i])) {
+//       copy[i] = deepCopyArray(arr[i]);  // Recursive call
+//     } else if (typeof arr[i] === 'object' && arr[i] !== null) {
+//       copy[i] = deepCopy(arr[i]);
+//     } else {
+//       copy[i] = arr[i];
+//     }
+//   }
+
+//   return copy;
+// }
+
+const deepCopyArrayResult = deepCopyArray(originalArray);
+
+console.log(deepCopyArrayResult);  // Output: [1, 2, 3, [4, 5]]
+deepCopyArrayResult[3][0] = 6;
+console.log(originalArray[3][0]);  // Output: 4 (original array remains unchanged)
+
+// Shallow Copy: Copies top-level properties only. Nested objects or arrays are not duplicated, just referenced.
+// Deep Copy: Recursively copies all properties and elements, including nested objects or arrays.
+
+  // Dos Attack:- in this one attacker send 100 and 1000 of request to the server and server is busy to respond to the request of actual client
+  // DDOS Attack: - in this not limited to on attacker it will attack from multiple machine from different location same as DOS attack.
+  
+  // brute Froce Attack: - in this attacker use huge amount of combination of email and password from dictionary and requst is continue until one is succeded
+
+  // Prevented by 
+// captcha
+  // rate limiter
 
 // assoication in sequelize
 // Define the associations
@@ -3120,3 +2949,942 @@ Course.belongsToMany(Student, { through: Enrollment });
 
 // we can identify the requirements and expected behavior of the application and API
 // Easier Maintenance: Test cases make it easier to maintain and update the codebase by ensuring that changes do not introduce new bugs.
+
+// {
+//       "name":"2222",
+//     "email":"p2p@gmail.com",
+//     "password":"kp",
+// hobbies:["cricket","footbal"],
+// company:[{id:1,name:"lol",gender:"male"},{id:1,name:"lol",gender:"male"}]
+// }
+// const userSchema = Joi.object({
+//   name: Joi.string().min(3).max(30).required(),
+//   email: Joi.string().email().required(),
+//   password: Joi.string().min(6).required(),
+//   hobbies: Joi.array().items(Joi.string().min(3)).required(),
+//   company: Joi.array().items(
+//     Joi.object({
+//       id: Joi.number().integer().required(),
+//       name: Joi.string().min(3).required(),
+//       gender: Joi.string().valid('male', 'female', 'other').required()
+//     })
+//   ).required()
+// });
+
+
+db.dropDatabase();
+db.product.drop();
+db.product.deleteMany({})
+
+// 11000 errorCode for duplicate key error in mongodb
+// Error Code: 1062 in mysql
+
+// db.student.find({age:5})
+// db.student.find({age:{$gte:7}})
+// db.student.find({age:{$in:[1,7,9]}})
+// db.student.find({age:{$nin:[1,7,9]}})
+// db.student.find({$and:[{hasMakBook:{$exists:true,$type:"bool"}},{}]})
+
+// in react, a component is a reusable building block for creating user Interface.
+// SPA - only content or section will be updated in same page every time without page reload
+advantage--
+// simple to nuild SPA using comppnents
+//it is open source and free to use
+//light weight and  very fast (virtual DOM)
+
+disadvantage--
+// it is not good choice for small application
+// arrow function is concise way of defining a function
+
+// Explanation of Cookie Options
+
+// httpOnly:
+// Prevents client-side JavaScript from accessing the cookie.
+// Mitigates the risk of XSS attacks.
+  
+// secure:
+// Ensures the cookie is only sent over HTTPS connections.
+// Protects against cookie theft over unsecured networks.
+// sameSite:
+
+// Helps prevent CSRF(Cross - Site Request Forgery) attacks by controlling whether cookies are sent with cross - site requests.
+
+// Strict: Cookies are only sent in a first-party context and not sent along with requests initiated by third-party websites.
+// Lax: Cookies are not sent on cross-site subrequests (e.g., loading images or frames), but are sent when a user navigates to the URL from an external site (e.g., by following a link).
+// None: Cookies will be sent in all contexts, i.e., in responses to both first-party and cross-origin requests. Requires the Secure flag to be set.
+  // Setting the JWT token in a cookie
+    res.cookie('token', token, { 
+        httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+        secure: true, // Ensures the cookie is only sent over HTTPS
+        sameSite: 'Strict' // Helps prevent CSRF (Cross-Site Request Forgery) attacks
+    });
+
+//     const mainString = "Hello, world!";
+// const substring = "o, w";
+
+// let found = false;
+
+// for (let i = 0; i <= mainString.length - substring.length; i++) {
+//   let match = true;
+
+//   for (let j = 0; j < substring.length; j++) {
+//     if (mainString[i + j] !== substring[j]) {
+//       match = false;
+//       break;
+//     }
+//   }
+
+//   if (match) {
+//     found = true;
+//     break;
+//   }
+// }
+
+// console.log(found); // Output: true
+
+    // Find whether an array is a subset of another array in javascript
+// function isSubset(arr1, arr2) {
+//     // Ensure arr1 is the larger array and arr2 is the smaller one
+//     if (arr1.length < arr2.length) {
+//         [arr1, arr2] = [arr2, arr1];
+//     }
+
+//     // Create a hash set of elements from the larger array
+//     const set = new Set(arr1);
+
+//     // Check if every element in the smaller array is in the hash set
+//     for (let elem of arr2) {
+//         if (!set.has(elem)) {
+//             return false; // If any element is not found, return false
+//         }
+//     }
+
+//     return true; // All elements found, return true
+// }
+
+// // Example usage:
+// const array1 = [1, 2, 3, 4, 5];
+// const array2 = [2, 4];
+// const array3 = [2, 6];
+
+// console.log(isSubset(array1, array2)); // Output: true
+// console.log(isSubset(array1, array3)); // Output: false
+
+
+//     function isSubset(arr1, arr2) {
+//     const set2 = new Set(arr2);
+//     return arr1.every(element => set2.has(element));
+// }
+
+// // Example usage:
+// const array1 = [1, 2, 3];
+// const array2 = [1, 2, 3, 4, 5];
+// const array3 = [1, 6, 3];
+
+// console.log(isSubset(array1, array2)); // true
+// console.log(isSubset(array3, array2)); // false
+
+
+function moveNegativesToOneSide(arr) {
+    const result = [];
+    let negativeCount = 0;
+
+    // Collect negative elements first
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] < 0) {
+            result[negativeCount++] = arr[i];
+        }
+    }
+
+    // Collect non-negative elements
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] >= 0) {
+            result[negativeCount++] = arr[i];
+        }
+    }
+
+    return result;
+}
+
+// Example usage:
+const array = [1, -2, -3, 4, -5, 6, -7, 8, 9];
+console.log(moveNegativesToOneSide(array)); // Output: [-2, -3, -5, -7, 1, 4, 6, 8, 9]
+
+
+
+// function kthMinAndMax(arr, k) {
+//     if (k <= 0 || k > arr.length) {
+//         throw new Error('k is out of bounds');
+//     }
+
+//     // Sort the array in ascending order
+//     arr.sort((a, b) => a - b);
+
+//     // Kth minimum element (1-based index)
+//     const kthMin = arr[k - 1];
+
+//     // Kth maximum element (1-based index)
+//     const kthMax = arr[arr.length - k];
+
+//     return { kthMin, kthMax };
+// }
+
+// // Example usage:
+// const array = [7, 10, 4, 3, 20, 15];
+// const k = 3;
+// const result = kthMinAndMax(array, k);
+// console.log(`The ${k}rd minimum element is ${result.kthMin}`); // Output: 7
+// console.log(`The ${k}rd maximum element is ${result.kthMax}`); // Output: 10
+
+
+// Check if two given strings are isomorphic to each other	in javascript
+
+function areIsomorphic(s, t) {
+    if (s.length !== t.length) return false;
+
+    const mapS = {};
+    const mapT = {};
+
+    for (let i = 0; i < s.length; i++) {
+        const charS = s[i];
+        const charT = t[i];
+
+        if (mapS[charS] === undefined && mapT[charT] === undefined) {
+            mapS[charS] = charT;
+            mapT[charT] = charS;
+        } else if (mapS[charS] !== charT || mapT[charT] !== charS) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Example usage:
+console.log(areIsomorphic("egg", "add")); // true
+console.log(areIsomorphic("foo", "bar")); // false
+console.log(areIsomorphic("paper", "title")); // true
+console.log(areIsomorphic("ab", "aa")); // false
+
+// Recursively remove all adjacent duplicates	
+function removeAdjacentDuplicates(s) {
+    let stack = [];
+
+    for (let char of s) {
+        if (stack.length > 0 && stack[stack.length - 1] === char) {
+            // Pop the last character if it's the same as the current one
+            stack.pop();
+        } else {
+            // Push the current character to the stack
+            stack.push(char);
+        }
+    }
+
+    // Join the stack to form the final string without adjacent duplicates
+    return stack.join('');
+}
+
+// Example usage:
+console.log(removeAdjacentDuplicates("abbaca")); // Output: "ca"
+console.log(removeAdjacentDuplicates("azxxzy")); // Output: "ay"
+console.log(removeAdjacentDuplicates("aabcca")); // Output: "bcca"
+console.log(removeAdjacentDuplicates("aaaa")); // Output: ""
+
+
+// Find the first repeated word in string.	in javascript
+
+
+function findFirstRepeatedWord(str) {
+    const words = str.split(/\s+/); // Split the string into words by whitespace
+    const seen = new Set();
+
+    for (let word of words) {
+        if (seen.has(word)) {
+            return word; // Return the first repeated word
+        }
+        seen.add(word);
+    }
+
+    return null; // Return null if no word is repeated
+}
+
+// Example usage:
+console.log(findFirstRepeatedWord("this is a test this")); // Output: "this"
+console.log(findFirstRepeatedWord("hello world hello")); // Output: "hello"
+console.log(findFirstRepeatedWord("no repeated words here")); // Output: null
+
+
+// Check whether a String is Palindrome or not in javascript
+
+
+function isPalindrome(str) {
+    // Normalize the string: remove non-alphanumeric characters and convert to lowercase
+    const normalizedStr = str.toLowerCase().replace(/[^a-z0-9]/gi, '');
+
+    // Reverse the normalized string
+    let reversedStr = '';
+    for (let i = normalizedStr.length - 1; i >= 0; i--) {
+        reversedStr += normalizedStr[i];
+    }
+
+    // Check if the reversed string matches the normalized string
+    return normalizedStr === reversedStr;
+}
+
+// Example usage:
+console.log(isPalindrome("A man, a plan, a canal, Panama")); // Output: true
+console.log(isPalindrome("racecar")); // Output: true
+console.log(isPalindrome("hello")); // Output: false
+
+// function findNextNumberInSeries(series) {
+//     // Calculate the common difference
+//     const difference = series[0] - series[1];
+
+//     // Verify if the common difference is consistent
+//     for (let i = 1; i < series.length - 1; i++) {
+//         if (series[i] - series[i + 1] !== difference) {
+//             throw new Error('The series does not have a consistent pattern.');
+//         }
+//     }
+
+//     // Calculate the next number
+//     const nextNumber = series[series.length - 1] - difference;
+//     return nextNumber;
+// }
+
+// Example usage
+// const series = [64, 58, 52, 46];
+// const nextNumber = findNextNumberInSeries(series);
+// console.log(nextNumber); // Output: 40
+
+// function findNextNumberInSeries(series) {
+//     // Calculate the differences between consecutive terms
+//     const differences = [];
+//     for (let i = 1; i < series.length; i++) {
+//         differences.push(series[i] - series[i - 1]);
+//     }
+
+//     // Calculate the next difference (which is incremented by 2)
+//     const nextDifference = differences[differences.length - 1] + 2;
+
+//     // Calculate the next number in the series
+//     const nextNumber = series[series.length - 1] + nextDifference;
+//     return nextNumber;
+// }
+
+// Example usage
+// const series = [2, 6, 12, 20];
+// const nextNumber = findNextNumberInSeries(series);
+// console.log(nextNumber); // Output: 30
+
+// Type: Does not support declaration merging.
+
+// type Person = {
+//     name: string;
+// };
+
+// // Error: Duplicate identifier 'Person'.
+// type Person = {
+//     age: number;
+// };
+// Interface: Supports declaration merging, where multiple declarations with the same name are merged into a single interface.  
+
+// interface Person {
+//     name: string;
+// }
+
+// interface Person {
+//     age: number;
+// }
+
+// // Person is now { name: string; age: number; }
+// Interface: Uses extends to extend other interfaces or multiple interfaces.
+
+// how to secure nodejs application please write the best solution
+// 1.) Keep Dependencies Up to Date
+
+// Regularly update your Node.js and npm packages to the latest versions. Use tools like npm audit to check for vulnerabilities in your dependencies.
+// Avoid using deprecated or unmaintained packages.
+
+//  2.) Use Secure Coding Practices
+// Input Validation: Always validate and sanitize user inputs to prevent injection attacks, such as SQL injection or NoSQL injection.
+// Escape Output: Escape data before rendering it in the view to prevent Cross-Site Scripting (XSS) attacks.
+// Limit Input Size: Set limits on the size of data that users can send to your application to prevent Denial of Service(DoS) attacks.
+
+// 3) Implement Strong Authentication and Authorization
+// Use Strong Password Hashing: Use bcrypt or Argon2 for hashing passwords.
+// JWT Best Practices: If using JSON Web Tokens (JWT), ensure that they are signed and verified correctly, use short expiration times, and store them securely.
+// OAuth2 and OpenID Connect: Use industry-standard authentication protocols for secure login flows.
+//   Role - Based Access Control(RBAC): Implement RBAC to control access based on user roles.
+
+  // 4) Use HTTPS
+// Always serve your application over HTTPS to ensure data is encrypted in transit.
+// Use strong TLS configurations and avoid outdated protocols like SSL 3.0 and TLS 1.0.
+
+// 5) Set Security-Related HTTP Headers
+// Helmet: Use the helmet middleware to set various HTTP headers, such as:
+// X-Frame-Options to prevent clickjacking.
+// X-Content-Type-Options to prevent MIME type sniffing.
+// Content Security Policy (CSP) to prevent XSS attacks.
+// Strict-Transport-Security (HSTS) to enforce HTTPS.
+// Rate Limiting: Implement rate limiting to mitigate brute-force attacks.
+//   CORS: Configure CORS policies to restrict resource access based on origin.
+
+  // 6) Protect Against Cross-Site Request Forgery (CSRF)
+// Use CSRF protection middleware like csurf to prevent unauthorized commands being executed on behalf of an authenticated user.
+
+//  7) Secure Session Management
+// Use secure cookies with the HttpOnly and Secure flags to prevent client-side script access and ensure they are only sent over HTTPS.
+// Set session expiration times and regenerate session IDs on critical operations.
+
+// 9) Limit Exposure of Sensitive Data
+// Avoid storing sensitive information like API keys, passwords, or database credentials in your source code. Use environment variables or secret management tools.
+// Encrypt sensitive data at rest using strong encryption algorithms.
+  
+//  10) Implement Secure File Uploads
+// Restrict the types and sizes of files that can be uploaded.
+// Store uploaded files in a location separate from your application's source code and sanitize file names to prevent directory traversal attacks.
+
+// 11) Protect Against Denial of Service (DoS) Attacks
+// Implement rate limiting and request throttling.
+// Use tools like pm2 or cluster to manage your Node.js processes effectively and distribute load.
+
+//   in mongodb Use Security Middleware
+
+//   const mongoSanitize = require('express-mongo-sanitize');
+// app.use(mongoSanitize());
+
+// Use tools like npm audit or Snyk to check for vulnerabilities in your dependencies.
+// Most database libraries provide escaping functions.For example, in mysql2, you can use mysql.escape().
+
+// Input Validation and Sanitization
+// Always validate and sanitize user inputs to ensure they meet the expected format and content.
+// Validation: Use libraries like Joi or validator.js to enforce rules on inputs.
+
+// Avoid Dynamic Query Construction in sql and nosql for preventing ingection attack.
+
+// Sanitization: Strip unwanted characters or escape special characters to prevent injection. Libraries like xss-clean can be used to sanitize input.
+
+// Sanitization: Strip unwanted characters or escape special characters to prevent injection. Libraries like xss-clean can be used to sanitize input.
+
+const express = require('express');
+const xssClean = require('xss-clean'); // Import xss-clean
+
+const app = express();
+
+app.use(express.json()); // For parsing application/json
+app.use(xssClean()); // Sanitize user input
+
+// Example route to handle user comments
+app.post('/submit-comment', (req, res) => {
+  const comment = req.body.comment; // User input from the request body
+
+  // After passing through xss-clean, the comment is sanitized
+  console.log('Sanitized Comment:', comment);
+
+  // Process the sanitized comment, e.g., save it to the database
+  res.send('Comment submitted successfully!');
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+
+// How xss-clean Works
+// Input Sanitization: When a user submits data (e.g., a comment), xss-clean automatically sanitizes the input by stripping or escaping potentially dangerous characters that could be used in XSS attacks.
+// Sanitized Example: If a user tries to submit a comment with malicious content like <script>alert('XSS');</script>, xss-clean will sanitize it, resulting in a safe version, such as &lt;script&gt;alert('XSS');&lt;/script&gt;.
+
+function sanitizeInput(input) {
+  return input.replace(/<|>|&|"/g, function (match) {
+    switch (match) {
+      case '<':
+        return '&lt;';
+      case '>':
+        return '&gt;';
+      case '&':
+        return '&amp;';
+      case '"':
+        return '&quot;';
+      default:
+        return match;
+    }
+  });
+}
+
+// const unsafeInput = `<script>alert('XSS');</script>`;
+// const safeInput = sanitizeInput(unsafeInput);
+
+// console.log('Sanitized Input:', safeInput); // Output: &lt;script&gt;alert('XSS');&lt;/script&gt;
+
+// When: If your application loads resources from external domains(e.g., scripts, images, fonts) or uses features like inline scripts, you’ll need to customize the CSP to balance security and functionality.
+
+// app.use(helmet.contentSecurityPolicy({
+//   directives: {
+//     defaultSrc: ["'self'"],
+//     scriptSrc: ["'self'", "https://trusted.cdn.com"],
+//     objectSrc: ["'none'"],
+//     upgradeInsecureRequests: [],
+//   },
+// }));
+// When: If your application needs to interact with resources from different origins(e.g., APIs, fonts, or images), you’ll need to configure CORS headers manually.
+
+// const cors = require('cors');
+// app.use(cors({
+//   origin: 'https://your-allowed-origin.com',
+//   methods: 'GET,POST',
+//   allowedHeaders: 'Content-Type,Authorization',
+// }));
+
+// helmet is a middleware that helps secure your Express.js applications by setting various HTTP headers automatically. It includes the following protections:
+
+// X-Content-Type-Options: nosniff: Prevents browsers from interpreting files as a different MIME type, which can help mitigate certain types of attacks.
+// X-Frame-Options: DENY or SAMEORIGIN: Prevents clickjacking attacks by controlling whether your site can be framed.
+// X-XSS-Protection: 0: Disables the buggy cross-site scripting filter in older browsers, which can sometimes cause more harm than good.
+// Strict-Transport-Security (HSTS): Enforces HTTPS for your site, telling browsers to only communicate over HTTPS.
+// Content Security Policy (CSP): Helps prevent XSS and data injection attacks by specifying what content is allowed to load on your site.
+// Expect-CT: Helps prevent the use of misissued certificates by enforcing Certificate Transparency.
+//   Referrer - Policy: Controls how much referrer information is sent with requests. 
+
+  // When you set X - Frame - Options: DENY, you're telling web browsers not to allow your website to be displayed inside a frame or iframe, not just on other websites, but also on your own.
+  // When you use X-Frame-Options: SAMEORIGIN, you're telling web browsers to allow your website to be displayed inside a frame or iframe, but only if that frame is on the same domain as your website.
+  
+  // DENY: Completely blocks your site from being framed by any site, including your own. Use this for the highest level of security when framing is not needed.
+  // SAMEORIGIN: Allows framing only by pages on the same origin.Use this when you need to allow framing within your own site but want to protect against external clickjacking
+
+  // The Referrer-Policy header controls how much information about the previous page (the referrer) is sent along when a user clicks a link to navigate to another page.
+
+// Why Does This Matter?
+// When someone clicks a link on your website, the browser usually sends the URL of the page they came from (the referrer) to the new site. This referrer information can sometimes contain sensitive data, like the specific page they were on or even personal information in the URL.
+
+// Full URL: You can send the full URL of the previous page.
+// Just the Domain: You can send only the main part of the URL (e.g., just the domain name).
+// Nothing at All: You can choose to send no referrer information.
+// By setting the Referrer - Policy, you control what information is shared when users navigate away from your site, helping to protect their privacy.
+
+// ?.: The ?. operator checks if the thing before it exists (is not null or undefined). If it exists, it continues to the next part. If it doesn’t exist, it stops and returns undefined.
+// No More Errors: If any part of the chain doesn’t exist, instead of throwing an error, it simply returns undefined.
+
+//  It helps you avoid errors like "Cannot read property 'something' of undefined."
+
+//  with jsx
+//  import React from 'react';
+
+// function Greeting() {
+//   return (
+//     <div>
+//       <h1>Hello, World!</h1>
+//       <p>Welcome to React with JSX!</p>
+//     </div>
+//   );
+// }
+
+// export default Greeting;
+
+// // without jsx
+// import React from 'react';
+// import { features } from "process";
+
+// function Greeting() {
+//   return React.createElement(
+//     'div', 
+//     null, 
+//     React.createElement('h1', null, 'Hello, World!'),
+//     React.createElement('p', null, 'Welcome to React without JSX!')
+//   );
+// }
+
+// export default Greeting;
+
+// // never
+
+// function throwError(message: string): never {
+//   throw new Error(message);
+// }
+
+// function infiniteLoop(): never {
+//   while (true) {
+//     console.log('This will run forever');
+//   }
+// }
+
+// The unknown type is a safer alternative to any.You can assign any type to unknown, but you must check its type before you can use it.This prevents unintended errors.
+
+// let uncertain: unknown = 'Hello';
+
+// uncertain = 42; // No error
+// uncertain = true; // No error
+
+// // To use it, you must narrow down the type first
+// if (typeof uncertain === 'string') {
+//   console.log(uncertain.toUpperCase()); // Now TypeScript knows it's a string
+// } else if (typeof uncertain === 'number') {
+//   console.log(uncertain.toFixed(2)); // Now TypeScript knows it's a number
+// }
+
+
+// never: Represents something that never happens (like a function that never returns). It’s useful for functions that throw errors or run indefinitely.
+// any: Disables type checking for a variable, allowing it to hold any type. It’s flexible but can lead to runtime errors if misused.
+//   unknown: A safer version of any.You can assign anything to it, but you need to check its type before using it, making your code safer and more predictable 
+
+
+//   es 6 features
+
+//   1. let and const
+// 2. Arrow Functions
+// 3. Template Literals
+// 4. Destructuring Assignment
+// 5 spread operator and rest operator
+
+// Write an SQL query to fetch only even rows from the table.
+// In case we have an auto-increment field e.g. EmpId then we can simply use the below query-
+
+// SELECT * FROM EmployeeDetails
+// WHERE MOD(EmpId, 2) = 0
+
+// Write an SQL query to fetch only odd rows from the table.
+// In case we have an auto-increment field e.g. EmpId then we can simply use the below query-
+
+// SELECT * FROM EmployeeDetails
+// WHERE MOD (EmpId, 2) <> 0
+
+// Consider a SalesData with columns SaleID, ProductID, RegionID, SaleAmount. Write a query to find the total sales amount for each product in each region.
+// The below query sums up SaleAmount for each combination of ProductID and RegionID, giving an insight into the total sales per product per region.
+
+// SELECT ProductID, RegionID, SUM(SaleAmount) AS TotalSales 
+// FROM SalesData 
+// GROUP BY ProductID, RegionID;
+
+
+// Write a query to find employees who earn more than their managers.
+// Here, we will write a query that joins the EmployeeDetails table with itself to compare the salaries of employees with their respective managers.
+
+// SELECT E.Name AS EmployeeName, 
+// M.Name AS ManagerName, 
+// E.Salary AS EmployeeSalary, 
+// M.Salary AS ManagerSalary 
+// FROM EmployeeDetails E JOIN EmployeeDetails M 
+// ON E.ManagerID = M.EmployeeID 
+// WHERE E.Salary > M.Salary;
+
+// Consider a BookCheckout table with columns – CheckoutID, MemberID, BookID, CheckoutDate, ReturnDate. Write an SQL query to find the number of books checked out by each member.
+
+// SELECT MemberID, COUNT(*) AS NumberOfBooksCheckedOut 
+// FROM BookCheckout 
+// GROUP BY MemberID;
+
+// Consider a StudentGrades table with columns – StudentID, CourseID, Grade. Write a query to find students who have scored an ‘A’ in more than three courses.
+// Here we will write an SQL query that filters students who have received an ‘A’ grade and groups them by StudentID, counting the number of ‘A’ grades per student.
+
+// SELECT StudentID FROM StudentGrades 
+// WHERE Grade = 'A' 
+// GROUP BY StudentID 
+// HAVING COUNT(*) > 3;
+
+//  Consider a table OrderDetails with columns – OrderID, CustomerID, ProductID, OrderDate, Quantity, Price. Write a query to find the average order value for each customer.
+// The below query calculates the average order value (quantity multiplied by price) for each customer.
+
+// SELECT CustomerID, AVG(Quantity * Price) AS AvgOrderValue 
+// FROM OrderDetails 
+// GROUP BY CustomerID;
+
+// Consider a table PatientVisits with Columns VisitID, PatientID, DoctorID, VisitDate, Diagnosis. Write a query to find the latest visit date for each patient.
+
+// SELECT PatientID, MAX(VisitDate) AS LatestVisitDate 
+// FROM PatientVisits 
+// GROUP BY PatientID;
+
+// For a table FlightBookings with columns – BookingID, FlightID, PassengerID, BookingDate, TravelDate, Class, write a query to count the number of bookings for each flight class.
+// Here, we will write an SQL query that groups the bookings by Class and counts the number of bookings in each class.
+
+// SELECT Class, COUNT(*) AS NumberOfBookings 
+// FROM FlightBookings 
+// GROUP BY Class;
+
+// Consider a table FoodOrders with columns – OrderID, TableID, MenuItemID, OrderTime, Quantity. Write a query to find the most ordered menu item.
+// For the desired output, we will group the orders by MenuItemID and then sort the results by the count in descending order, fetching the top result.
+
+// SELECT MenuItemID 
+// FROM FoodOrders 
+// GROUP BY MenuItemID 
+// ORDER BY COUNT(*) DESC 
+// LIMIT 1;
+
+
+// Consider a table Transactions with columns – TransactionID, CustomerID, ProductID, TransactionDate, Amount. Write a query to find the total transaction amount for each month.
+// The below query sums the Amount for each month, giving a monthly total transaction amount.
+
+// SELECT MONTH(TransactionDate) AS Month, 
+// SUM(Amount) AS TotalAmount 
+// FROM Transactions 
+// GROUP BY MONTH(TransactionDate);
+
+// Consider a table EmployeeAttendance with columns – AttendanceID, EmployeeID, Date, Status. Write a query to find employees with more than 5 absences in a month.
+// This query filters the records for absent status, groups them by EmployeeID and month, and counts absences, filtering for more than 5 absences.
+
+// SELECT EmployeeID, 
+// MONTH(Date) AS Month, 
+// COUNT(*) AS Absences 
+// FROM EmployeeAttendance 
+// WHERE Status = 'Absent' 
+// GROUP BY EmployeeID, MONTH(Date) 
+// HAVING COUNT(*) > 5;
+
+// 32. Write an SQL query to fetch duplicate records from EmployeeDetails (without considering the primary key – EmpId).
+
+// SELECT FullName, ManagerId, DateOfJoining, City, COUNT(*)
+// FROM EmployeeDetails
+// GROUP BY FullName, ManagerId, DateOfJoining, City
+// HAVING COUNT(*) > 1;
+
+
+// 39. Write an SQL query to find the nth highest salary from a table.
+
+// SELECT Salary
+// FROM Employee
+// ORDER BY Salary DESC LIMIT N-1,1;
+
+//  Write an SQL query to remove duplicates from a table without using a temporary table.
+// Here, we can use delete with alias and inner join. We will check for the equality of all the matching records and then remove the row with a higher EmpId.
+
+// DELETE E1 FROM EmployeeDetails E1
+// INNER JOIN EmployeeDetails E2 
+// WHERE E1.EmpId > E2.EmpId 
+// AND E1.FullName = E2.FullName 
+// AND E1.ManagerId = E2.ManagerId
+// AND E1.DateOfJoining = E2.DateOfJoining
+// AND E1.City = E2.City;
+
+//  Write an SQL query to fetch all the Employees who are also managers from the EmployeeDetails table.
+
+// SELECT DISTINCT E.FullName
+// FROM EmployeeDetails E
+// INNER JOIN EmployeeDetails M
+// ON E.EmpID = M.ManagerID
+
+
+//  Write a query to fetch employee names and salary records.Display the employee details even if the salary record is not present for the employee.
+   
+// SELECT E.FullName, S.Salary 
+// FROM EmployeeDetails E 
+// LEFT JOIN 
+// EmployeeSalary S
+// ON E.EmpId = S.EmpId;
+
+// Write an SQL query to fetch the project-wise count of employees sorted by project’s count in descending order.
+// The query has two requirements – first to fetch the project-wise count and then to sort the result by that count.
+
+// SELECT Project, count(EmpId) EmpProjectCount
+// FROM EmployeeSalary
+// GROUP BY Project
+// ORDER BY EmpProjectCount DESC;
+
+// Write an SQL query to fetch all employee records from the EmployeeDetails table who have a salary record in the EmployeeSalary table.
+// Using ‘Exists’-
+
+// SELECT * FROM EmployeeDetails E
+// WHERE EXISTS
+// (SELECT * FROM EmployeeSalary S 
+// WHERE  E.EmpId = S.EmpId);
+
+// Write an SQL query to fetch all the Employee details from the EmployeeDetails table who joined in the Year 2020.
+// Using BETWEEN for the date range ’01-01-2020′ AND ’31-12-2020′-
+
+// SELECT * FROM EmployeeDetails
+// WHERE DateOfJoining BETWEEN '2020/01/01'
+// AND '2020/12/31';
+
+// Also, we can extract the year part from the joining date (using YEAR in MySQL)-
+
+// SELECT * FROM EmployeeDetails 
+// WHERE YEAR(DateOfJoining) = '2020';
+
+// Write an SQL query to find the current date-time.
+// MySQL-
+
+//   SELECT NOW();
+
+
+//   Write an SQL query to fetch employee names having a salary greater than or equal to 5000 and less than or equal to 10000.
+// Here, we will use BETWEEN in the ‘where’ clause to return the EmpId of the employees with salary satisfying the required criteria and then use it as a subquery to find the fullName of the employee from the EmployeeDetails table.
+
+// SELECT FullName 
+// FROM EmployeeDetails 
+// WHERE EmpId IN 
+// (SELECT EmpId FROM EmployeeSalary 
+// WHERE Salary BETWEEN 5000 AND 10000);
+
+// Fetch all the employees who are not working on any project.
+// This is one of the very basic interview questions in which the interviewer wants to see if the person knows about the commonly used – Is NULL operator.
+
+// SELECT EmpId 
+// FROM EmployeeSalary 
+// WHERE Project IS NULL;
+
+//  Write an SQL query to update the employee names by removing leading and trailing spaces.
+// Using the ‘Update’ command with the ‘LTRIM’ and ‘RTRIM’ functions.
+
+// UPDATE EmployeeDetails 
+// SET FullName = LTRIM(RTRIM(FullName));
+
+
+//  Write an SQL query to update the employee names by removing leading and trailing spaces.
+// Using the ‘Update’ command with the ‘LTRIM’ and ‘RTRIM’ functions.
+
+// UPDATE EmployeeDetails 
+// SET FullName = LTRIM(RTRIM(FullName));
+
+// Write an SQL query to find the count of the total occurrences of a particular character – ‘n’ in the FullName field.
+// Here, we can use the ‘Length’ function. We can subtract the total length of the FullName field from the length of the FullName after replacing the character – ‘n’.
+
+// SELECT FullName, 
+// LENGTH(FullName) - LENGTH(REPLACE(FullName, 'n', ''))
+// FROM EmployeeDetails
+
+
+// Write an SQL query to uppercase the name of the employee and lowercase the city values.
+// We can use SQL Upper and Lower functions to achieve the intended results.
+
+// SELECT UPPER(FullName), LOWER(City) 
+// FROM EmployeeDetails;
+
+
+// Write an SQL query to display both the EmpId and ManagerId together.
+// Here we can use the CONCAT command.
+
+// SELECT CONCAT(EmpId, ManagerId) as NewId
+// FROM EmployeeDetails;
+
+//  Write an SQL query to fetch the employee’s full names and replace the space with ‘-’.
+// Using the ‘Replace’ function-
+
+// SELECT REPLACE(FullName, ' ', '-') 
+// FROM EmployeeDetails;
+
+// Write an SQL query to fetch the EmpIds that are present in EmployeeDetails but not in EmployeeSalary.
+// Using subquery-
+
+// SELECT EmpId FROM 
+// EmployeeDetails 
+// where EmpId Not IN 
+//   (SELECT EmpId FROM EmployeeSalary);
+
+//   Write an SQL query to fetch records that are present in one table but not in another table.
+
+// SELECT EmployeeSalary.*
+// FROM EmployeeSalary
+// LEFT JOIN
+// ManagerSalary USING (EmpId)
+// WHERE ManagerSalary.EmpId IS NULL;
+
+//   Write an SQL query to fetch common records between two tables.
+
+// SELECT *
+// FROM EmployeeSalary
+// WHERE EmpId IN 
+//   (SELECT EmpId from ManagerSalary);
+
+//   Write an SQL query to fetch the employees whose name begins with any two characters, followed by a text “hn” and ends with any sequence of characters.
+
+// SELECT FullName
+// FROM EmployeeDetails
+// WHERE FullName LIKE ‘__hn %’;
+
+// Write an SQL query to display the total salary of each employee adding the Salary with Variable value.
+
+// SELECT EmpId,
+// Salary+Variable as TotalSalary 
+// FROM EmployeeSalary;
+
+
+//  Write an SQL query to fetch all those employees who work on Projects other than P1.
+
+// SELECT EmpId
+// FROM EmployeeSalary
+// WHERE NOT Project='P1';
+
+// Or using the ‘not equal to’ operator-
+
+// SELECT EmpId
+// FROM EmployeeSalary
+// WHERE Project <> 'P1';
+
+// Write an SQL query to fetch the EmpId and FullName of all the employees working under the Manager with id – ‘986’.
+
+// SELECT  EmpId, FullName
+// FROM EmployeeDetails
+// WHERE ManagerId = 986;
+
+//  Write an SQL query to fetch the names of workers who earn the highest salary.
+//  SELECT FIRST_NAME, SALARY from Worker WHERE SALARY = (SELECT max(SALARY) from Worker);
+//  Q-49. Write an SQL query to fetch departments along with the total salaries paid for each of them.
+// SELECT DEPARTMENT, sum(Salary) from Worker group by DEPARTMENT;
+
+// Q - 47. Write an SQL query to fetch three min salaries from a table.
+// SELECT distinct Salary from Worker a WHERE 3 >= (SELECT count(distinct Salary) from Worker b WHERE a.Salary >= b.Salary) order by a.Salary desc;
+// Q-46. Write an SQL query to fetch three max salaries from a table.
+// SELECT distinct Salary from Worker a WHERE 3 >= (SELECT count(distinct Salary) from Worker b WHERE a.Salary <= b.Salary) order by a.Salary desc;
+// Q-45. Write an SQL query to print the names of employees having the highest salary in each department.
+// SELECT t.DEPARTMENT, t.FIRST_NAME, t.Salary from(SELECT max(Salary) as TotalSalary, DEPARTMENT from Worker group by DEPARTMENT) as TempNew Inner Join Worker t on TempNew.DEPARTMENT = t.DEPARTMENT and TempNew.TotalSalary = t.Salary;
+// Q-44. Write an SQL query to fetch the last five records from a table.
+// -- Solution 1
+// SELECT * FROM Worker WHERE WORKER_ID <= 5 UNION SELECT * FROM (SELECT * FROM Worker W ORDER BY W.WORKER_ID DESC) AS W1 WHERE W1.WORKER_ID <= 5;
+
+// -- Solution 2
+// SELECT * FROM Worker ORDER BY WORKER_ID DESC LIMIT 5;
+// Q-43. Write an SQL query to fetch the first row of a table.
+//   Select * from Worker where WORKER_ID = (SELECT min(WORKER_ID) from Worker); 
+// Q-42. Write an SQL query to show the last record from a table.
+//   Select * from Worker where WORKER_ID = (SELECT max(WORKER_ID) from Worker);
+// Q-41. Write an SQL query to show all departments along with the number of people in there.
+// SELECT DEPARTMENT, COUNT(DEPARTMENT) as 'Number of Workers' FROM Worker GROUP BY DEPARTMENT;
+// Q-40. Write an SQL query to fetch the departments that have less than five people in them.
+//   SELECT DEPARTMENT, COUNT(WORKER_ID) as 'Number of Workers' FROM Worker GROUP BY DEPARTMENT HAVING COUNT(WORKER_ID) < 5;
+//   Q-39. Write an SQL query to fetch the first 50% of records from a table.
+//   SELECT * FROM WORKER WHERE WORKER_ID <= (SELECT count(WORKER_ID) / 2 from Worker);
+// Q-37. Write an SQL query to show one row twice in the results from a table.
+// SELECT FIRST_NAME, DEPARTMENT from Worker W where W.DEPARTMENT = 'HR' union all select FIRST_NAME, DEPARTMENT from Worker W1 where W1.DEPARTMENT = 'HR';
+// Q-36. Write an SQL query to show the second-highest salary from a table.
+// SELECT max(Salary) from Worker where Salary not in (Select max(Salary) from Worker);
+// Q-35. Write an SQL query to fetch the list of employees with the same salary.
+// SELECT distinct W.WORKER_ID, W.FIRST_NAME, W.Salary from Worker W, Worker W1 where W.Salary = W1.Salary and W.WORKER_ID != W1.WORKER_ID;
+// Q-34. Write an SQL query to determine the 5th highest salary without using the TOP or limit method.
+//   SELECT Salary FROM Worker W1 WHERE 4 = (SELECT COUNT(DISTINCT W2.Salary) FROM Worker W2 WHERE W2.Salary >= W1.Salary);
+// Q-33. Write an SQL query to determine the nth (say n=5) highest salary from a table.
+// SELECT DISTINCT SALARY
+// FROM Worker
+// ORDER BY SALARY DESC
+// LIMIT 1 OFFSET 4;
+// Q-29. Write an SQL query to fetch intersecting records of two tables.
+//   SELECT * FROM Worker INTERSECT SELECT * FROM WorkerClone;
+// Q-28. Write an SQL query to clone a new table from another table.
+// CREATE TABLE WorkerClone AS SELECT * FROM Worker;
+// Q-24. Write an SQL query to print details of the Workers who are also Managers.
+// Q-23. Write an SQL query to fetch the number of workers for each department in descending order.
+// SELECT DEPARTMENT, count(WORKER_ID) No_Of_Workers FROM Worker GROUP BY DEPARTMENT ORDER BY No_Of_Workers DESC;
+// Q-14. Write an SQL query to print details of workers excluding first names, “Vipul” and “Satish” from the Worker table.
+//   Select * from Worker where FIRST_NAME not in ('Vipul', 'Satish');
+// Q-12. Write an SQL query to print all Worker details from the Worker table order by FIRST_NAME Ascending and DEPARTMENT Descending.
+//   Select * from Worker order by FIRST_NAME asc, DEPARTMENT desc;
+// Q-8. Write an SQL query that fetches the unique values of DEPARTMENT from the Worker table and prints its length.
+// SELECT DISTINCT DEPARTMENT, LENGTH(DEPARTMENT) AS Department_Length FROM Worker;
+// Q-4. Write an SQL query to print the first three characters of  FIRST_NAME from the Worker table.
+// Select substring(FIRST_NAME, 1, 3) from Worker;
+// Q-5. Write an SQL query to find the position of the alphabet (‘a’) in the first name column ‘Amitabh’ from the Worker table.
+// SELECT INSTR(FIRST_NAME, 'a') FROM Worker WHERE FIRST_NAME = 'Amitabh';
+// Q-2. Write an SQL query to fetch “FIRST_NAME” from the Worker table in upper case.
+// Select upper(FIRST_NAME) from Worker;
+
+// Definition: A DBMS is software that allows users to create, retrieve, update, and manage data in a database.It can manage data in various formats, including hierarchical, network, or object - oriented.
+//   Definition: An RDBMS is a type of DBMS that stores data in a tabular form and maintains relationships between the data using foreign keys.It is based on the relational model proposed by E.F.Codd. 
+//   Definition: SQL is a standard programming language specifically designed for managing and manipulating relational databases.It is used for querying, updating, and managing data stored in databases.
+//   Definition: MySQL is a relational database management system(RDBMS) that uses SQL as its primary query language.It is an open - source software used for managing databases.
+  
+//     5. List all joins supported in SQL. 
+// INNER JOIN
+
+// LEFT JOIN
+
+// RIGHT JOIN
+
+// FULL JOIN
+
+// CROSS JOIN
+
